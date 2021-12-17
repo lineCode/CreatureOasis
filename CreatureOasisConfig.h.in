@@ -1,3 +1,0 @@
-// the configured options and settings for CreatureOasis
-#define CreatureOasis_VERSION_MAJOR @CreatureOasis_VERSION_MAJOR@
-#define CreatureOasis_VERSION_MINOR @CreatureOasis_VERSION_MINOR@
