@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayAbilitySystem/GASPawn.h"
+#include "CreatureOasis/GameplayAbilitySystem/GASPawn.h"
 #include "ChaoPawn.generated.h"
 
 /**
