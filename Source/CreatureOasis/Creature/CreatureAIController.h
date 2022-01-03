@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CreatureOasis/GameplayAbilitySystem/GASPawn.h"
-#include "ChaoPawn.generated.h"
+#include "AIController.h"
+#include "CreatureAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CREATUREOASIS_API AChaoPawn : public AGASPawn
+class CREATUREOASIS_API ACreatureAIController : public AAIController
 {
 	GENERATED_BODY()
 	
