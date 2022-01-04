@@ -20,16 +20,15 @@ UBTTask_CreatureMoveTo::UBTTask_CreatureMoveTo()
 
 EBTNodeResult::Type UBTTask_CreatureMoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
-	
-	TargetLocation = AIController->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
-	
 	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_CreatureMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+
+	const FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
+	const ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
 	
 	AIController->RotateGraduallyTowardsTarget(TargetLocation);
 	AIController->MoveForward();

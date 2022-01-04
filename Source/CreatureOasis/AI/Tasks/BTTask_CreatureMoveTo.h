@@ -23,9 +23,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float AcceptableRadius;
-	
-private:
-	const class ACreatureAIController* AIController; 
-	
-	FVector TargetLocation;
 };
