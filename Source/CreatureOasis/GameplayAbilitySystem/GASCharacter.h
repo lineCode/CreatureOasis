@@ -20,14 +20,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	UPROPERTY()
-	class UBaseAttributeSet* BaseAttributeSet;
 public:
 	// Implement IAbilitySystemInterface
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void InitializeAttributes();
@@ -48,8 +45,11 @@ public:
 	// These effects are only applied one time on startup
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS")
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
-
-private:
-	UPROPERTY()
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="GAS")
 	class UBaseAbilitySystemComponent* AbilitySystemComponent;
+
+protected:
+	UPROPERTY()
+	const class UBaseAttributeSet* BaseAttributeSet;
 };

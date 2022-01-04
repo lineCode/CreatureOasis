@@ -10,9 +10,6 @@
 AGASCharacter::AGASCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>("AbilitySystemComponent");
-
-	// TODO: Uses attributeSet intended for Chaos, fix this
-	BaseAttributeSet = CreateDefaultSubobject<UChaoCoreAttributeSet>("Attributes");
 }
 
 // Called when the game starts or when spawned
@@ -20,12 +17,10 @@ void AGASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}
-
-// Called to bind functionality to input
-void AGASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	if (IsValid(AbilitySystemComponent))
+	{
+		BaseAttributeSet = AbilitySystemComponent->GetSet<UBaseAttributeSet>();
+	}
 }
 
 void AGASCharacter::InitializeAttributes()
