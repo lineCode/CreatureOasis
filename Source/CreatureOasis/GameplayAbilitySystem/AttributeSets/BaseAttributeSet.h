@@ -26,12 +26,8 @@ public:
 	UBaseAttributeSet();
 
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
-	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Health);
-
-	UPROPERTY(BlueprintReadOnly, Category="Attributes")
-	FGameplayAttributeData Money;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Money);
+	FGameplayAttributeData Hitpoints;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Hitpoints);
 
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
 	FGameplayAttributeData Level;

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-/* used for automayically binding abilities to key binds when desired */
+/* used for automatically binding abilities to key binds when desired */
 UENUM(BlueprintType)
 enum class EAbilityInputID : uint8
 {

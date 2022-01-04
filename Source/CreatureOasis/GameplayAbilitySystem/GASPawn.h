@@ -25,12 +25,6 @@ protected:
 	virtual void InitializeAttributes();
 	virtual void AddStartupEffects();
 	virtual void GiveAbilities();
-
-	UPROPERTY()
-	class UBaseAbilitySystemComponent* AbilitySystemComponent;
-
-	UPROPERTY()
-	class UBaseAttributeSet* BaseAttributeSet;
 	
 public:
 	
@@ -49,7 +43,7 @@ public:
 	int32 GetCharacterLevel() const;
 	
 	UFUNCTION(BlueprintCallable, Category = "GAS")
-	float GetHealth() const;
+	float GetHitpoints() const;
 
 	// list of default gameplay abilities
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
@@ -62,4 +56,11 @@ public:
 	// These effects are only applied one time on startup
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS")
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
+
+private:
+	UPROPERTY()
+	class UBaseAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY()
+	class UBaseAttributeSet* BaseAttributeSet;
 };

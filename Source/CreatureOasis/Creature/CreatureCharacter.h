@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureCharacter.generated.h"
 
 UCLASS()
-class CREATUREOASIS_API ACreatureCharacter : public ACharacter
+class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter
 {
 	GENERATED_BODY()
 

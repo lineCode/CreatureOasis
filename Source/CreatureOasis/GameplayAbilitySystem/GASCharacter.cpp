@@ -1,32 +1,35 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GASPawn.h"
+#include "GASCharacter.h"
 
 #include "BaseAbilitySystemComponent.h"
 #include "BaseGameplayAbility.h"
-#include "AttributeSets/BaseAttributeSet.h"
+#include "AttributeSets/ChaoCoreAttributeSet.h"
 
 // Sets default values
-AGASPawn::AGASPawn()
+AGASCharacter::AGASCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>("AbilitySystemComponent");
+
+	BaseAttributeSet = CreateDefaultSubobject<UChaoCoreAttributeSet>("Attributes");
+
+	//BaseAttributeSet = CreateOptionalDefaultSubobject<UBaseAttributeSet>("Attributes");
+}
+
+// Called when the game starts or when spawned
+void AGASCharacter::BeginPlay()
+{
+	Super::BeginPlay();
 	
-	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>("Attributes");
 }
 
 // Called to bind functionality to input
-void AGASPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AGASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	if(AbilitySystemComponent && PlayerInputComponent)
-	{
-		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "EAbilityInputID", static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel));
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, Binds);
-	}
 }
 
-void AGASPawn::InitializeAttributes()
+void AGASCharacter::InitializeAttributes()
 {
 	if (!IsValid(AbilitySystemComponent) && DefaultAttributes)
 	{
@@ -43,7 +46,7 @@ void AGASPawn::InitializeAttributes()
 	}
 }
 
-void AGASPawn::AddStartupEffects()
+void AGASCharacter::AddStartupEffects()
 {
 	if (!IsValid(AbilitySystemComponent) || AbilitySystemComponent->bStartupEffectsApplied)
 	{
@@ -65,7 +68,7 @@ void AGASPawn::AddStartupEffects()
 	AbilitySystemComponent->bStartupEffectsApplied = true;
 }
 
-void AGASPawn::GiveAbilities()
+void AGASCharacter::GiveAbilities()
 {
 	if (!IsValid(AbilitySystemComponent) || AbilitySystemComponent->bAbilitiesGiven)
 	{
@@ -85,7 +88,7 @@ void AGASPawn::GiveAbilities()
 	AbilitySystemComponent->bAbilitiesGiven = true;
 }
 
-void AGASPawn::PossessedBy(AController* NewController)
+void AGASCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
@@ -96,12 +99,12 @@ void AGASPawn::PossessedBy(AController* NewController)
 	GiveAbilities();
 }
 
-UAbilitySystemComponent* AGASPawn::GetAbilitySystemComponent() const
+UAbilitySystemComponent* AGASCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
 
-void AGASPawn::RemoveCharacterAbilities()
+void AGASCharacter::RemoveCharacterAbilities()
 {
 	if (!IsValid(AbilitySystemComponent) || !AbilitySystemComponent->bAbilitiesGiven)
 	{
@@ -127,7 +130,7 @@ void AGASPawn::RemoveCharacterAbilities()
 	AbilitySystemComponent->bAbilitiesGiven = false;
 }
 
-int32 AGASPawn::GetCharacterLevel() const
+float AGASCharacter::GetCharacterLevel() const
 {
 	if (IsValid(BaseAttributeSet))
 	{
@@ -136,14 +139,3 @@ int32 AGASPawn::GetCharacterLevel() const
 
 	return 0.0f;
 }
-
-float AGASPawn::GetHitpoints() const
-{
-	if (IsValid(BaseAttributeSet))
-	{
-		return BaseAttributeSet->GetHitpoints();
-	}
-
-	return 0.0f;
-}
-
