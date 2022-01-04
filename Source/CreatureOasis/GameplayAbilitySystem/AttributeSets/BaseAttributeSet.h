@@ -23,8 +23,8 @@ class CREATUREOASIS_API UBaseAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
-	UBaseAttributeSet();
-
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
 	FGameplayAttributeData Hitpoints;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Hitpoints);
