@@ -11,9 +11,8 @@ AGASCharacter::AGASCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>("AbilitySystemComponent");
 
+	// TODO: Uses attributeSet intended for Chaos, fix this
 	BaseAttributeSet = CreateDefaultSubobject<UChaoCoreAttributeSet>("Attributes");
-
-	//BaseAttributeSet = CreateOptionalDefaultSubobject<UBaseAttributeSet>("Attributes");
 }
 
 // Called when the game starts or when spawned
