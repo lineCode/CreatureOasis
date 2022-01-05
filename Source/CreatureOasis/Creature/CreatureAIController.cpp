@@ -32,7 +32,7 @@ void ACreatureAIController::RotateGraduallyTowardsTarget(const AActor* TargetAct
 	RotateGraduallyTowardsTarget(TargetActor->GetActorLocation());
 }
 
-bool ACreatureAIController::IsCreatureAtLocation(const FVector TargetLocation, const float AcceptableRadius, const bool bAddCreatureRadius) const
+bool ACreatureAIController::IsAtLocation(const FVector TargetLocation, const float AcceptableRadius, const bool bAddCreatureRadius) const
 {
 	float RadiusToUse = AcceptableRadius;
 	if (bAddCreatureRadius && IsValid(CreatureCharacter))
@@ -40,5 +40,13 @@ bool ACreatureAIController::IsCreatureAtLocation(const FVector TargetLocation, c
 		RadiusToUse += CreatureCharacter->GetCapsuleComponent()->GetScaledCapsuleRadius();
 	}
 	
-	return (FVector::Dist2D(GetPawn()->GetActorLocation(), TargetLocation) < RadiusToUse);
+	return FVector::Dist2D(GetPawn()->GetActorLocation(), TargetLocation) < RadiusToUse;
+}
+
+bool ACreatureAIController::IsRotatedTowardsLocation(const FVector TargetLocation, const float Tolerance) const
+{
+	FVector TargetDirection = (TargetLocation - GetPawn()->GetActorLocation());
+	TargetDirection.Z = 0;
+
+	return FMath::Abs(GetPawn()->GetActorRotation().Yaw - TargetDirection.Rotation().Yaw) <= Tolerance;
 }

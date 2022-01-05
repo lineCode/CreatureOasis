@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTTask_CreatureMoveTo.h"
+#include "BTTask_CreatureRotateAndMoveTo.h"
 
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
@@ -9,7 +9,7 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "CreatureOasis/Creature/CreatureAIController.h"
 
-UBTTask_CreatureMoveTo::UBTTask_CreatureMoveTo()
+UBTTask_CreatureRotateAndMoveTo::UBTTask_CreatureRotateAndMoveTo()
 {
 	NodeName = TEXT("Creature Rotate and Move To");
 
@@ -18,12 +18,12 @@ UBTTask_CreatureMoveTo::UBTTask_CreatureMoveTo()
 	bNotifyTick = true;
 }
 
-EBTNodeResult::Type UBTTask_CreatureMoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_CreatureRotateAndMoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	return EBTNodeResult::InProgress;
 }
 
-void UBTTask_CreatureMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
@@ -34,7 +34,7 @@ void UBTTask_CreatureMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* 
 	AIController->MoveForward();
 	
 	// Acceptable radius
-	if (AIController->IsCreatureAtLocation(TargetLocation, AcceptableRadius))
+	if (AIController->IsAtLocation(TargetLocation, AcceptableRadius))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}
