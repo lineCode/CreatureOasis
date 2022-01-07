@@ -23,6 +23,9 @@ public:
 
 	bool IsAtLocation(const FVector TargetLocation, const float AcceptableRadius = 5.f, const bool bAddCreatureRadius = true) const;
 	bool IsRotatedTowardsLocation(const FVector TargetLocation, const float Tolerance = 0.0f) const;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="AI")
+	class UAIPerceptionComponent* AIPerceptionComponent;
 	
 private:
 	const class ACreatureCharacter* CreatureCharacter;  

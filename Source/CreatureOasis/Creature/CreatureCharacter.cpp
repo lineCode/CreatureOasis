@@ -2,7 +2,7 @@
 
 #include "CreatureCharacter.h"
 
-#include "CreatureOasis/GameplayAbilitySystem/AttributeSets/ChaoCoreAttributeSet.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -13,6 +13,12 @@ ACreatureCharacter::ACreatureCharacter()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	PickUpBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PickUpBox"));
+	PickUpBox->SetupAttachment(RootComponent);
+	
+	PickUpAnchor = CreateDefaultSubobject<USceneComponent>(TEXT("PickUpAnchor"));
+	PickUpAnchor->SetupAttachment(GetMesh());
 }
 
 // Called when the game starts or when spawned

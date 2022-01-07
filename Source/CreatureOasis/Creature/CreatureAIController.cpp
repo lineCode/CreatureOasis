@@ -4,12 +4,14 @@
 #include "CreatureAIController.h"
 
 #include "CreatureCharacter.h"
-#include "DrawDebugHelpers.h"
 #include "Components/CapsuleComponent.h"
+#include "Perception/AIPerceptionComponent.h"
 
 ACreatureAIController::ACreatureAIController()
 {
 	CreatureCharacter = Cast<ACreatureCharacter>(GetPawn());
+
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 }
 
 void ACreatureAIController::MoveForward() const
