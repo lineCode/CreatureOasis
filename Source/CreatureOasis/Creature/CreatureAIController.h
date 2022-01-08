@@ -28,5 +28,6 @@ public:
 	class UAIPerceptionComponent* AIPerceptionComponent;
 	
 private:
+	UPROPERTY()
 	const class ACreatureCharacter* CreatureCharacter;  
 };
