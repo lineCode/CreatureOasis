@@ -6,6 +6,9 @@
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureCharacter.generated.h"
 
+class UManageEmotionComponent;
+class UManageEvolutionComponent;
+
 UCLASS()
 class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter
 {
@@ -25,10 +28,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UBoxComponent* PickUpBox;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USceneComponent* PickUpAnchor;
 };

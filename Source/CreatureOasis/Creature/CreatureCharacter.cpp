@@ -5,6 +5,9 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "CreatureOasis/Components/ManageEmotionComponent.h"
+#include "CreatureOasis/Components/ManageEvolutionComponent.h"
+
 // Sets default values
 ACreatureCharacter::ACreatureCharacter()
 {
@@ -41,4 +44,3 @@ void ACreatureCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
