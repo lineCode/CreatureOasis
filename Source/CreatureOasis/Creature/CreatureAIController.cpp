@@ -4,6 +4,7 @@
 #include "CreatureAIController.h"
 
 #include "CreatureCharacter.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 
@@ -11,6 +12,8 @@ ACreatureAIController::ACreatureAIController()
 {
 	CreatureCharacter = Cast<ACreatureCharacter>(GetPawn());
 
+	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
+	
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 }
 
