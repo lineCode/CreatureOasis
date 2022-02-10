@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
+#include "FuzzyDynamicBTActionSelectionService.h"
+
 #include "CreatureOasis/AI/FuzzyLogic/FuzzyLogicInterface.h"
 #include "CreatureOasis/AI/FuzzyLogic/Actions/BaseDynamicBTAction.h"
-
-#include "FuzzyDynamicBTActionSelectionService.h"
 
 UFuzzyDynamicBTActionSelectionService::UFuzzyDynamicBTActionSelectionService() :
 	BestFuzzyAction(nullptr)
