@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Blueprintable)
 class CREATUREOASIS_API UBaseDynamicBTAction : public UObject, public IFuzzyLogicInterface
 {
 	GENERATED_BODY()
