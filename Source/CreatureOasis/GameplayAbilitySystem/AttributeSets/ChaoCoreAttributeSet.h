@@ -58,6 +58,10 @@ public:
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Sleepiness);
 
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
+	FGameplayAttributeData Tiredness;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Tiredness);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData Boredom;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Boredom);
 
@@ -68,7 +72,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData Joy;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Joy);
-
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
+	FGameplayAttributeData Anger;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Anger);
+	
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData UrgeToCry;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, UrgeToCry);
