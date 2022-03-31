@@ -36,11 +36,11 @@ protected:
 	bool CommenceComparativeCheck(const float ValToCheck) const;
 
 	UPROPERTY(EditAnywhere)
-	FGameplayAttribute TargetAttribute;
-
-	UPROPERTY(EditAnywhere)
 	float ComparativeVal;
 	
 	UPROPERTY(EditAnywhere)
 	ECheckCompareQuery CheckQuery;
+	
+	UPROPERTY(EditAnywhere)
+	FGameplayAttribute TargetAttribute;
 };
