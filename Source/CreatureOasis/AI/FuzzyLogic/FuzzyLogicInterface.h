@@ -21,7 +21,7 @@ class IFuzzyLogicInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float CalculateScore();
+	float CalculateScore(const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	class UBehaviorTree* GetBehaviorTreeToRun();

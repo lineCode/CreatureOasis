@@ -2,8 +2,11 @@
 
 #include "FuzzyDynamicBTActionSelectionService.h"
 
+#include "AIController.h"
 #include "CreatureOasis/AI/FuzzyLogic/FuzzyLogicInterface.h"
 #include "CreatureOasis/AI/FuzzyLogic/Actions/BaseDynamicBTAction.h"
+#include "CreatureOasis/GameplayAbilitySystem/BaseAbilitySystemComponent.h"
+#include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 
 UFuzzyDynamicBTActionSelectionService::UFuzzyDynamicBTActionSelectionService() :
 	BestFuzzyAction(nullptr)
@@ -23,9 +26,9 @@ void UFuzzyDynamicBTActionSelectionService::OnBecomeRelevant(UBehaviorTreeCompon
 	{
 		return;
 	}
-	
+
 	// Calculate best action
-	SearchForBestFuzzyAction();
+	SearchForBestFuzzyAction(OwnerComp);
 
 	if (BestFuzzyAction)
 	{
@@ -39,14 +42,17 @@ void UFuzzyDynamicBTActionSelectionService::OnBecomeRelevant(UBehaviorTreeCompon
 	}
 }
 
-void UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyAction()
+void UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp)
 {
 	float BestScore = 0.f;
 	UBaseDynamicBTAction* BestAction = nullptr;
 	
 	for (const TSubclassOf<UBaseDynamicBTAction> Action : FuzzyActions)
 	{
-		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject());
+		const UBaseAbilitySystemComponent* AbilitySystemComponent = static_cast<UBaseAbilitySystemComponent*>(
+			static_cast<AGASCharacter*>(OwnerComp.GetAIOwner()->GetCharacter())->GetAbilitySystemComponent());
+		
+		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject(), AbilitySystemComponent);
 		
 		if (CalculatedScore > BestScore)
 		{

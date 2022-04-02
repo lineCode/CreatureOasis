@@ -24,7 +24,7 @@ public:
 	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 protected:
-	void SearchForBestFuzzyAction();
+	void SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<TSubclassOf<UBaseDynamicBTAction>> FuzzyActions;

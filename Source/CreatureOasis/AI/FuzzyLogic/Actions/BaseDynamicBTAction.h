@@ -19,6 +19,6 @@ public:
 	class UBehaviorTree* BehaviorTreeToRun;
 
 	// IFuzzyLogicInterface implementations
-	virtual float CalculateScore_Implementation() override;
+	virtual float CalculateScore_Implementation(const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent) override;
 	virtual UBehaviorTree* GetBehaviorTreeToRun_Implementation() override;
 };
