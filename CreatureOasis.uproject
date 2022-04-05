@@ -12,6 +12,11 @@
 				"Engine",
 				"AIModule"
 			]
+		},
+		{
+			"Name": "CreatureOasisLoadingScreen",
+			"Type": "ClientOnly",
+			"LoadingPhase": "PreLoadingScreen"
 		}
 	],
 	"Plugins": [
