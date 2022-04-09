@@ -25,7 +25,7 @@ void AGASCharacter::BeginPlay()
 
 void AGASCharacter::InitializeAttributes()
 {
-	if (!IsValid(AbilitySystemComponent) && DefaultAttributes)
+	if (!IsValid(AbilitySystemComponent) && !IsValid(DefaultAttributes))
 	{
 		return;
 	}
@@ -36,7 +36,7 @@ void AGASCharacter::InitializeAttributes()
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 1, EffectContext);
 	if (SpecHandle.IsValid())
 	{
-		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 	}
 }
 
@@ -55,7 +55,7 @@ void AGASCharacter::AddStartupEffects()
 		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, GetCharacterLevel(), EffectContext);
 		if (NewHandle.IsValid())
 		{
-			FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent);
+			AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent);
 		}
 	}
 
