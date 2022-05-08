@@ -37,23 +37,23 @@ bool UBTDecorator_CheckGASAttribute::CommenceComparativeCheck(const float ValToC
 	switch (CheckQuery)
 	{
 	case ECheckCompareQuery::Less:
-		CompareCheck = ComparativeVal < ValToCheck;
+		CompareCheck = ScalableFloat.GetValue() < ValToCheck;
 		break;
 
 	case ECheckCompareQuery::LessOrEqual:
-		CompareCheck = ComparativeVal <= ValToCheck;
+		CompareCheck = ScalableFloat.GetValue() <= ValToCheck;
 		break;
 
 	case ECheckCompareQuery::Equal:
-		CompareCheck = ComparativeVal == ValToCheck;
+		CompareCheck = ScalableFloat.GetValue() == ValToCheck;
 		break;
 
 	case ECheckCompareQuery::Greater:
-		CompareCheck = ComparativeVal > ValToCheck ;
+		CompareCheck = ScalableFloat.GetValue() > ValToCheck ;
 		break;
 
 	case ECheckCompareQuery::GreaterOrEqual:
-		CompareCheck = ComparativeVal >= ValToCheck;
+		CompareCheck = ScalableFloat.GetValue() >= ValToCheck;
 		break;
 		
 	default: ;

@@ -39,10 +39,31 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Evolution")
 	FGameplayAttributeData Magnitude;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Magnitude);
-
-	//// Personality
-
+	
 	//// Health
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData Cough;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Cough);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData Cold;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Cold);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData Rash;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Rash);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData RunningNose;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, RunningNose);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData Hiccups;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Hiccups);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Health")
+	FGameplayAttributeData StomachAche;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, StomachAche);
 	
 	//// Emotions and Behaviours
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
@@ -72,6 +93,18 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData Joy;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Joy);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
+	FGameplayAttributeData Relax;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Relax);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
+	FGameplayAttributeData Stress;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Stress);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
+	FGameplayAttributeData Lonely;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, Lonely);
 	
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData Anger;
