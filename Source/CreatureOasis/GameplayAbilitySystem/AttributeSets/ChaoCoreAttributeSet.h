@@ -10,6 +10,11 @@ class CREATUREOASIS_API UChaoCoreAttributeSet : public UChaoStatsAttributeSet
 	GENERATED_BODY()
 	
 public:
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	const float MinValue = 0.f;
+	const float MaxValue = 100.f;
+
 	// Attribute layout inspired by "Fusion's Chao Editor"
 
 	//// General

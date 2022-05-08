@@ -2,7 +2,9 @@
 
 #include "CreatureCharacter.h"
 
+#include "GameplayEffect.h"
 #include "Components/BoxComponent.h"
+#include "CreatureOasis/Structs/CreaturePassiveStatEffectTableRow.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -28,7 +30,6 @@ ACreatureCharacter::ACreatureCharacter()
 void ACreatureCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
