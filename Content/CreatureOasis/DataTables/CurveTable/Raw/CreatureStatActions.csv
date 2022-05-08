@@ -1,3 +1,4 @@
 ---,0
-Hunger_Starvin,75
-Sleep_Action1,75
+Hunger_Starving,75
+Sleep_Start,75
+Tiredness,50
