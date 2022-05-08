@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "ManageEvolutionComponent.generated.h"
+#include "EvolutionComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CREATUREOASIS_API UManageEvolutionComponent : public UActorComponent
+class CREATUREOASIS_API UEvolutionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UManageEvolutionComponent();
+	UEvolutionComponent();
 
 protected:
 	virtual void InitializeComponent() override;

@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
+
+#include "CreatureOasis/Components/ExpressionComponent.h"
+#include "CreatureOasis/Components/EvolutionComponent.h"
+
 #include "CreatureCharacter.generated.h"
 
 class UManageEmotionComponent;
@@ -34,4 +38,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USceneComponent* PickUpAnchor;
+
+	UPROPERTY(BlueprintReadOnly)
+	UEvolutionComponent* EvolutionComponent;
+	
+	UPROPERTY(BlueprintReadOnly)
+	UExpressionComponent* ExpressionComponent;
 };

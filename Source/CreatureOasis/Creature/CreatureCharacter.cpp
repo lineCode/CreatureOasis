@@ -5,9 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-#include "CreatureOasis/Components/ManageExpressionComponent.h"
-#include "CreatureOasis/Components/ManageEvolutionComponent.h"
-
 // Sets default values
 ACreatureCharacter::ACreatureCharacter()
 {
@@ -22,6 +19,9 @@ ACreatureCharacter::ACreatureCharacter()
 	
 	PickUpAnchor = CreateDefaultSubobject<USceneComponent>(TEXT("PickUpAnchor"));
 	PickUpAnchor->SetupAttachment(GetMesh());
+
+	EvolutionComponent = CreateDefaultSubobject<UEvolutionComponent>(TEXT("EvolutionComponent"));
+	ExpressionComponent = CreateDefaultSubobject<UExpressionComponent>(TEXT("ExpressionComponent"));
 }
 
 // Called when the game starts or when spawned
