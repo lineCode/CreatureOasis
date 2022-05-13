@@ -1,0 +1,7 @@
+---,0
+Hunger_Base,0.88
+Sleepiness_Base,1.35
+Energy_Base,1.5
+Sleepiness_Sleeping,-15
+Tiredness_FallingAsleep,15
+Tiredness_Waking,-15
