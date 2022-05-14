@@ -3,7 +3,7 @@
 
 #include "EvolutionComponent.h"
 
-#include "CreatureOasis/Creature/CreatureCharacter.h"
+#include "CreatureOasis/Characters/Creature/CreatureCharacter.h"
 
 // Sets default values for this component's properties
 UEvolutionComponent::UEvolutionComponent()

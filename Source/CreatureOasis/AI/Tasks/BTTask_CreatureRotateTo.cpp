@@ -4,7 +4,7 @@
 #include "BTTask_CreatureRotateTo.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
-#include "CreatureOasis/Creature/CreatureAIController.h"
+#include "CreatureOasis/Characters/Creature/CreatureAIController.h"
 
 UBTTask_CreatureRotateTo::UBTTask_CreatureRotateTo()
 {

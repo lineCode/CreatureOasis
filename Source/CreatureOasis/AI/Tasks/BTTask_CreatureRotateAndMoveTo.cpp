@@ -7,7 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "CreatureOasis/Creature/CreatureAIController.h"
+#include "CreatureOasis/Characters/Creature/CreatureAIController.h"
 
 UBTTask_CreatureRotateAndMoveTo::UBTTask_CreatureRotateAndMoveTo()
 {

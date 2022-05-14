@@ -1,10 +1,10 @@
 ﻿#include "BaseGardenGameMode.h"
 
-#include "CreatureOasis/Player/Base/BasePlayerController.h"
+#include "CreatureOasis/Characters/ThirdPersonCharacter/Base/BaseThirdPersonCharacter.h"
 
 ABaseGardenGameMode::ABaseGardenGameMode()
 {
-	PlayerControllerClass = ABasePlayerController::StaticClass();
+	PlayerControllerClass = ABaseThirdPersonCharacter::StaticClass();
 }
 
 void ABaseGardenGameMode::BeginPlay()

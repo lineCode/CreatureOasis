@@ -3,7 +3,7 @@
 
 #include "ExpressionComponent.h"
 
-#include "CreatureOasis/Creature/CreatureCharacter.h"
+#include "CreatureOasis/Characters/Creature/CreatureCharacter.h"
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/Async/AbilityAsync_WaitGameplayTag.h"
