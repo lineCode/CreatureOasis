@@ -4,13 +4,13 @@
 #include "Modules/ModuleManager.h"
 
 // Based on the ActionRPG loading screen
-class FCreatureOasisLoadingScreen : public IModuleInterface
+class FCreatureOasisLoadingScreenModule : public IModuleInterface
 {
 public:
 	/* Loads the module so it can be turned on */
-	static inline FCreatureOasisLoadingScreen& Get()
+	static inline FCreatureOasisLoadingScreenModule& Get()
 	{
-		return FModuleManager::LoadModuleChecked<FCreatureOasisLoadingScreen>("Zephyr_DemoLoadingScreen");
+		return FModuleManager::LoadModuleChecked<FCreatureOasisLoadingScreenModule>("CreatureOasisLoadingScreen");
 	}
 	
 	// Start IModuleInterface

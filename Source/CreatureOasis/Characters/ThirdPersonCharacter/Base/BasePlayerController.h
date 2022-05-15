@@ -13,7 +13,7 @@ class CREATUREOASIS_API ABasePlayerController : public APlayerController
 public:
 	// Sets default values for this actor's properties
 	ABasePlayerController();
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

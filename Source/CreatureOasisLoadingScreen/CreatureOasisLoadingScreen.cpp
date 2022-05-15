@@ -4,7 +4,7 @@
 
 #include "MoviePlayer.h"
 
-void FCreatureOasisLoadingScreen::StartupModule()
+void FCreatureOasisLoadingScreenModule::StartupModule()
 {
 	if (IsMoviePlayerEnabled())
 	{
@@ -12,12 +12,12 @@ void FCreatureOasisLoadingScreen::StartupModule()
 	}
 }
 
-bool FCreatureOasisLoadingScreen::IsGameModule() const
+bool FCreatureOasisLoadingScreenModule::IsGameModule() const
 {
 	return true;
 }
 
-void FCreatureOasisLoadingScreen::StartInGameLoadingScreen(bool bPlayUntilStopped, float PlayTime)
+void FCreatureOasisLoadingScreenModule::StartInGameLoadingScreen(bool bPlayUntilStopped, float PlayTime)
 {
 	FLoadingScreenAttributes LoadingScreenAttributes;
 	LoadingScreenAttributes.bAutoCompleteWhenLoadingCompletes = !bPlayUntilStopped;
@@ -28,12 +28,12 @@ void FCreatureOasisLoadingScreen::StartInGameLoadingScreen(bool bPlayUntilStoppe
 	GetMoviePlayer()->SetupLoadingScreen(LoadingScreenAttributes);
 }
 
-void FCreatureOasisLoadingScreen::StopInGameLoadingScreen()
+void FCreatureOasisLoadingScreenModule::StopInGameLoadingScreen()
 {
 	GetMoviePlayer()->StopMovie();
 }
 
-void FCreatureOasisLoadingScreen::CreateScreen()
+void FCreatureOasisLoadingScreenModule::CreateScreen()
 {
 	FLoadingScreenAttributes LoadingScreenAttributes;
 	LoadingScreenAttributes.bAutoCompleteWhenLoadingCompletes = true;
@@ -42,4 +42,4 @@ void FCreatureOasisLoadingScreen::CreateScreen()
 	GetMoviePlayer()->SetupLoadingScreen(LoadingScreenAttributes);
 }
 
-IMPLEMENT_GAME_MODULE(FCreatureOasisLoadingScreen, Zephyr_DemoLoadingScreen);
+IMPLEMENT_GAME_MODULE(FCreatureOasisLoadingScreenModule, CreatureOasisLoadingScreen);

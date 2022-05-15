@@ -28,6 +28,8 @@ public:
 	// Called to bind functionality to input
 	virtual void PossessedBy(AController* NewController) override;
 
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
 	virtual void InitializeAttributes();
 	virtual void AddStartupEffects();
 	virtual void GiveAbilities();

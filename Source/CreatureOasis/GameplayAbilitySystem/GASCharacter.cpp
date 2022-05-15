@@ -93,6 +93,17 @@ void AGASCharacter::PossessedBy(AController* NewController)
 	GiveAbilities();
 }
 
+void AGASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if(AbilitySystemComponent && PlayerInputComponent)
+	{
+		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "EAbilityInputID", static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel));
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, Binds);
+	}
+}
+
 UAbilitySystemComponent* AGASCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
