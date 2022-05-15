@@ -1,20 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "EvolutionComponent.generated.h"
-
+#include "CreatureAppearanceComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CREATUREOASIS_API UEvolutionComponent : public UActorComponent
+class CREATUREOASIS_API UCreatureAppearanceComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UEvolutionComponent();
+	UCreatureAppearanceComponent();
 
 protected:
 	virtual void InitializeComponent() override;

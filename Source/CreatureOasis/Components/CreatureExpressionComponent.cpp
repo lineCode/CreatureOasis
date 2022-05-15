@@ -1,7 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "ExpressionComponent.h"
+#include "CreatureExpressionComponent.h"
 
 #include "CreatureOasis/Characters/Creature/CreatureCharacter.h"
 
@@ -13,27 +10,26 @@
 
 #include "Engine/DataTable.h"
 
-// Sets default values for this component's properties
-UExpressionComponent::UExpressionComponent()
+UCreatureExpressionComponent::UCreatureExpressionComponent()
 {
 	//PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
 
 }
 
-void UExpressionComponent::SetEyeTag(const FGameplayTag NewEyeTag)
+void UCreatureExpressionComponent::SetEyeTag(const FGameplayTag NewEyeTag)
 {
 	CurrentEyeTag = NewEyeTag;
 	RegenerateEyes();
 }
 
-void UExpressionComponent::SetMouthTag(const FGameplayTag NewMouthTag)
+void UCreatureExpressionComponent::SetMouthTag(const FGameplayTag NewMouthTag)
 {
 	CurrentMouthTag = NewMouthTag;
 	RegenerateMouth();
 }
 
-void UExpressionComponent::RegenerateEyes() const
+void UCreatureExpressionComponent::RegenerateEyes() const
 {
 	if (!IsValid(EyeDataTable) || !CurrentEyeTag.IsValid())
 	{
@@ -50,7 +46,7 @@ void UExpressionComponent::RegenerateEyes() const
 	EyeMaterialInstance->SetTextureParameterValue("EyeTexture", EyeTableRow->EyeTexture);
 }
 
-void UExpressionComponent::RegenerateMouth() const
+void UCreatureExpressionComponent::RegenerateMouth() const
 {
 	if (!IsValid(MouthDataTable) || !CurrentMouthTag.IsValid())
 	{
@@ -74,12 +70,12 @@ void UExpressionComponent::RegenerateMouth() const
 	SubMouthMaterialInstance->SetTextureParameterValue("SideMouthTexture", MouthTableRow->SideMouthTexture);
 }
 
-UMaterialInstanceDynamic* UExpressionComponent::GetMaterialInstance(const FName MaterialName) const
+UMaterialInstanceDynamic* UCreatureExpressionComponent::GetMaterialInstance(const FName MaterialName) const
 {
 	return Cast<UMaterialInstanceDynamic>(CreatureMesh->GetMaterial(CreatureMesh->GetMaterialIndex(MaterialName)));
 }
 
-void UExpressionComponent::InitializeComponent()
+void UCreatureExpressionComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 	
@@ -89,7 +85,7 @@ void UExpressionComponent::InitializeComponent()
 	PrepareMaterialInstances();
 }
 
-void UExpressionComponent::PrepareMaterialInstances()
+void UCreatureExpressionComponent::PrepareMaterialInstances()
 {
 	EyeMaterialInstance = GetMaterialInstance("M_eyes");
 	

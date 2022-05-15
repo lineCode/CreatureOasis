@@ -22,8 +22,8 @@ ACreatureCharacter::ACreatureCharacter()
 	PickUpAnchor = CreateDefaultSubobject<USceneComponent>(TEXT("PickUpAnchor"));
 	PickUpAnchor->SetupAttachment(GetMesh());
 
-	EvolutionComponent = CreateDefaultSubobject<UEvolutionComponent>(TEXT("EvolutionComponent"));
-	ExpressionComponent = CreateDefaultSubobject<UExpressionComponent>(TEXT("ExpressionComponent"));
+	AppearanceComponent = CreateDefaultSubobject<UCreatureAppearanceComponent>(TEXT("AppearanceComponent"));
+	ExpressionComponent = CreateDefaultSubobject<UCreatureExpressionComponent>(TEXT("ExpressionComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -44,4 +44,14 @@ void ACreatureCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+bool ACreatureCharacter::StartHold_Implementation(AActor* InstigatorActor)
+{
+	return IHoldableInterface::StartHold_Implementation(InstigatorActor);
+}
+
+bool ACreatureCharacter::EndHold_Implementation()
+{
+	return IHoldableInterface::EndHold_Implementation();
 }

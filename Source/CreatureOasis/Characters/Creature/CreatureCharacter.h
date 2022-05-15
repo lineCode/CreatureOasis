@@ -1,20 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 
-#include "CreatureOasis/Components/ExpressionComponent.h"
-#include "CreatureOasis/Components/EvolutionComponent.h"
+#include "CreatureOasis/Components/CreatureExpressionComponent.h"
+#include "CreatureOasis/Components/CreatureAppearanceComponent.h"
+#include "CreatureOasis/Interfaces/HoldableInterface.h"
 
 #include "CreatureCharacter.generated.h"
 
-class UManageEmotionComponent;
-class UManageEvolutionComponent;
-
 UCLASS()
-class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter
+class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter, public IHoldableInterface
 {
 	GENERATED_BODY()
 
@@ -32,6 +28,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// From IHoldableInterface
+	virtual bool StartHold_Implementation(AActor* InstigatorActor) override;
+	virtual bool EndHold_Implementation() override;
+	// End
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UBoxComponent* PickUpBox;
@@ -40,8 +41,8 @@ public:
 	USceneComponent* PickUpAnchor;
 
 	UPROPERTY(BlueprintReadOnly)
-	UEvolutionComponent* EvolutionComponent;
+	UCreatureAppearanceComponent* AppearanceComponent;
 	
 	UPROPERTY(BlueprintReadOnly)
-	UExpressionComponent* ExpressionComponent;
+	UCreatureExpressionComponent* ExpressionComponent;
 };

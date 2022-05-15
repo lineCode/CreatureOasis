@@ -1,18 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EvolutionComponent.h"
+#include "CreatureAppearanceComponent.h"
 
 #include "CreatureOasis/Characters/Creature/CreatureCharacter.h"
 
 // Sets default values for this component's properties
-UEvolutionComponent::UEvolutionComponent()
+UCreatureAppearanceComponent::UCreatureAppearanceComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
 }
 
-void UEvolutionComponent::InitializeComponent()
+void UCreatureAppearanceComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 	
@@ -21,21 +21,21 @@ void UEvolutionComponent::InitializeComponent()
 }
 
 // Called when the game starts
-void UEvolutionComponent::BeginPlay()
+void UCreatureAppearanceComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
 // Called every frame
-void UEvolutionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCreatureAppearanceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
-void UEvolutionComponent::SetPrimaryColor(const FLinearColor NewColor) const
+void UCreatureAppearanceComponent::SetPrimaryColor(const FLinearColor NewColor) const
 {
 	if (IsValid(CreatureMesh))
 	{
@@ -44,7 +44,7 @@ void UEvolutionComponent::SetPrimaryColor(const FLinearColor NewColor) const
 	
 }
 
-void UEvolutionComponent::SetSecondaryColor(const FLinearColor NewColor) const
+void UCreatureAppearanceComponent::SetSecondaryColor(const FLinearColor NewColor) const
 {
 	if (IsValid(CreatureMesh))
 	{
@@ -52,7 +52,7 @@ void UEvolutionComponent::SetSecondaryColor(const FLinearColor NewColor) const
 	}
 }
 
-void UEvolutionComponent::SetSkeletalMesh(USkeletalMeshComponent* NewMesh)
+void UCreatureAppearanceComponent::SetSkeletalMesh(USkeletalMeshComponent* NewMesh)
 {
 	CreatureMesh = NewMesh;
 }

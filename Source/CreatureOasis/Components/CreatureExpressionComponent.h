@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
-#include "ExpressionComponent.generated.h"
+#include "CreatureExpressionComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CREATUREOASIS_API UExpressionComponent : public UActorComponent
+class CREATUREOASIS_API UCreatureExpressionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UExpressionComponent();
+	UCreatureExpressionComponent();
 
 	UFUNCTION(BlueprintCallable)
 	void SetEyeTag(const FGameplayTag NewEyeTag);
