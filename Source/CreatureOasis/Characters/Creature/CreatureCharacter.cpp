@@ -2,8 +2,12 @@
 
 #include "CreatureCharacter.h"
 
+#include "AbilitySystemComponent.h"
+#include "CreatureAIController.h"
 #include "GameplayEffect.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "CreatureOasis/Structs/CreaturePassiveStatEffectTableRow.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -15,13 +19,10 @@ ACreatureCharacter::ACreatureCharacter()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-
-	PickUpBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PickUpBox"));
-	PickUpBox->SetupAttachment(RootComponent);
 	
-	PickUpAnchor = CreateDefaultSubobject<USceneComponent>(TEXT("PickUpAnchor"));
-	PickUpAnchor->SetupAttachment(GetMesh());
-
+	HoldableAnchor = CreateDefaultSubobject<UHoldableAnchorComponent>(TEXT("HoldableAnchor"));
+	HoldableAnchor->SetupAttachment(GetMesh());
+	
 	AppearanceComponent = CreateDefaultSubobject<UCreatureAppearanceComponent>(TEXT("AppearanceComponent"));
 	ExpressionComponent = CreateDefaultSubobject<UCreatureExpressionComponent>(TEXT("ExpressionComponent"));
 }
@@ -43,15 +44,29 @@ void ACreatureCharacter::Tick(float DeltaTime)
 void ACreatureCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
-bool ACreatureCharacter::StartHold_Implementation(AActor* InstigatorActor)
+void ACreatureCharacter::PossessedBy(AController* NewController)
 {
-	return IHoldableInterface::StartHold_Implementation(InstigatorActor);
+	Super::PossessedBy(NewController);
+
+	CreatureAIController = Cast<ACreatureAIController>(NewController);
 }
 
-bool ACreatureCharacter::EndHold_Implementation()
+void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
 {
-	return IHoldableInterface::EndHold_Implementation();
+	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted"));
+
+	CreatureAIController->BehaviorTreeComponent->RestartTree();
+
+	GetMovementComponent()->Deactivate();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ACreatureCharacter::EndBeingHold_Implementation()
+{
+	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted"));
+
+	GetMovementComponent()->Activate();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }

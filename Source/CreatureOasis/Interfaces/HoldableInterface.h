@@ -19,8 +19,8 @@ class CREATUREOASIS_API IHoldableInterface
 	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Trigger)
-	bool StartHold(AActor* InstigatorActor);
+	void StartBeingHold(AActor* ActorInstigator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Trigger)
-	bool EndHold();
+	void EndBeingHold();
 };

@@ -3,6 +3,8 @@
 
 #include "AbilityCharacterHoldActor.h"
 
+#include "CreatureOasis/Components/HoldableAnchorComponent.h"
+#include "CreatureOasis/Interfaces/HoldableInterface.h"
 #include "GameFramework/Character.h"
 
 UAbilityCharacterHoldActor::UAbilityCharacterHoldActor() :
@@ -37,7 +39,17 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 	if(GEngine && bHit)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow,
-		                                 FString::Printf(TEXT("Colliding with %s"), *OutHit.GetActor()->GetName()));	
+		                                 FString::Printf(TEXT("Colliding with %s"), *OutHit.GetActor()->GetName()));
+
+		AActor* ActorToHold = OutHit.GetActor();
+		UHoldableAnchorComponent* HoldableAnchorComponent = ActorInfo->AvatarActor->FindComponentByClass<UHoldableAnchorComponent>();
+		
+		if (ActorToHold->GetClass()->ImplementsInterface(UHoldableInterface::StaticClass()) && HoldableAnchorComponent != nullptr)
+		{
+			IHoldableInterface::Execute_StartBeingHold(ActorToHold, ActorInfo->AvatarActor.Get());
+			
+			HoldableAnchorComponent->AttachHoldable(ActorToHold);
+		}
 	}
 }
 
@@ -62,4 +74,14 @@ void UAbilityCharacterHoldActor::CancelAbility(const FGameplayAbilitySpecHandle 
 	bool bReplicateCancelAbility)
 {
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
+
+	UHoldableAnchorComponent* HoldableAnchorComponent = ActorInfo->AvatarActor->FindComponentByClass<UHoldableAnchorComponent>();
+	AActor* ActorWeAreHolding = HoldableAnchorComponent->GetActorWeAreHolding();
+	
+	if (ActorWeAreHolding != nullptr && HoldableAnchorComponent != nullptr)
+	{
+		IHoldableInterface::Execute_EndBeingHold(ActorWeAreHolding);
+
+		HoldableAnchorComponent->DetachHoldable();
+	}
 }

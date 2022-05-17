@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
+#include "CreatureOasis/Interfaces/HoldableInterface.h"
 #include "BaseThirdPersonCharacter.generated.h"
 
 UCLASS(config=Game)
-class CREATUREOASIS_API ABaseThirdPersonCharacter : public AGASCharacter
+class CREATUREOASIS_API ABaseThirdPersonCharacter : public AGASCharacter, public IHoldableInterface
 {
 	GENERATED_BODY()
 
@@ -41,11 +42,19 @@ protected:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UHoldableAnchorComponent* HoldableAnchor;
 	
 public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	// IHoldableInterface
+	virtual void StartBeingHold_Implementation(AActor* InstigatorActor) override;
+	virtual void EndBeingHold_Implementation() override;
+	// End
+	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;

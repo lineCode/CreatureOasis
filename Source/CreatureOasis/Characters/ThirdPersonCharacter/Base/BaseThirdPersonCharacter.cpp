@@ -3,6 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -32,6 +33,9 @@ ABaseThirdPersonCharacter::ABaseThirdPersonCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+	
+	HoldableAnchor = CreateDefaultSubobject<UHoldableAnchorComponent>(TEXT("HoldableAnchor"));
+	HoldableAnchor->SetupAttachment(GetMesh());
 }
 
 void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -45,6 +49,16 @@ void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent*
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABaseThirdPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABaseThirdPersonCharacter::LookUpAtRate);
+}
+
+void ABaseThirdPersonCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
+{
+	IHoldableInterface::StartBeingHold_Implementation(InstigatorActor);
+}
+
+void ABaseThirdPersonCharacter::EndBeingHold_Implementation()
+{
+	IHoldableInterface::EndBeingHold_Implementation();
 }
 
 void ABaseThirdPersonCharacter::TurnAtRate(float Rate)

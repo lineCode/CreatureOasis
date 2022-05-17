@@ -5,9 +5,12 @@
 
 #include "CreatureOasis/Components/CreatureExpressionComponent.h"
 #include "CreatureOasis/Components/CreatureAppearanceComponent.h"
+#include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 
 #include "CreatureCharacter.generated.h"
+
+class ACreatureAIController;
 
 UCLASS()
 class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter, public IHoldableInterface
@@ -19,7 +22,6 @@ public:
 	ACreatureCharacter();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
@@ -29,20 +31,22 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// From IHoldableInterface
-	virtual bool StartHold_Implementation(AActor* InstigatorActor) override;
-	virtual bool EndHold_Implementation() override;
-	// End
+	virtual void PossessedBy(AController* NewController) override;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UBoxComponent* PickUpBox;
+	// IHoldableInterface
+	virtual void StartBeingHold_Implementation(AActor* InstigatorActor) override;
+	virtual void EndBeingHold_Implementation() override;
+	// End
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USceneComponent* PickUpAnchor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UHoldableAnchorComponent* HoldableAnchor;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCreatureAppearanceComponent* AppearanceComponent;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCreatureExpressionComponent* ExpressionComponent;
+
+	UPROPERTY()
+	ACreatureAIController* CreatureAIController;
 };
