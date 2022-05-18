@@ -14,8 +14,8 @@ class CREATUREOASIS_API UHoldableAnchorComponent : public USceneComponent
 public:
 	UHoldableAnchorComponent();
 
-	bool AttachHoldable(AActor* HoldableActor);
-	bool DetachHoldable();
+	void AttachHoldable(AActor* HoldableActor);
+	void DetachHoldable();
 	
 	UPROPERTY(BlueprintAssignable, Category = "Holdable")
 	FOnStartHold OnStartHoldDelegate;

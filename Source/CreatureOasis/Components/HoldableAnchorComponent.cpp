@@ -6,17 +6,16 @@ UHoldableAnchorComponent::UHoldableAnchorComponent() :
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-bool UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
+void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
 {
 	OnStartHoldDelegate.Broadcast();
 	
 	ActorWeAreHolding = HoldableActor;
 	
 	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
-	return true;
 }
 
-bool UHoldableAnchorComponent::DetachHoldable()
+void UHoldableAnchorComponent::DetachHoldable()
 {
 	OnEndHoldDelegate.Broadcast();
 	
@@ -26,7 +25,6 @@ bool UHoldableAnchorComponent::DetachHoldable()
 
 		ActorWeAreHolding = nullptr;
 	}
-	return true;
 }
 
 AActor* UHoldableAnchorComponent::GetActorWeAreHolding() const
