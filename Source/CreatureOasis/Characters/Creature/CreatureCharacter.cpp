@@ -55,7 +55,7 @@ void ACreatureCharacter::PossessedBy(AController* NewController)
 
 void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
 {
-	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted"));
+	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 
 	CreatureAIController->BehaviorTreeComponent->RestartTree();
 
@@ -65,7 +65,7 @@ void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
 
 void ACreatureCharacter::EndBeingHold_Implementation()
 {
-	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted"));
+	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 
 	GetMovementComponent()->Activate();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
