@@ -3,14 +3,16 @@
 #include "CoreMinimal.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 
-#include "CreatureOasis/Components/CreatureExpressionComponent.h"
-#include "CreatureOasis/Components/CreatureAppearanceComponent.h"
 #include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 
 #include "CreatureCharacter.generated.h"
 
 class ACreatureAIController;
+class HoldableAnchorComponent;
+class UCreatureAppearanceComponent;
+class UCreatureExpressionComponent;
+class UEmoteBallComponent;
 
 UCLASS()
 class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter, public IHoldableInterface
@@ -46,6 +48,12 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCreatureExpressionComponent* ExpressionComponent;
+
+	// EmoteBall related
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* EmoteBallMeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UEmoteBallComponent* EmoteBallComponent;
 
 	UPROPERTY()
 	ACreatureAIController* CreatureAIController;

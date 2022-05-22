@@ -4,10 +4,11 @@
 
 #include "AbilitySystemComponent.h"
 #include "CreatureAIController.h"
-#include "GameplayEffect.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "CreatureOasis/Components/CreatureAppearanceComponent.h"
+#include "CreatureOasis/Components/CreatureExpressionComponent.h"
+#include "CreatureOasis/Components/EmoteBallComponent.h"
 #include "CreatureOasis/Structs/CreaturePassiveStatEffectTableRow.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -25,6 +26,11 @@ ACreatureCharacter::ACreatureCharacter()
 	
 	AppearanceComponent = CreateDefaultSubobject<UCreatureAppearanceComponent>(TEXT("AppearanceComponent"));
 	ExpressionComponent = CreateDefaultSubobject<UCreatureExpressionComponent>(TEXT("ExpressionComponent"));
+
+	EmoteBallComponent = CreateDefaultSubobject<UEmoteBallComponent>(TEXT("EmoteBallComponent"));
+
+	EmoteBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EmoteBallMeshComponent"));
+	EmoteBallComponent->SetEmoteBallMeshComp(EmoteBallMeshComponent);
 }
 
 // Called when the game starts or when spawned
