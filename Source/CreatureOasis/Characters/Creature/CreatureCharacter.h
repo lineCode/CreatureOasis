@@ -3,16 +3,11 @@
 #include "CoreMinimal.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 
-#include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 
 #include "CreatureCharacter.generated.h"
 
 class ACreatureAIController;
-class HoldableAnchorComponent;
-class UCreatureAppearanceComponent;
-class UCreatureExpressionComponent;
-class UEmoteBallComponent;
 
 UCLASS()
 class CREATUREOASIS_API ACreatureCharacter : public AGASCharacter, public IHoldableInterface
@@ -27,9 +22,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -40,21 +32,7 @@ public:
 	virtual void EndBeingHold_Implementation() override;
 	// End
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UHoldableAnchorComponent* HoldableAnchor;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UCreatureAppearanceComponent* AppearanceComponent;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UCreatureExpressionComponent* ExpressionComponent;
-
-	// EmoteBall related
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* EmoteBallMeshComponent;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UEmoteBallComponent* EmoteBallComponent;
-
+private:
 	UPROPERTY()
 	ACreatureAIController* CreatureAIController;
 };

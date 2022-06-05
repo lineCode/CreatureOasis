@@ -7,11 +7,11 @@
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 #include "GameFramework/Character.h"
 
-UAbilityCharacterHoldActor::UAbilityCharacterHoldActor() :
-	PickUpSphereRadius(50.f)
+UAbilityCharacterHoldActor::UAbilityCharacterHoldActor()
 {
 	AbilityInputID = EAbilityInputID::Interact;
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.HoldActor")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.HoldActor")));
 }
 
 void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -22,32 +22,20 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
     {
     	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
     }
-    
-    ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
 
-	const FVector PickUpLoc = Character->GetActorLocation() + FVector(0.f, 0.f, -17.5f) + (Character->GetActorForwardVector() * 32.5f);
+	const ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
 	
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(ActorInfo->AvatarActor.Get());
-	FHitResult OutHit;
-
-	const bool bHit = GetWorld()->SweepSingleByChannel(OutHit, PickUpLoc, PickUpLoc,
-			FQuat::Identity, ECollisionChannel::ECC_Pawn, FCollisionShape::MakeSphere(PickUpSphereRadius), QueryParams);
-
-	// DrawDebugSphere(GetWorld(), PickUpLoc, PickUpSphereRadius, 12, FColor(0, 0, 0, 255), true, 2.f);
-
-	if(GEngine && bHit)
+	UHoldableAnchorComponent* HoldableAnchorComponent = Character->FindComponentByClass<UHoldableAnchorComponent>();
+	if (IsValid(HoldableAnchorComponent))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow,
-		                                 FString::Printf(TEXT("Colliding with %s"), *OutHit.GetActor()->GetName()));
-
-		AActor* ActorToHold = OutHit.GetActor();
-		UHoldableAnchorComponent* HoldableAnchorComponent = ActorInfo->AvatarActor->FindComponentByClass<UHoldableAnchorComponent>();
-		
-		if (ActorToHold->GetClass()->ImplementsInterface(UHoldableInterface::StaticClass()) && HoldableAnchorComponent != nullptr)
+		AActor* ActorToHold = HoldableAnchorComponent->DetectHoldableActor();
+		if(IsValid(ActorToHold))
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow,
+											 FString::Printf(TEXT("Holding %s"), *ActorToHold->GetName()));
+		
 			IHoldableInterface::Execute_StartBeingHold(ActorToHold, ActorInfo->AvatarActor.Get());
-			
+		
 			HoldableAnchorComponent->AttachHoldable(ActorToHold);
 		}
 	}
@@ -76,11 +64,14 @@ void UAbilityCharacterHoldActor::CancelAbility(const FGameplayAbilitySpecHandle 
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 
 	UHoldableAnchorComponent* HoldableAnchorComponent = ActorInfo->AvatarActor->FindComponentByClass<UHoldableAnchorComponent>();
-	AActor* ActorWeAreHolding = HoldableAnchorComponent->GetActorWeAreHolding();
 	
-	if (ActorWeAreHolding != nullptr && HoldableAnchorComponent != nullptr)
+	if (HoldableAnchorComponent != nullptr)
 	{
-		IHoldableInterface::Execute_EndBeingHold(ActorWeAreHolding);
+		AActor* ActorWeAreHolding = HoldableAnchorComponent->GetActorWeAreHolding();
+		if (IsValid(ActorWeAreHolding))
+		{
+			IHoldableInterface::Execute_EndBeingHold(ActorWeAreHolding);
+		}
 
 		HoldableAnchorComponent->DetachHoldable();
 	}

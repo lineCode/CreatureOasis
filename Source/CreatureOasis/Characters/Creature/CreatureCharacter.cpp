@@ -6,44 +6,23 @@
 #include "CreatureAIController.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "CreatureOasis/Components/CreatureAppearanceComponent.h"
-#include "CreatureOasis/Components/CreatureExpressionComponent.h"
-#include "CreatureOasis/Components/EmoteBallComponent.h"
-#include "CreatureOasis/Structs/CreaturePassiveStatEffectTableRow.h"
+#include "CreatureOasis/GameplayAbilitySystem/BaseAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ACreatureCharacter::ACreatureCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	
-	HoldableAnchor = CreateDefaultSubobject<UHoldableAnchorComponent>(TEXT("HoldableAnchor"));
-	HoldableAnchor->SetupAttachment(GetMesh());
-	
-	AppearanceComponent = CreateDefaultSubobject<UCreatureAppearanceComponent>(TEXT("AppearanceComponent"));
-	ExpressionComponent = CreateDefaultSubobject<UCreatureExpressionComponent>(TEXT("ExpressionComponent"));
-
-	EmoteBallComponent = CreateDefaultSubobject<UEmoteBallComponent>(TEXT("EmoteBallComponent"));
-
-	EmoteBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EmoteBallMeshComponent"));
-	EmoteBallComponent->SetEmoteBallMeshComp(EmoteBallMeshComponent);
 }
 
 // Called when the game starts or when spawned
 void ACreatureCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-// Called every frame
-void ACreatureCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -62,8 +41,9 @@ void ACreatureCharacter::PossessedBy(AController* NewController)
 void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
 {
 	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
-
 	CreatureAIController->BehaviorTreeComponent->RestartTree();
+
+	AbilitySystemComponent->CancelAllAbilities();
 
 	GetMovementComponent()->Deactivate();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

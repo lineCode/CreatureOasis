@@ -1,20 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTTask_ActivateAbilitiesByTag.h"
+#include "BTTask_EndAbilitiesByTag.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
 #include "AIController.h"
-#include "Abilities/Async/AbilityAsync_WaitGameplayTag.h"
-#include "CreatureOasis/GameplayAbilitySystem/GASPawn.h"
 
-UBTTask_ActivateAbilitiesByTag::UBTTask_ActivateAbilitiesByTag()
+UBTTask_EndAbilitiesByTag::UBTTask_EndAbilitiesByTag()
 	: bNonBlocking(false)
 {
-	NodeName = "Activate Abilities By Tag";
+	NodeName = "End Abilities By Tag";
 }
 
-EBTNodeResult::Type UBTTask_ActivateAbilitiesByTag::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_EndAbilitiesByTag::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	const AAIController* AIController = OwnerComp.GetAIOwner();
 
@@ -32,18 +31,16 @@ EBTNodeResult::Type UBTTask_ActivateAbilitiesByTag::ExecuteTask(UBehaviorTreeCom
 	
 	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
 
-	if(!AbilitySystemComponent->TryActivateAbilitiesByTag(FGameplayTagContainer(GameplayTag)))
-	{
-		return EBTNodeResult::Failed;
-	}
-	
-	if (bNonBlocking)
-	{
-		return EBTNodeResult::Succeeded;
-	}
-
 	if (AbilitySystemComponent->HasMatchingGameplayTag(GameplayTag))
 	{
+		const FGameplayTagContainer TagContainer = FGameplayTagContainer(GameplayTag);
+		AbilitySystemComponent->CancelAbilities(&TagContainer);
+	
+		if (bNonBlocking)
+		{
+			return EBTNodeResult::Succeeded;
+		}
+		
 		AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTag, EGameplayTagEventType::NewOrRemoved)
 			.AddLambda([&](const FGameplayTag CallbackTag, int32 NewCount)
 			{
