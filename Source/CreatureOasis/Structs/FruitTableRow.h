@@ -25,7 +25,7 @@ struct CREATUREOASIS_API FFruitTableRow : public FTableRowBase
 	FVector MeshScaleOverride = FVector(1.f);
 	
 	// The amount of "bites" a creature can take from this fruit
-	UPROPERTY(EditAnywhere, Category="FruitStats")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="FruitStats")
 	int32 MaxPortions = 4;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="FruitGameplayEffects")
