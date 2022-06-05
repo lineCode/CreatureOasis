@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "CreatureOasis/Characters/Creature/CreatureAIController.h"
 
@@ -16,6 +17,10 @@ UBTTask_CreatureRotateAndMoveTo::UBTTask_CreatureRotateAndMoveTo()
 	AcceptableRadius = 30.f;
 	
 	bNotifyTick = true;
+
+	// accept only actors and vectors
+	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CreatureRotateAndMoveTo, BlackboardKey), AActor::StaticClass());
+	BlackboardKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CreatureRotateAndMoveTo, BlackboardKey));
 }
 
 EBTNodeResult::Type UBTTask_CreatureRotateAndMoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -27,8 +32,17 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
-	const FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
+	FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
 	const ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
+
+	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
+	{
+		TargetLocation = Cast<AActor>(AIController->GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()))->GetActorLocation();
+	}
+	else
+	{
+		TargetLocation = AIController->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
+	}
 	
 	AIController->RotateGraduallyTowardsTarget(TargetLocation);
 	AIController->MoveForward();

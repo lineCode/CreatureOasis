@@ -7,7 +7,7 @@
 #include "BTDecorator_IsFocusHoldable.generated.h"
 
 /**
- * 
+ * Returns true if Focus Actor is in Holdable range, Agent Avatar must needs to have UHoldableAnchorComponent
  */
 UCLASS()
 class CREATUREOASIS_API UBTDecorator_IsFocusHoldable : public UBTDecorator

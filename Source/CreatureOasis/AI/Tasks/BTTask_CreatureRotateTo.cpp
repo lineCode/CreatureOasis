@@ -13,6 +13,8 @@ UBTTask_CreatureRotateTo::UBTTask_CreatureRotateTo()
 	Tolerance = 0.0f;
 	
 	bNotifyTick = true;
+
+	BlackboardKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CreatureRotateTo, BlackboardKey));
 }
 
 EBTNodeResult::Type UBTTask_CreatureRotateTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

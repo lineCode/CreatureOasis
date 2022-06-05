@@ -7,7 +7,8 @@
 #include "BTTask_CreatureRotateAndMoveTo.generated.h"
 
 /**
- * 
+ * Rotates and moves towards a specific Actor or Location
+ * Will continue onwards until in an AcceptableRadius
  */
 UCLASS()
 class CREATUREOASIS_API UBTTask_CreatureRotateAndMoveTo : public UBTTask_BlackboardBase

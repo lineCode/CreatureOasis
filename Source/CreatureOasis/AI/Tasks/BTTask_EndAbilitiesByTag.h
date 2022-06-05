@@ -11,7 +11,7 @@
  * If none are found this task will fail
  */
 UCLASS()
-class CREATUREOASIS_API UBTTask_EndAbilitiesByTag : public UBTTask_BlackboardBase
+class CREATUREOASIS_API UBTTask_EndAbilitiesByTag : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
