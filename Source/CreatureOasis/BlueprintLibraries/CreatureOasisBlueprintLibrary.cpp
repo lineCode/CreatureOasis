@@ -18,3 +18,9 @@ FLinearColor UCreatureOasisBlueprintLibrary::GenerateRandomColor()
 {
 	return {FMath::RandRange(0.f, 1.f), FMath::RandRange(0.f, 1.f), FMath::RandRange(0.f, 1.f), 1.f};
 }
+
+ABaseGardenGameMode* UCreatureOasisBlueprintLibrary::GetGardenGameMode(const UObject* WorldContextObject)
+{
+	const UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+	return Cast<ABaseGardenGameMode>(World->GetAuthGameMode());
+}

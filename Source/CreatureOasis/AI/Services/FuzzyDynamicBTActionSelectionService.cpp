@@ -8,8 +8,7 @@
 #include "CreatureOasis/GameplayAbilitySystem/BaseAbilitySystemComponent.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 
-UFuzzyDynamicBTActionSelectionService::UFuzzyDynamicBTActionSelectionService() :
-	BestFuzzyAction(nullptr)
+UFuzzyDynamicBTActionSelectionService::UFuzzyDynamicBTActionSelectionService()
 {
 	NodeName = "Select Action and SetDynamicSubtree";
 
@@ -27,13 +26,11 @@ void UFuzzyDynamicBTActionSelectionService::OnBecomeRelevant(UBehaviorTreeCompon
 		return;
 	}
 
-	// Calculate best action
-	SearchForBestFuzzyAction(OwnerComp);
+	UBaseDynamicBTAction* BestFuzzyAction = SearchForBestFuzzyAction(OwnerComp);;
 
 	if (BestFuzzyAction)
 	{
 		UBehaviorTree* SubTreeToRun = IFuzzyLogicInterface::Execute_GetBehaviorTreeToRun(BestFuzzyAction);
-		
 		if (SubTreeToRun)
 		{
 			// Inject new Action BT into Dynamic Run task
@@ -42,17 +39,18 @@ void UFuzzyDynamicBTActionSelectionService::OnBecomeRelevant(UBehaviorTreeCompon
 	}
 }
 
-void UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp)
+UBaseDynamicBTAction* UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp)
 {
 	float BestScore = 0.f;
 	UBaseDynamicBTAction* BestAction = nullptr;
+	AAIController* AIController = OwnerComp.GetAIOwner();
 	
 	for (const TSubclassOf<UBaseDynamicBTAction> Action : FuzzyActions)
 	{
 		const UBaseAbilitySystemComponent* AbilitySystemComponent = static_cast<UBaseAbilitySystemComponent*>(
-			static_cast<AGASCharacter*>(OwnerComp.GetAIOwner()->GetCharacter())->GetAbilitySystemComponent());
+			static_cast<AGASCharacter*>(AIController->GetCharacter())->GetAbilitySystemComponent());
 		
-		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject(), AbilitySystemComponent);
+		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject(), AIController, AbilitySystemComponent);
 		
 		if (CalculatedScore > BestScore)
 		{
@@ -61,5 +59,5 @@ void UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyAction(const UBeha
 		}
 	}
 
-	BestFuzzyAction = BestAction;
+	return BestAction;
 }

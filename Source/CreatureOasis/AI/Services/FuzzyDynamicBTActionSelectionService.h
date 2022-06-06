@@ -24,15 +24,11 @@ public:
 	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 protected:
-	void SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp);
+	UBaseDynamicBTAction* SearchForBestFuzzyAction(const UBehaviorTreeComponent& OwnerComp);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<TSubclassOf<UBaseDynamicBTAction>> FuzzyActions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FGameplayTag DynamicBTInjectionTag;
-	
-private: 
-	UPROPERTY()
-	UBaseDynamicBTAction* BestFuzzyAction;
 };

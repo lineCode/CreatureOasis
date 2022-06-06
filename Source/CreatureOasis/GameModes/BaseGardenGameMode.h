@@ -4,6 +4,8 @@
 #include "GameFramework/GameMode.h"
 #include "BaseGardenGameMode.generated.h"
 
+class UGardenDynamicObjectsManager;
+
 /**
  * 
  */
@@ -17,4 +19,8 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	UPROPERTY()
+	UGardenDynamicObjectsManager* GardenDynamicObjectsManager;
 };

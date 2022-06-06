@@ -6,6 +6,8 @@
 
 #include "FuzzyLogicInterface.generated.h"
 
+class AAIController;
+
 /**
  * 
  */
@@ -21,7 +23,7 @@ class IFuzzyLogicInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float CalculateScore(const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent);
+	float CalculateScore(AAIController* AIController, const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	class UBehaviorTree* GetBehaviorTreeToRun();
