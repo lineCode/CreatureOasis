@@ -1,4 +1,5 @@
 #pragma once
+
 #include "CreatureOasis/GameModes/BaseGardenGameMode.h"
 
 #include "CreatureOasisBlueprintLibrary.generated.h"
@@ -24,10 +25,4 @@ public:
 	/* Generate random color */
 	UFUNCTION(BlueprintCallable, Category="Colors")
 	static FLinearColor GenerateRandomColor();
-
-	/* Gets current GameMode cast to BaseGardenGameMode
-	 * @return current GameMode of type BaseGardenGameMode, nullptr if failed
-	 */
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject", CallableWithoutWorldContext), Category="GameMode")
-	static ABaseGardenGameMode* GetGardenGameMode(const UObject* WorldContextObject);
 };

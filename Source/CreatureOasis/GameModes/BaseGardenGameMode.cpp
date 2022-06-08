@@ -1,10 +1,10 @@
 ﻿#include "BaseGardenGameMode.h"
 
 #include "CreatureOasis/Characters/ThirdPersonCharacter/Base/BasePlayerController.h"
-#include "CreatureOasis/Objects/GardenDynamicObjectsManager.h"
+#include "CreatureOasis/Objects/GardenActorsManager.h"
 
 ABaseGardenGameMode::ABaseGardenGameMode()
-	: GardenDynamicObjectsManager(NewObject<UGardenDynamicObjectsManager>())
+	: GardenActorsManager(NewObject<UGardenActorsManager>())
 {
 	PlayerControllerClass = ABasePlayerController::StaticClass();
 	
@@ -15,16 +15,7 @@ ABaseGardenGameMode::ABaseGardenGameMode()
 	}
 }
 
-void ABaseGardenGameMode::BeginPlay()
+UGardenActorsManager* ABaseGardenGameMode::GetGardenActorsManager() const
 {
-	Super::BeginPlay();
-
-	GardenDynamicObjectsManager->Initialize();
-}
-
-void ABaseGardenGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-
-	GardenDynamicObjectsManager->Uninitialize();
+	return GardenActorsManager;
 }
