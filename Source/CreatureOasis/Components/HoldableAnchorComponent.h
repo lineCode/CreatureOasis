@@ -22,7 +22,7 @@ public:
 	 * @return HoldableActor if any detected, guaranteed to return an Actor that has the IHoldableInterface
 	 */
 	AActor* DetectHoldableActor() const;
-
+ 
 	void AttachHoldable(AActor* HoldableActor);
 	void DetachHoldable();
 

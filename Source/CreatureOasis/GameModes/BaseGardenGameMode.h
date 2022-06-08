@@ -4,7 +4,7 @@
 #include "GameFramework/GameMode.h"
 #include "BaseGardenGameMode.generated.h"
 
-class UGardenDynamicObjectsManager;
+class UGardenActorsManager;
 
 /**
  * 
@@ -16,11 +16,11 @@ class CREATUREOASIS_API ABaseGardenGameMode : public AGameMode
 
 public:
 	ABaseGardenGameMode();
+
+	UFUNCTION(BlueprintCallable)
+	UGardenActorsManager* GetGardenActorsManager() const;
 	
 protected:
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 	UPROPERTY()
-	UGardenDynamicObjectsManager* GardenDynamicObjectsManager;
+	UGardenActorsManager* GardenActorsManager;
 };
