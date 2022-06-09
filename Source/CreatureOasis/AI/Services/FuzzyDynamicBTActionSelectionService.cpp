@@ -50,7 +50,7 @@ UBaseDynamicBTAction* UFuzzyDynamicBTActionSelectionService::SearchForBestFuzzyA
 		const UBaseAbilitySystemComponent* AbilitySystemComponent = static_cast<UBaseAbilitySystemComponent*>(
 			static_cast<AGASCharacter*>(AIController->GetCharacter())->GetAbilitySystemComponent());
 		
-		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject(), AIController, AbilitySystemComponent);
+		const float CalculatedScore = IFuzzyLogicInterface::Execute_CalculateScore(Action.GetDefaultObject(), GetWorld(), AIController, AbilitySystemComponent);
 		
 		if (CalculatedScore > BestScore)
 		{

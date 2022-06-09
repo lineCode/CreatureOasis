@@ -2,8 +2,7 @@
 
 #include "GardenActor.h"
 
-#include "CreatureOasis/BlueprintLibraries/GardenStaticsBlueprintLibrary.h"
-#include "CreatureOasis/Objects/GardenActorsManager.h"
+#include "CreatureOasis/Subsystems/GardenActorsSubsystem.h"
 
 AGardenActor::AGardenActor()
 {
@@ -13,7 +12,6 @@ AGardenActor::AGardenActor()
 void AGardenActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UGardenStaticsBlueprintLibrary::GetGardenActorsManager(GetWorld())
-		->AddGardenActor(GardenActorTypeTag, this);
+
+	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(GardenActorTag, this);
 }

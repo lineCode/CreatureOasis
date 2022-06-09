@@ -16,11 +16,4 @@ class CREATUREOASIS_API ABaseGardenGameMode : public AGameMode
 
 public:
 	ABaseGardenGameMode();
-
-	UFUNCTION(BlueprintCallable)
-	UGardenActorsManager* GetGardenActorsManager() const;
-	
-protected:
-	UPROPERTY()
-	UGardenActorsManager* GardenActorsManager;
 };

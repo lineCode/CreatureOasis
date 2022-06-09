@@ -3,7 +3,7 @@
 
 #include "BaseDynamicBTAction.h"
 
-float UBaseDynamicBTAction::CalculateScore_Implementation(AAIController* AIController, const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent)
+float UBaseDynamicBTAction::CalculateScore_Implementation(UWorld* World, AAIController* AIController, const class UBaseAbilitySystemComponent* BaseAbilitySystemComponent)
 {
 	return 0.f;
 }
