@@ -13,5 +13,5 @@ void AGardenActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(GardenActorTag, this);
+	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(GardenActorTypeTag, this);
 }
