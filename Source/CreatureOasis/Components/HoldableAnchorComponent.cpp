@@ -41,23 +41,23 @@ AActor* UHoldableAnchorComponent::DetectHoldableActor() const
 
 void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
 {
-	OnStartHoldDelegate.Broadcast();
-	
 	ActorWeAreHolding = HoldableActor;
 	
 	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
+
+	OnStartHoldDelegate.Broadcast();
 }
 
 void UHoldableAnchorComponent::DetachHoldable()
 {
-	OnEndHoldDelegate.Broadcast();
-	
 	if (ActorWeAreHolding != nullptr)
 	{
 		ActorWeAreHolding->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
 		ActorWeAreHolding = nullptr;
 	}
+	
+	OnEndHoldDelegate.Broadcast();
 }
 
 AActor* UHoldableAnchorComponent::GetActorWeAreHolding() const
