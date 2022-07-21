@@ -10,6 +10,6 @@ public class CreatureOasis : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "CreatureOasisLoadingScreen", "GameplayAbilities", "GameplayTags", "GameplayTasks"  });
+		PrivateDependencyModuleNames.AddRange(new string[] { "CreatureOasisLoadingScreen", "GameplayAbilities", "GameplayTags", "GameplayTasks", "DeveloperSettings"  });
 	}
 }
