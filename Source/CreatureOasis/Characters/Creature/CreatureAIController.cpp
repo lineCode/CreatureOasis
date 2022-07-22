@@ -27,7 +27,7 @@ void ACreatureAIController::RotateGraduallyTowardsTarget(const FVector TargetLoc
 	FVector TargetDirection = (TargetLocation - GetPawn()->GetActorLocation());
 	TargetDirection.Z = 0;
 	
-	const FRotator ResultRot = FMath::Lerp(GetPawn()->GetActorRotation(), TargetDirection.Rotation(), GetWorld()->GetDeltaSeconds());
+	const FRotator ResultRot = FMath::Lerp(GetPawn()->GetActorRotation(), TargetDirection.Rotation(), GetWorld()->GetDeltaSeconds() * 0.75f);
 	
 	GetPawn()->SetActorRotation(ResultRot);
 }
