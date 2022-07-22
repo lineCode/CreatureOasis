@@ -18,6 +18,14 @@ public:
 	FGameplayAttributeData SwimPoints;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, SwimPoints);
 
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData SwimLvl;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, SwimLvl);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData SwimLvlBar;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, SwimLvlBar);
+	
 	// Fly
 	
 	// Power
