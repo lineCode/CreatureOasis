@@ -48,18 +48,9 @@ bool UAbilityCharacterHoldActor::CanActivateAbility(const FGameplayAbilitySpecHa
 	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
-void UAbilityCharacterHoldActor::InputReleased(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
-{
-	if (ActorInfo != nullptr && ActorInfo->AvatarActor != nullptr)
-	{
-		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
-	}
-}
-
 void UAbilityCharacterHoldActor::CancelAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	bool bReplicateCancelAbility)
+                                               const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+                                               bool bReplicateCancelAbility)
 {
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 
@@ -74,5 +65,14 @@ void UAbilityCharacterHoldActor::CancelAbility(const FGameplayAbilitySpecHandle 
 		}
 
 		HoldableAnchorComponent->DetachHoldable();
+	}
+}
+
+void UAbilityCharacterHoldActor::InputPressed(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+{
+	if (ActorInfo != nullptr && ActorInfo->AvatarActor != nullptr)
+	{
+		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 	}
 }
