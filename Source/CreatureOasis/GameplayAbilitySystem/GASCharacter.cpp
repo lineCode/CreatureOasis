@@ -5,6 +5,7 @@
 #include "BaseAbilitySystemComponent.h"
 #include "BaseGameplayAbility.h"
 #include "AttributeSets/ChaoCoreAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AGASCharacter::AGASCharacter()
@@ -22,6 +23,23 @@ void AGASCharacter::BeginPlay()
 		BaseAttributeSet = AbilitySystemComponent->GetSet<UBaseAttributeSet>();
 		
 		AbilitySystemComponent->AddLooseGameplayTags(StartupGameplayTags);
+	}
+}
+
+void AGASCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+{
+	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMovementMode"), true);
+	if (EnumPtr)
+	{
+		const FString PreFix = "State.MovementMode.";
+		
+		FString Result = PreFix + EnumPtr->GetNameStringByValue(GetCharacterMovement()->MovementMode);
+		AbilitySystemComponent->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName(Result), false));
+
+		Result = PreFix + EnumPtr->GetNameStringByValue(PrevMovementMode);
+		AbilitySystemComponent->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName(Result), false));
 	}
 }
 
