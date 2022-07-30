@@ -20,6 +20,8 @@ void AGASCharacter::BeginPlay()
 	if (IsValid(AbilitySystemComponent))
 	{
 		BaseAttributeSet = AbilitySystemComponent->GetSet<UBaseAttributeSet>();
+		
+		AbilitySystemComponent->AddLooseGameplayTags(StartupGameplayTags);
 	}
 }
 

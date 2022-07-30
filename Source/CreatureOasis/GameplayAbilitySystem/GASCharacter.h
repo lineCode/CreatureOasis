@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
 
 #include "GASCharacter.generated.h"
@@ -48,6 +49,10 @@ public:
 	// These effects are only applied one time on startup
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS")
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
+
+	// Adds loose gameplay tags at start which are not backed by a GameplayEffect
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS")
+	FGameplayTagContainer StartupGameplayTags;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="GAS")
 	class UBaseAbilitySystemComponent* AbilitySystemComponent;
