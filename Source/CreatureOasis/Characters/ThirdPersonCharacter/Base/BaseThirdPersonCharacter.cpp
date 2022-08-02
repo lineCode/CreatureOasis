@@ -33,9 +33,6 @@ ABaseThirdPersonCharacter::ABaseThirdPersonCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
-	
-	HoldableAnchor = CreateDefaultSubobject<UHoldableAnchorComponent>(TEXT("HoldableAnchor"));
-	HoldableAnchor->SetupAttachment(GetMesh());
 }
 
 void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -49,16 +46,6 @@ void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent*
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABaseThirdPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABaseThirdPersonCharacter::LookUpAtRate);
-}
-
-void ABaseThirdPersonCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
-{
-	IHoldableInterface::StartBeingHold_Implementation(InstigatorActor);
-}
-
-void ABaseThirdPersonCharacter::EndBeingHold_Implementation()
-{
-	IHoldableInterface::EndBeingHold_Implementation();
 }
 
 void ABaseThirdPersonCharacter::TurnAtRate(float Rate)

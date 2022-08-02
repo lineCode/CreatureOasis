@@ -11,6 +11,7 @@
 
 // Sets default values
 ACreatureCharacter::ACreatureCharacter()
+	: CharacterCurrentlyHoldingUs(nullptr)
 {
 	PrimaryActorTick.bCanEverTick = false;
 	
@@ -38,7 +39,7 @@ void ACreatureCharacter::PossessedBy(AController* NewController)
 	CreatureAIController = Cast<ACreatureAIController>(NewController);
 }
 
-void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
+void ACreatureCharacter::StartBeingHold_Implementation(AGASCharacter* InstigatorCharacter)
 {
 	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 	CreatureAIController->BehaviorTreeComponent->RestartTree();
@@ -46,7 +47,10 @@ void ACreatureCharacter::StartBeingHold_Implementation(AActor* InstigatorActor)
 	AbilitySystemComponent->CancelAllAbilities();
 
 	GetMovementComponent()->Deactivate();
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	GetCapsuleComponent()->SetCollisionProfileName(FName("IgnoreOnlyPawn"));
+
+	CharacterCurrentlyHoldingUs = InstigatorCharacter;
 }
 
 void ACreatureCharacter::EndBeingHold_Implementation()
@@ -54,5 +58,13 @@ void ACreatureCharacter::EndBeingHold_Implementation()
 	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 
 	GetMovementComponent()->Activate();
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	
+	GetCapsuleComponent()->SetCollisionProfileName(FName("Creature"));
+
+	CharacterCurrentlyHoldingUs = nullptr;
+}
+
+AGASCharacter* ACreatureCharacter::GetCharacterCurrentlyHoldingUs_Implementation()
+{
+	return CharacterCurrentlyHoldingUs;
 }

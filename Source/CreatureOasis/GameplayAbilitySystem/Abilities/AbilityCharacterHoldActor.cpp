@@ -3,15 +3,19 @@
 
 #include "AbilityCharacterHoldActor.h"
 
+#include "AbilitySystemComponent.h"
 #include "CreatureOasis/Components/HoldableAnchorComponent.h"
+#include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 #include "GameFramework/Character.h"
 
 UAbilityCharacterHoldActor::UAbilityCharacterHoldActor()
+	: ActiveGameplayTag(FGameplayTag::RequestGameplayTag(FName("Ability.HoldActor")))
 {
 	AbilityInputID = EAbilityInputID::Interact;
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.HoldActor")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.HoldActor")));
+	
+	AbilityTags.AddTag(ActiveGameplayTag);
+	ActivationOwnedTags.AddTag(ActiveGameplayTag);
 }
 
 void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -23,18 +27,22 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
     	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
     }
 
-	const ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
+	AGASCharacter* Character = CastChecked<AGASCharacter>(ActorInfo->AvatarActor.Get());
 	
 	UHoldableAnchorComponent* HoldableAnchorComponent = Character->FindComponentByClass<UHoldableAnchorComponent>();
 	if (IsValid(HoldableAnchorComponent))
 	{
 		AActor* ActorToHold = HoldableAnchorComponent->DetectHoldableActor();
-		if(IsValid(ActorToHold))
+		if (IsValid(ActorToHold))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow,
-											 FString::Printf(TEXT("Holding %s"), *ActorToHold->GetName()));
-		
-			IHoldableInterface::Execute_StartBeingHold(ActorToHold, ActorInfo->AvatarActor.Get());
+			// Make sure that when the ActorToHold is already being held by a GASCharacter we Detach from it first 
+			const AGASCharacter* HolderOfActorToHold = IHoldableInterface::Execute_GetCharacterCurrentlyHoldingUs(ActorToHold);
+			if (IsValid(HolderOfActorToHold))
+			{
+				HolderOfActorToHold->GetAbilitySystemComponent()->CancelAllAbilities();
+			}
+			
+			IHoldableInterface::Execute_StartBeingHold(ActorToHold, Character);
 		
 			HoldableAnchorComponent->AttachHoldable(ActorToHold);
 		}

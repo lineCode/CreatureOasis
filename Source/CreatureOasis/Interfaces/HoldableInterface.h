@@ -4,6 +4,8 @@
 #include "UObject/Interface.h"
 #include "HoldableInterface.generated.h"
 
+class AGASCharacter;
+
 UINTERFACE()
 class UHoldableInterface : public UInterface
 {
@@ -19,8 +21,12 @@ class CREATUREOASIS_API IHoldableInterface
 	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Trigger)
-	void StartBeingHold(AActor* ActorInstigator);
+	void StartBeingHold(AGASCharacter* CharacterInstigator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Trigger)
 	void EndBeingHold();
+
+	/* Returns nullptr if no Actor is currently holding us */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Trigger)
+	AGASCharacter* GetCharacterCurrentlyHoldingUs();
 };

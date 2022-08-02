@@ -3,8 +3,10 @@
 #include "CoreMinimal.h"
 #include "HoldableAnchorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartHold);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartHold, AActor*, ActorBeingHeld);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndHold);
+
+class UPrimitiveComponent;
 
 /**
  * HoldableAnchorComponent is used to define a location where holdable objects should be anchored upon
@@ -17,9 +19,11 @@ class CREATUREOASIS_API UHoldableAnchorComponent : public USceneComponent
 public:
 	UHoldableAnchorComponent();
 
+	virtual void BeginPlay() override;
+	
 	/*
-	 * Detects and return a holdable Actor
-	 * @return HoldableActor if any detected, guaranteed to return an Actor that has the IHoldableInterface
+	 * Detects and return a holdable Actor, guaranteed to return an Actor that has the IHoldableInterface
+	 * @return Returns a nullptr if no valid Actor with the IHoldableInterface is detected
 	 */
 	AActor* DetectHoldableActor() const;
  
@@ -38,10 +42,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Sockets")
 	FName SocketNameToAttachTo;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "HoldableTriggerVolume")
-	float PickUpSphereRadius;
+	UPROPERTY(EditDefaultsOnly, Category = "HoldableTriggerVolume")
+	FComponentReference ComponentReference;
 	
 protected:
+	UPROPERTY()
+	UPrimitiveComponent* PickupDetectionPrimitive;
+	
 	UPROPERTY()
 	AActor* ActorWeAreHolding;
 };

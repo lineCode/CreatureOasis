@@ -1,34 +1,39 @@
 ﻿#include "HoldableAnchorComponent.h"
 
+#include "Components/ShapeComponent.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
 
 UHoldableAnchorComponent::UHoldableAnchorComponent()
 	: SocketNameToAttachTo(NAME_None)
-	, PickUpSphereRadius(50.f)
+	, PickupDetectionPrimitive(nullptr)
 	, ActorWeAreHolding(nullptr)
 {
+	ComponentReference.ComponentProperty = "HoldableDetectionSphere";
+	
 	PrimaryComponentTick.bCanEverTick = false;
 	bEditableWhenInherited = true;
 }
 
+void UHoldableAnchorComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	PickupDetectionPrimitive = Cast<UPrimitiveComponent>(ComponentReference.GetComponent(GetOwner()));
+}
+
 AActor* UHoldableAnchorComponent::DetectHoldableActor() const
 {
-	AActor* Owner = GetOwner();
-
-	FHitResult OutHit;
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(GetOwner());
-	
-	const FVector PickUpLoc = Owner->GetActorLocation()
-		+ FVector(0.f, 0.f, -17.5f)
-		+ (Owner->GetActorForwardVector() * 32.5f);
-
-	DrawDebugSphere(GetWorld(), PickUpLoc, PickUpSphereRadius, 12, FColor(0, 0, 0, 255), false, 2.f);
-	
-	if (GetWorld()->SweepSingleByChannel(OutHit, PickUpLoc, PickUpLoc,
-		FQuat::Identity, ECollisionChannel::ECC_Pawn, FCollisionShape::MakeSphere(PickUpSphereRadius), QueryParams))
+	if (!IsValid(PickupDetectionPrimitive))
 	{
-		AActor* CandidateActor = OutHit.GetActor();
+		return nullptr;
+	}
+	
+	TArray<AActor*> OverlappingActors;
+	PickupDetectionPrimitive->GetOverlappingActors(OverlappingActors);
+	
+	if (!OverlappingActors.IsEmpty())
+	{
+		AActor* CandidateActor = OverlappingActors[0];
 		if (IsValid(CandidateActor) &&
 			CandidateActor->GetClass()->ImplementsInterface(UHoldableInterface::StaticClass()))
 		{
@@ -45,7 +50,7 @@ void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
 	
 	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
 
-	OnStartHoldDelegate.Broadcast();
+	OnStartHoldDelegate.Broadcast(HoldableActor);
 }
 
 void UHoldableAnchorComponent::DetachHoldable()

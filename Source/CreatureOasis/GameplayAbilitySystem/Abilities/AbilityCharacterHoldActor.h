@@ -22,5 +22,6 @@ public:
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	
 protected:
-	float PickUpSphereRadius;
+	FGameplayTag ActiveGameplayTag;
+	
 };

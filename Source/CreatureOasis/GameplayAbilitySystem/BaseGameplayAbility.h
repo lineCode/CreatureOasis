@@ -17,10 +17,14 @@ class CREATUREOASIS_API UBaseGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 	
 public:
-	
 	UBaseGameplayAbility();
+
+	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
 	// Abilities with this set will automatically activate when the input is pressed
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	EAbilityInputID AbilityInputID = EAbilityInputID::None;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
+	bool bActivateOnGranted;
 };

@@ -28,11 +28,15 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	
 	// IHoldableInterface
-	virtual void StartBeingHold_Implementation(AActor* InstigatorActor) override;
+	virtual void StartBeingHold_Implementation(AGASCharacter* InstigatorCharacter) override;
 	virtual void EndBeingHold_Implementation() override;
+	virtual AGASCharacter* GetCharacterCurrentlyHoldingUs_Implementation() override;
 	// End
 
 private:
 	UPROPERTY()
 	ACreatureAIController* CreatureAIController;
+
+	UPROPERTY()
+	AGASCharacter* CharacterCurrentlyHoldingUs;
 };
