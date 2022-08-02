@@ -32,6 +32,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AActor* GetActorWeAreHolding() const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsHoldingActor() const;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Holdable")
 	FOnStartHold OnStartHoldDelegate;

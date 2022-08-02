@@ -70,3 +70,8 @@ AActor* UHoldableAnchorComponent::GetActorWeAreHolding() const
 	return ActorWeAreHolding;
 }
 
+bool UHoldableAnchorComponent::IsHoldingActor() const
+{
+	return ActorWeAreHolding != nullptr;
+}
+
