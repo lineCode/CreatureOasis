@@ -4,6 +4,8 @@
 #include "AbilityCharacterHoldActor.h"
 
 #include "AbilitySystemComponent.h"
+#include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
+#include "BehaviorTree/BehaviorTreeTypes.h"
 #include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureOasis/Interfaces/HoldableInterface.h"
@@ -16,6 +18,12 @@ UAbilityCharacterHoldActor::UAbilityCharacterHoldActor()
 	
 	AbilityTags.AddTag(ActiveGameplayTag);
 	ActivationOwnedTags.AddTag(ActiveGameplayTag);
+
+	FAbilityTriggerData TriggerData;
+	TriggerData.TriggerTag = FGameplayTag::RequestGameplayTag("Event.HoldActor");
+	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	
+	AbilityTriggers.Add(TriggerData);
 }
 
 void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -27,12 +35,27 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
     	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
     }
 
+	UAbilityTask_WaitGameplayEvent* Task = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, FGameplayTag::RequestGameplayTag("Event.HoldCancel"));
+	Task->EventReceived.AddDynamic(this, &UAbilityCharacterHoldActor::CancelAbilityEvent);
+	Task->ReadyForActivation();
+	
 	AGASCharacter* Character = CastChecked<AGASCharacter>(ActorInfo->AvatarActor.Get());
 	
 	UHoldableAnchorComponent* HoldableAnchorComponent = Character->FindComponentByClass<UHoldableAnchorComponent>();
 	if (IsValid(HoldableAnchorComponent))
 	{
-		AActor* ActorToHold = HoldableAnchorComponent->DetectHoldableActor();
+		AActor* ActorToHold = nullptr;
+
+		if (TriggerEventData != nullptr)
+		{
+			ActorToHold = const_cast<AActor*>(TriggerEventData->Target);
+		}
+
+		if (ActorToHold == nullptr)
+		{
+			ActorToHold = HoldableAnchorComponent->DetectHoldableActor();
+		}
+		
 		if (IsValid(ActorToHold))
 		{
 			// Make sure that when the ActorToHold is already being held by a GASCharacter we Detach from it first 
@@ -83,4 +106,10 @@ void UAbilityCharacterHoldActor::InputPressed(const FGameplayAbilitySpecHandle H
 	{
 		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 	}
+}
+
+void UAbilityCharacterHoldActor::CancelAbilityEvent(FGameplayEventData GameplayEventData)
+{
+	const FGameplayAbilityActorInfo AbilityActorInfo = GetActorInfo();
+	CancelAbility(GetCurrentAbilitySpecHandle(), &AbilityActorInfo, CurrentActivationInfo, true);
 }

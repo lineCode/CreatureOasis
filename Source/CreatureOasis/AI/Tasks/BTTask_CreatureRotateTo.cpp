@@ -27,7 +27,7 @@ void UBTTask_CreatureRotateTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	const ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
-	const FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());;
+	const FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
 	
 	AIController->RotateGraduallyTowardsTarget(TargetLocation);
 	

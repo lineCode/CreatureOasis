@@ -6,6 +6,7 @@
 #include "CreatureCharacter.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 
 ACreatureAIController::ACreatureAIController()
@@ -54,4 +55,9 @@ bool ACreatureAIController::IsRotatedTowardsLocation(const FVector TargetLocatio
 	TargetDirection.Z = 0;
 
 	return FMath::Abs(GetPawn()->GetActorRotation().Yaw - TargetDirection.Rotation().Yaw) <= Tolerance;
+}
+
+void ACreatureAIController::ResetAIBehavior()
+{
+	BehaviorTreeComponent->RestartTree();
 }

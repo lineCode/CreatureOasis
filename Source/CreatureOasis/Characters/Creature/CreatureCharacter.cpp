@@ -42,13 +42,14 @@ void ACreatureCharacter::PossessedBy(AController* NewController)
 void ACreatureCharacter::StartBeingHold_Implementation(AGASCharacter* InstigatorCharacter)
 {
 	GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
-	CreatureAIController->BehaviorTreeComponent->RestartTree();
 
-	AbilitySystemComponent->CancelAllAbilities();
-
+	// make sure other abilities know we have just Cancelled holding an object
+	const FGameplayEventData GameplayEventData = FGameplayEventData();
+	AbilitySystemComponent->HandleGameplayEvent(FGameplayTag::RequestGameplayTag("Event.HoldCancel"), &GameplayEventData);
+	
 	GetMovementComponent()->Deactivate();
 	
-	GetCapsuleComponent()->SetCollisionProfileName(FName("IgnoreOnlyPawn"));
+	GetCapsuleComponent()->SetCollisionProfileName(FName("IgnoreOnlyCreature"));
 
 	CharacterCurrentlyHoldingUs = InstigatorCharacter;
 }

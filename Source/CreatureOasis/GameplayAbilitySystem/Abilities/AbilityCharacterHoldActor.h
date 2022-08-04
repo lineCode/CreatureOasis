@@ -20,8 +20,10 @@ public:
 	virtual void CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility) override;
 
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
+
+	UFUNCTION()
+	void CancelAbilityEvent(FGameplayEventData GameplayEventData);
 	
 protected:
 	FGameplayTag ActiveGameplayTag;
-	
 };
