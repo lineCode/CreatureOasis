@@ -56,8 +56,3 @@ bool ACreatureAIController::IsRotatedTowardsLocation(const FVector TargetLocatio
 
 	return FMath::Abs(GetPawn()->GetActorRotation().Yaw - TargetDirection.Rotation().Yaw) <= Tolerance;
 }
-
-void ACreatureAIController::ResetAIBehavior()
-{
-	BehaviorTreeComponent->RestartTree();
-}
