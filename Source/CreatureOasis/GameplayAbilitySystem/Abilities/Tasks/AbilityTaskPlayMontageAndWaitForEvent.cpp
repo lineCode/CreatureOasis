@@ -15,7 +15,7 @@ UAbilityTaskPlayMontageAndWaitForEvent::UAbilityTaskPlayMontageAndWaitForEvent(c
 	bStopWhenAbilityEnds = true;
 }
 
-void UAbilityTaskPlayMontageAndWaitForEvent::OnMontageBlendingOut(const UAnimMontage* Montage, bool bInterrupted) const
+void UAbilityTaskPlayMontageAndWaitForEvent::OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted) const
 {
 	if (Ability && Ability->GetCurrentMontage() == MontageToPlay)
 	{
@@ -132,7 +132,7 @@ void UAbilityTaskPlayMontageAndWaitForEvent::Activate()
 
 				CancelledHandle = Ability->OnGameplayAbilityCancelled.AddUObject(this, &UAbilityTaskPlayMontageAndWaitForEvent::OnAbilityCancelled);
 
-				// BlendingOutDelegate.BindUObject(this, &UAbilityTaskPlayMontageAndWaitForEvent::OnMontageBlendingOut);
+				BlendingOutDelegate.BindUObject(this, &UAbilityTaskPlayMontageAndWaitForEvent::OnMontageBlendingOut);
 				AnimInstance->Montage_SetBlendingOutDelegate(BlendingOutDelegate, MontageToPlay);
 
 				MontageEndedDelegate.BindUObject(this, &UAbilityTaskPlayMontageAndWaitForEvent::OnMontageEnded);

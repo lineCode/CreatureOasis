@@ -108,7 +108,7 @@ private:
 	/** Checks if the ability is playing a montage and stops that montage, returns true if a montage was stopped, false if not. */
 	bool StopPlayingMontage() const;
 
-	void OnMontageBlendingOut(const UAnimMontage* Montage, bool bInterrupted) const;
+	void OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted) const;
 	void OnAbilityCancelled();
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 	void OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload);

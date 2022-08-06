@@ -48,7 +48,7 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 
 		if (TriggerEventData != nullptr)
 		{
-			ActorToHold = const_cast<AActor*>(TriggerEventData->Target);
+			ActorToHold = const_cast<AActor*>(TriggerEventData->Target); // Bad; why you do this to me Unreal???? Blueprints I can change payload data just fine
 		}
 
 		if (ActorToHold == nullptr)
@@ -68,6 +68,10 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 			IHoldableInterface::Execute_StartBeingHold(ActorToHold, Character);
 		
 			HoldableAnchorComponent->AttachHoldable(ActorToHold);
+		}
+		else
+		{
+			CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 		}
 	}
 }

@@ -30,18 +30,28 @@ AActor* UHoldableAnchorComponent::DetectHoldableActor() const
 	
 	TArray<AActor*> OverlappingActors;
 	PickupDetectionPrimitive->GetOverlappingActors(OverlappingActors);
-	
+
+	float MinDistance = TNumericLimits<float>::Max();
+	AActor* ClosestActor = nullptr;
 	if (!OverlappingActors.IsEmpty())
 	{
-		AActor* CandidateActor = OverlappingActors[0];
-		if (IsValid(CandidateActor) &&
-			CandidateActor->GetClass()->ImplementsInterface(UHoldableInterface::StaticClass()))
+		for	(AActor* Actor : OverlappingActors)
 		{
-			return CandidateActor;
+			if (IsValid(Actor)
+				&& Actor != GetOwner()
+				&& Actor->GetClass()->ImplementsInterface(UHoldableInterface::StaticClass()))
+			{
+				const float Distance = FVector::Distance(Actor->GetActorLocation(), GetOwner()->GetActorLocation());
+				if (Distance < MinDistance)
+				{
+					MinDistance = Distance;
+					ClosestActor = Actor;
+				}
+			}
 		}
 	}
 	
-	return nullptr;
+	return ClosestActor;
 }
 
 void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
