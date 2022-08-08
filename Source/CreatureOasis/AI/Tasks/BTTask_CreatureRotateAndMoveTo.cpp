@@ -15,7 +15,8 @@ UBTTask_CreatureRotateAndMoveTo::UBTTask_CreatureRotateAndMoveTo()
 	NodeName = TEXT("Creature Rotate and Move To");
 
 	AcceptableRadius = 30.f;
-	
+
+	bNotifyTaskFinished = true;
 	bNotifyTick = true;
 
 	// accept only actors and vectors
@@ -28,13 +29,19 @@ EBTNodeResult::Type UBTTask_CreatureRotateAndMoveTo::ExecuteTask(UBehaviorTreeCo
 	return EBTNodeResult::InProgress;
 }
 
+void UBTTask_CreatureRotateAndMoveTo::OnTaskFinished(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
+	EBTNodeResult::Type TaskResult)
+{
+	OwnerComp.GetAIOwner()->ClearFocus(EAIFocusPriority::Move);
+}
+
 void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
-	const ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
-
+	ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
+	
 	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
 	{
 		TargetLocation = Cast<AActor>(AIController->GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()))->GetActorLocation();
@@ -44,9 +51,9 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 		TargetLocation = AIController->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
 	}
 	
-	//AIController->RotateGraduallyTowardsTarget(TargetLocation);
+	AIController->SetFocalPoint(TargetLocation, EAIFocusPriority::Move);
 	AIController->MoveForward();
-	
+
 	// Acceptable radius
 	if (AIController->IsAtLocation(TargetLocation, AcceptableRadius))
 	{

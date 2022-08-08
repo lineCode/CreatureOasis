@@ -10,7 +10,7 @@
 
 UFuzzyDynamicBTActionSelectionService::UFuzzyDynamicBTActionSelectionService()
 {
-	NodeName = "Select Action and SetDynamicSubtree";
+	NodeName = "Select Fuzzy Action and SetDynamicSubtree";
 
 	bNotifyBecomeRelevant = true;
 }

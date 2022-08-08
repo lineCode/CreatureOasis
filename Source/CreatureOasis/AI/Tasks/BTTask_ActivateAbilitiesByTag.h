@@ -19,7 +19,8 @@ public:
 	UBTTask_ActivateAbilitiesByTag();
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
+	virtual void OnTaskFinished(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, EBTNodeResult::Type TaskResult) override;
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	FGameplayTag GameplayTag;
@@ -27,4 +28,6 @@ protected:
 	// If true, this task will activate the ability and instantly finish
 	UPROPERTY(EditAnywhere)
 	bool bNonBlocking;
+
+	TMap<FGameplayTag, FDelegateHandle> DelegateMap;
 };

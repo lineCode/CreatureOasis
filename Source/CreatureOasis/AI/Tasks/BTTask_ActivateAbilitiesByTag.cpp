@@ -12,6 +12,8 @@ UBTTask_ActivateAbilitiesByTag::UBTTask_ActivateAbilitiesByTag()
 	: bNonBlocking(false)
 {
 	NodeName = "Activate Abilities By Tag";
+
+	bNotifyTaskFinished = true;
 }
 
 EBTNodeResult::Type UBTTask_ActivateAbilitiesByTag::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -44,11 +46,13 @@ EBTNodeResult::Type UBTTask_ActivateAbilitiesByTag::ExecuteTask(UBehaviorTreeCom
 
 	if (AbilitySystemComponent->HasMatchingGameplayTag(GameplayTag))
 	{
-		AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTag, EGameplayTagEventType::NewOrRemoved)
+		FDelegateHandle DelegateHandle = AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTag, EGameplayTagEventType::NewOrRemoved)
 			.AddLambda([&](const FGameplayTag CallbackTag, int32 NewCount)
 			{
 				FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 			});
+		
+		DelegateMap.Add(TTuple<FGameplayTag, FDelegateHandle>(GameplayTag,DelegateHandle));
 	}
 	else
 	{
@@ -56,4 +60,13 @@ EBTNodeResult::Type UBTTask_ActivateAbilitiesByTag::ExecuteTask(UBehaviorTreeCom
 	}
 	
 	return EBTNodeResult::InProgress;
+}
+
+void UBTTask_ActivateAbilitiesByTag::OnTaskFinished(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
+	EBTNodeResult::Type TaskResult)
+{
+	const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
+	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
+
+	AbilitySystemComponent->UnregisterGameplayTagEvent(DelegateMap.FindRef(GameplayTag), GameplayTag, EGameplayTagEventType::NewOrRemoved);
 }
