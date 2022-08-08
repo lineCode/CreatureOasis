@@ -131,4 +131,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|EmotionsAndBehaviours")
 	FGameplayAttributeData PlaceholderCharacterBond;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, PlaceholderCharacterBond);
+
+	//// Movement component use
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|MovementComponent|Rotation")
+	FGameplayAttributeData RotationRateYaw;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, RotationRateYaw);
 };

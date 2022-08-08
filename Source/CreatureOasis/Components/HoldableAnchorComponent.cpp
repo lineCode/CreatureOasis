@@ -30,7 +30,7 @@ AActor* UHoldableAnchorComponent::DetectHoldableActor() const
 	
 	TArray<AActor*> OverlappingActors;
 	PickupDetectionPrimitive->GetOverlappingActors(OverlappingActors);
-
+	
 	float MinDistance = TNumericLimits<float>::Max();
 	AActor* ClosestActor = nullptr;
 	if (!OverlappingActors.IsEmpty())

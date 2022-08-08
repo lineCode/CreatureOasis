@@ -4,17 +4,20 @@
 #include "BTTask_CreatureRotateTo.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "CreatureOasis/Characters/Creature/CreatureAIController.h"
+#include "GameFramework/Character.h"
 
 UBTTask_CreatureRotateTo::UBTTask_CreatureRotateTo()
 {
-	NodeName = TEXT("Creature Rotate To");
+	NodeName = TEXT("Check if Rotation is met");
 
-	Tolerance = 0.0f;
-	
+	Tolerance = 4.0f;
+
 	bNotifyTick = true;
 
 	BlackboardKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CreatureRotateTo, BlackboardKey));
+	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CreatureRotateTo, BlackboardKey), AActor::StaticClass());
 }
 
 EBTNodeResult::Type UBTTask_CreatureRotateTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -26,12 +29,25 @@ void UBTTask_CreatureRotateTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
-	const ACreatureAIController* AIController = Cast<ACreatureAIController>(OwnerComp.GetAIOwner());
-	const FVector TargetLocation = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
-	
-	AIController->RotateGraduallyTowardsTarget(TargetLocation);
-	
-	if (AIController->IsRotatedTowardsLocation(TargetLocation, Tolerance))
+	FVector TargetLoc;
+	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
+	{
+		const UObject* GotObject = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey());
+		if (!IsValid(GotObject))
+		{
+			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+			return;
+		}
+
+		TargetLoc = Cast<AActor>(GotObject)->GetActorLocation();
+	}
+	else
+	{
+		TargetLoc = OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
+	}
+
+	const FVector TargetDirection = (TargetLoc - OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation());
+	if (FMath::Abs( OwnerComp.GetAIOwner()->GetPawn()->GetActorRotation().Yaw - TargetDirection.Rotation().Yaw) <= Tolerance)
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}

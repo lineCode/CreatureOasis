@@ -18,9 +18,7 @@ public:
 	ACreatureAIController();
 
 	void MoveForward() const;
-	void RotateGraduallyTowardsTarget(const FVector TargetLocation) const;
-	void RotateGraduallyTowardsTarget(const AActor* TargetActor) const;
-
+	
 	bool IsAtLocation(const FVector TargetLocation, const float AcceptableRadius = 5.f, const bool bAddCreatureRadius = true) const;
 	bool IsRotatedTowardsLocation(const FVector TargetLocation, const float Tolerance = 0.0f) const;
 	
@@ -32,5 +30,7 @@ public:
 	
 private:
 	UPROPERTY()
-	const class ACreatureCharacter* CreatureCharacter;  
+	const class ACreatureCharacter* CreatureCharacter;
+
+	float RotateTimer;
 };

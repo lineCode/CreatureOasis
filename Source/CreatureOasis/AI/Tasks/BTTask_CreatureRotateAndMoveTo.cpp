@@ -44,7 +44,7 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 		TargetLocation = AIController->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
 	}
 	
-	AIController->RotateGraduallyTowardsTarget(TargetLocation);
+	//AIController->RotateGraduallyTowardsTarget(TargetLocation);
 	AIController->MoveForward();
 	
 	// Acceptable radius
