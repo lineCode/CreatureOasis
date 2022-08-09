@@ -274,6 +274,10 @@
 		{
 			"Name": "InterchangeEditor",
 			"Enabled": false
+		},
+		{
+			"Name": "DatasmithGLTFImporter",
+			"Enabled": true
 		}
 	]
 }

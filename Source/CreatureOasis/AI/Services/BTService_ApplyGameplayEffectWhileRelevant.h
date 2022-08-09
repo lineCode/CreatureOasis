@@ -3,28 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffect.h"
 #include "BehaviorTree/BTService.h"
-#include "ApplyGameplayEffectService.generated.h"
-
-class UGameplayEffect;
+#include "BTService_ApplyGameplayEffectWhileRelevant.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CREATUREOASIS_API UApplyGameplayEffectService : public UBTService
+class CREATUREOASIS_API UBTService_ApplyGameplayEffectWhileRelevant : public UBTService
 {
 	GENERATED_BODY()
 
 public:
-	UApplyGameplayEffectService();
+	UBTService_ApplyGameplayEffectWhileRelevant();
 
 	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	virtual void OnCeaseRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UGameplayEffect* GameplayEffectToApply;
+	TSubclassOf<UGameplayEffect> GameplayEffectToApply;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool bRemoveOnCeaseRelevant;
+	bool bDoNotRemoveOnCeaseRelevant;
 };

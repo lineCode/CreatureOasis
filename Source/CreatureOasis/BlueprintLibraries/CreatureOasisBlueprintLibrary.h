@@ -1,8 +1,10 @@
 #pragma once
 
-#include "CreatureOasis/GameModes/BaseGardenGameMode.h"
+#include "GameplayTagContainer.h"
 
 #include "CreatureOasisBlueprintLibrary.generated.h"
+
+class UAbilitySystemComponent;
 
 /*
  * Game-specific blueprint library
@@ -25,4 +27,7 @@ public:
 	/* Generate random color */
 	UFUNCTION(BlueprintCallable, Category="Colors")
 	static FLinearColor GenerateRandomColor();
+
+	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
+	static bool GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& InGameplayTag);
 };
