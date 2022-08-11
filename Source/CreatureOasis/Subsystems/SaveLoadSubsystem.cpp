@@ -25,9 +25,41 @@ void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
 	}
 	
 	const UWorld* World = GetGameInstance()->GetWorld();
+
+	// Hard skip Worlds that do not contain "Garden" in their name, 
+	if (!World->GetMapName().Contains("Garden"))
+	{
+		return;
+	}
+	
 	UGardenActorsSubsystem* GardenActorsSubsystem = World->GetSubsystem<UGardenActorsSubsystem>();
 
-	const TSharedPtr<FJsonObject> RootJsonObject(new FJsonObject);
+	TSharedPtr<FJsonObject> RootJsonObject(new FJsonObject);
+	
+	if (!CreatureSaveGame->GardenActorsJsonString.IsEmpty())
+	{
+		TSharedPtr<FJsonValue> RootDeserializedJsonValue;
+	
+		// Create a reader pointer to read the json data
+		const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(CreatureSaveGame->GardenActorsJsonString);
+
+		if (!FJsonSerializer::Deserialize(Reader, RootDeserializedJsonValue))
+		{
+			return;
+		}
+
+		RootJsonObject = RootDeserializedJsonValue->AsObject();
+	}
+	else
+	{
+		RootJsonObject = MakeShared<FJsonObject>();
+	}
+
+	// Remove Map if RootJsonObject has it, this so we can recreate it later on
+	if (RootJsonObject->HasField(World->GetMapName()))
+	{
+		RootJsonObject->RemoveField(World->GetMapName());
+	}
 	
 	const TSharedPtr<FJsonObject> GardenRootJsonObject(new FJsonObject());
 	const TSharedPtr<FJsonObject> GardenCreatureRootJsonObject(new FJsonObject());
@@ -75,6 +107,14 @@ void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
 		return;
 	}
 	
+	UWorld* World = GetGameInstance()->GetWorld();
+
+	// Hard skip Worlds that do not contain "Garden" in their name, 
+	if (!World->GetMapName().Contains("Garden"))
+	{
+		return;
+	}
+	
 	TSharedPtr<FJsonValue> RootJsonValue;
 	
 	// Create a reader pointer to read the json data
@@ -85,26 +125,44 @@ void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
 		return;
 	}
 	
-	UWorld* World = GetGameInstance()->GetWorld();
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
+	const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
 
-	TSharedPtr<FJsonObject> TestData = RootJsonValue->AsObject();
-	TArray<TSharedPtr<FJsonValue>> CreatureArray = RootJsonValue->AsObject()->GetObjectField(World->GetMapName())->GetArrayField("Creatures");
-
-	for (const TSharedPtr<FJsonValue> CreatureEntry : CreatureArray)
+	if (RootJsonValue->AsObject()->HasField(World->GetMapName()))
 	{
-		const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
-		
-		FNavLocation SpawnNavLocation;
-		FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
-		UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation);
+		TArray<TSharedPtr<FJsonValue>> CreatureArray = RootJsonValue->AsObject()->GetObjectField(World->GetMapName())->GetArrayField("Creatures");
 
-		AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
-		SpawnedGASCharacter->SpawnDefaultController();
+		for (const TSharedPtr<FJsonValue> CreatureEntry : CreatureArray)
+		{
+			FNavLocation SpawnNavLocation;
+			FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
+			if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+			{
+				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+				if (IsValid(SpawnedGASCharacter))
+				{
+					SpawnedGASCharacter->SpawnDefaultController();
 		
-		UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
+					UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
 		
-		InitAttributesFromJsonObject(AbilitySystemComponent, CreatureEntry->AsObject()->GetObjectField("Attributes"));
+					InitAttributesFromJsonObject(AbilitySystemComponent, CreatureEntry->AsObject()->GetObjectField("Attributes"));
+				}
+			}
+		}
+	}
+	else
+	{
+		// If no save-data is present for this specific map, we spawn a set amount of Creatures at start
+		for (int32 Count = 0; Count < GardenSettings->AmountOfStartingCreaturesToSpawnOnEmptySave; Count++)
+		{
+			FNavLocation SpawnNavLocation;
+			FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
+			if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+			{
+				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+				SpawnedGASCharacter->SpawnDefaultController();
+			}
+		}
 	}
 }
 

@@ -15,6 +15,9 @@ public:
 	int32 MaxCreatures;
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
+	int32 AmountOfStartingCreaturesToSpawnOnEmptySave;
+	
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
 	TMap<FGameplayTag, TSubclassOf<AActor>> GardenActorTypeClassRelationMap;
 
 	TSubclassOf<AActor> TestVar;
