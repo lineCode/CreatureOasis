@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "UObject/Object.h"
+
 #include "CreatureStatSettings.generated.h"
 
 struct FGameplayAttribute;

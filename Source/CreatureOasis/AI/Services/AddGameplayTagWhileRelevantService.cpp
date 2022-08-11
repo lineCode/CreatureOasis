@@ -33,7 +33,7 @@ void UAddGameplayTagWhileRelevantService::OnCeaseRelevant(UBehaviorTreeComponent
 	Super::OnCeaseRelevant(OwnerComp, NodeMemory);
 
 	const AActor* OwnerActor = OwnerComp.GetAIOwner()->GetPawn();
-	if (OwnerActor->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
+	if (IsValid(OwnerActor) && OwnerActor->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
 		const AGASCharacter* GASCharacter = Cast<AGASCharacter>(OwnerActor);
 		GASCharacter->GetAbilitySystemComponent()->RemoveLooseGameplayTags(GameplayTagsToAdd);

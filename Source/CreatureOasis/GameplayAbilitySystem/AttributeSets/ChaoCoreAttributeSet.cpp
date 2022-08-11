@@ -13,3 +13,8 @@ void UChaoCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 			NewValue, this);
 	}
 }
+
+void UChaoCoreAttributeSet::InitFromMetaDataTable(const UDataTable* DataTable)
+{
+	Super::InitFromMetaDataTable(DataTable);
+}

@@ -7,6 +7,8 @@
 #include "Components/ActorComponent.h"
 #include "CreatureExpressionComponent.generated.h"
 
+class UDataTable;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CREATUREOASIS_API UCreatureExpressionComponent : public UActorComponent
 {
@@ -31,10 +33,10 @@ protected:
 	UMaterialInstanceDynamic* GetMaterialInstance(const FName MaterialName) const;
 	
 	UPROPERTY(EditAnywhere)
-	class UDataTable* EyeDataTable;
+	UDataTable* EyeDataTable;
 	
 	UPROPERTY(EditAnywhere)
-	class UDataTable* MouthDataTable;
+	UDataTable* MouthDataTable;
 	
 private:
 	void PrepareMaterialInstances();
@@ -52,10 +54,11 @@ private:
 	UPROPERTY()
 	class UMaterialInstanceDynamic* SubMouthMaterialInstance;
 
+	// Used for defaulting back to, generated based on personality
 	UPROPERTY()
-	FGameplayTag DefaultEyeTag;
+	FGameplayTag InitialEyeTag;
 	UPROPERTY()
-	FGameplayTag DefaultMouthTag;
+	FGameplayTag InitialMouthTag;
 
 	UPROPERTY()
 	FGameplayTag CurrentEyeTag;

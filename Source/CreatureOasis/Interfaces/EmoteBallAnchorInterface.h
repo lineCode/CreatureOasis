@@ -22,4 +22,7 @@ class CREATUREOASIS_API IEmoteBallAnchorInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="EmoteBallAnchorInterface")
 	USceneComponent* GetEmoteBallAnchorComponent();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="EmoteBallAnchorInterface")
+    USceneComponent* GetEmoteBallBaseComponent();
 };

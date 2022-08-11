@@ -25,6 +25,9 @@ public:
 	bool GetGardenActorsByTag(FGameplayTag GameplayTag, TArray<AActor*>& OutGardenActors);
 
 	UFUNCTION(BlueprintCallable, Category="Garden")
+	bool GetAllGardenActors(TArray<AActor*>& OutGardenActors);
+	
+	UFUNCTION(BlueprintCallable, Category="Garden")
 	AActor* GetClosestGardenActorInRange(FVector Start, const float Range, FGameplayTag GardenActorTag);
 	
 	UFUNCTION(BlueprintCallable, Category="Garden")

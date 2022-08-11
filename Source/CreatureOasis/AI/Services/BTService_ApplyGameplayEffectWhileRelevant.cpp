@@ -48,7 +48,7 @@ void UBTService_ApplyGameplayEffectWhileRelevant::OnCeaseRelevant(UBehaviorTreeC
 	}
 	
 	const AActor* OwnerActor = OwnerComp.GetAIOwner()->GetPawn();
-	if (OwnerActor->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
+	if (IsValid(OwnerActor) && OwnerActor->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
 		const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OwnerActor);
 		UAbilitySystemComponent* ASC = AbilitySystemInterface->GetAbilitySystemComponent();

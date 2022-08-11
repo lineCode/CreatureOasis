@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "CreatureOasis/GameplayAbilitySystem/BaseAbilitySystemComponent.h"
+#include "CreatureOasis/Subsystems/GardenActorsSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -24,6 +25,8 @@ ACreatureCharacter::ACreatureCharacter()
 void ACreatureCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(FGameplayTag::RequestGameplayTag("Type.Creature"), this);
 }
 
 // Called to bind functionality to input

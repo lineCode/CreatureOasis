@@ -34,6 +34,18 @@ bool UGardenActorsSubsystem::GetGardenActorsByTag(FGameplayTag GameplayTag, TArr
 	return !OutGardenActors.IsEmpty();
 }
 
+bool UGardenActorsSubsystem::GetAllGardenActors(TArray<AActor*>& OutGardenActors)
+{
+	if (GardenActorsMultiMap.IsEmpty())
+	{
+		return false;	
+	}
+	
+	GardenActorsMultiMap.GenerateValueArray(OutGardenActors);
+	
+	return true;
+}
+
 void UGardenActorsSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
