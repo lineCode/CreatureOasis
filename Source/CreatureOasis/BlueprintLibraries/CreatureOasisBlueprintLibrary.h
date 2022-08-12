@@ -30,4 +30,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
 	static bool GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& InGameplayTag);
+
+	UFUNCTION()
+	static bool GetNameOfTopMostChildTag(const FGameplayTag& TargetTag, FName& OutName);
 };

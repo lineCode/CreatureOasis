@@ -19,22 +19,43 @@ public:
 	// Sets default values for this component's properties
 	UCreatureExpressionComponent();
 
+	UFUNCTION()
+	void GenerateInitialExpressionTags();
+	
 	UFUNCTION(BlueprintCallable)
 	void SetEyeTag(const FGameplayTag NewEyeTag);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetMouthTag(const FGameplayTag NewMouthTag);
 
-	void RegenerateEyes() const;
-	void RegenerateMouth() const;
+	UFUNCTION(BlueprintCallable)
+	void ClearEyeTag();
 
+	UFUNCTION(BlueprintCallable)
+	void ClearMouthTag();
+	
+	UFUNCTION(BlueprintCallable)
+	void ClearEyeAndMouthTag();
+	
+	UFUNCTION(BlueprintCallable)
+	FGameplayTag GetActiveEyeTag() const;
+	
+	UFUNCTION(BlueprintCallable)
+	FGameplayTag GetActiveMouthTag() const;
+	
 protected:
 	virtual void InitializeComponent() override;
-
-	UMaterialInstanceDynamic* GetMaterialInstance(const FName MaterialName) const;
-
+	virtual void BeginPlay() override;
+	
+	void RegenerateEyesAndMouth() const;
+	void RegenerateEyes() const;
+	void RegenerateMouth() const;
+	
 	virtual void LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad) override;
 	virtual void GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad) override;
+	
+	UMaterialInstanceDynamic* CreateAndSetMaterialInstanceDynamic(const FName MaterialName) const;
+	void PrepareMaterialInstances();
 
 	UPROPERTY(EditAnywhere)
 	UDataTable* EyeDataTable;
@@ -43,20 +64,19 @@ protected:
 	UDataTable* MouthDataTable;
 	
 private:
-	void PrepareMaterialInstances();
-	
 	UPROPERTY()
 	class ACreatureCharacter* CreatureCharacter;
-	UPROPERTY()
-	class USkeletalMeshComponent* CreatureMesh;
-
-	UPROPERTY()
-	class UMaterialInstanceDynamic* EyeMaterialInstance;
 	
 	UPROPERTY()
-	class UMaterialInstanceDynamic* MouthMaterialInstance;
+	USkeletalMeshComponent* CreatureMesh;
+
 	UPROPERTY()
-	class UMaterialInstanceDynamic* SubMouthMaterialInstance;
+	UMaterialInstanceDynamic* EyeMaterialInstance;
+	
+	UPROPERTY()
+	UMaterialInstanceDynamic* MouthMaterialInstance;
+	UPROPERTY()
+	UMaterialInstanceDynamic* SubMouthMaterialInstance;
 
 	// Used for defaulting back to, generated based on personality
 	UPROPERTY()

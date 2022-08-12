@@ -42,3 +42,18 @@ bool UCreatureOasisBlueprintLibrary::GetDirectActiveChildTag(UAbilitySystemCompo
 	
 	return false;
 }
+
+bool UCreatureOasisBlueprintLibrary::GetNameOfTopMostChildTag(const FGameplayTag& TargetTag, FName& OutName)
+{
+	if (!TargetTag.IsValid())
+	{
+		return false;
+	}
+	
+	TArray<FName> SplitTagArray;
+	UGameplayTagsManager::Get().SplitGameplayTagFName(TargetTag, SplitTagArray);
+
+	OutName = SplitTagArray[SplitTagArray.Max() - 1];
+	
+	return true;
+}
