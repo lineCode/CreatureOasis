@@ -18,5 +18,8 @@ struct FEyeTextureTagTableRow : public FTableRowBase
 	UTexture* EyeTexture = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="EyeRowBase", meta=(ClampMin=0.f, ClampMax=1.f))
-	float EyeLidCloseAmount = 0.f;
+	float EyeLidCloseScale = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="EyeRowBase", meta=(ClampMin=0.f, ClampMax=1.f))
+	float EyeLidSlantedScale = 0.f;
 };

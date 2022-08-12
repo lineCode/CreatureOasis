@@ -66,7 +66,15 @@ void UBTTask_ActivateAbilitiesByTag::OnTaskFinished(UBehaviorTreeComponent& Owne
 	EBTNodeResult::Type TaskResult)
 {
 	const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
-	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
+	if (AbilitySystemInterface != nullptr)
+	{
+		UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
+		AbilitySystemComponent->UnregisterGameplayTagEvent(DelegateMap.FindRef(GameplayTag), GameplayTag, EGameplayTagEventType::NewOrRemoved);
 
-	AbilitySystemComponent->UnregisterGameplayTagEvent(DelegateMap.FindRef(GameplayTag), GameplayTag, EGameplayTagEventType::NewOrRemoved);
+		if (!bNonBlocking && TaskResult == EBTNodeResult::Aborted)
+		{
+			const FGameplayTagContainer TagContainer(GameplayTag);
+			AbilitySystemComponent->CancelAbilities(&TagContainer);
+		}
+	}
 }
