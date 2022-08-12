@@ -26,4 +26,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject", CallableWithoutWorldContext), Category="GardenStatics")
 	static ABaseGardenGameMode* GetGardenGameMode(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject", CallableWithoutWorldContext), Category="GardenStatics")
+	static FString GetRandomCreatureName();
 };

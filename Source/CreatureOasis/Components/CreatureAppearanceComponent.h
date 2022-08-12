@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "CreatureOasis/Interfaces/CreatureComponentLoadableInterface.h"
 #include "CreatureAppearanceComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CREATUREOASIS_API UCreatureAppearanceComponent : public UActorComponent
+class CREATUREOASIS_API UCreatureAppearanceComponent : public UActorComponent, public ICreatureComponentLoadableInterface
 {
 	GENERATED_BODY()
 
@@ -15,10 +16,13 @@ public:
 
 protected:
 	virtual void InitializeComponent() override;
-
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	virtual void LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad) override;
+	virtual void GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad) override;
+	
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -38,4 +42,10 @@ private:
 
 	UPROPERTY()
 	class USkeletalMeshComponent* CreatureMesh;
+
+	UPROPERTY()
+	FLinearColor InitialPrimaryColor;
+	
+	UPROPERTY()
+	FLinearColor InitialSecondaryColor;
 };

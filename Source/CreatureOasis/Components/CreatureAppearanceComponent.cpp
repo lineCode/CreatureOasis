@@ -27,6 +27,18 @@ void UCreatureAppearanceComponent::BeginPlay()
 
 }
 
+void UCreatureAppearanceComponent::LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad)
+{
+	InitialPrimaryColor = CreatureDataLoad.InitialPrimaryColor;
+	InitialSecondaryColor = CreatureDataLoad.InitialSecondaryColor;
+}
+
+void UCreatureAppearanceComponent::GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad)
+{
+	CreatureDataLoad.InitialPrimaryColor = InitialPrimaryColor;
+	CreatureDataLoad.InitialSecondaryColor = InitialSecondaryColor;
+}
+
 // Called every frame
 void UCreatureAppearanceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

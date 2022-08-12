@@ -4,18 +4,21 @@
 #include "CreaturePersonalityComponent.h"
 
 
-// Sets default values for this component's properties
 UCreaturePersonalityComponent::UCreaturePersonalityComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UCreaturePersonalityComponent::SetCreatureName(FString NewNameString)
+{
+	CreatureName = NewNameString;
+}
 
-// Called when the game starts
+FString UCreaturePersonalityComponent::GetCreatureName() const
+{
+	return CreatureName;
+}
+
 void UCreaturePersonalityComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -24,13 +27,12 @@ void UCreaturePersonalityComponent::BeginPlay()
 	
 }
 
-
-// Called every frame
-void UCreaturePersonalityComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                                  FActorComponentTickFunction* ThisTickFunction)
+void UCreaturePersonalityComponent::LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	SetCreatureName(CreatureDataLoad.CreatureName);
 }
 
+void UCreaturePersonalityComponent::GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad)
+{
+	CreatureDataLoad.CreatureName = GetCreatureName();
+}

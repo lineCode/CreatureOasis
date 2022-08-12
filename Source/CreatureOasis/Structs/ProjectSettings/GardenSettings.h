@@ -20,5 +20,6 @@ public:
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
 	TMap<FGameplayTag, TSubclassOf<AActor>> GardenActorTypeClassRelationMap;
 
-	TSubclassOf<AActor> TestVar;
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
+	TArray<FString> CreatureNameStringArray;
 };

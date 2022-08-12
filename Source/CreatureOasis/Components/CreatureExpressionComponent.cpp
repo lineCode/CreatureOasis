@@ -75,6 +75,18 @@ UMaterialInstanceDynamic* UCreatureExpressionComponent::GetMaterialInstance(cons
 	return Cast<UMaterialInstanceDynamic>(CreatureMesh->GetMaterial(CreatureMesh->GetMaterialIndex(MaterialName)));
 }
 
+void UCreatureExpressionComponent::LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad)
+{
+	InitialEyeTag = CreatureDataLoad.InitialEyeTag;
+	InitialMouthTag = CreatureDataLoad.InitialMouthTag;
+}
+
+void UCreatureExpressionComponent::GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad)
+{
+	CreatureDataLoad.InitialEyeTag = InitialEyeTag;
+	CreatureDataLoad.InitialMouthTag = InitialMouthTag;
+}
+
 void UCreatureExpressionComponent::InitializeComponent()
 {
 	Super::InitializeComponent();

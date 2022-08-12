@@ -9,7 +9,9 @@
 #include "NavigationSystem.h"
 #include "AI/NavigationSystemBase.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
+#include "CreatureOasis/Interfaces/CreatureComponentLoadableInterface.h"
 #include "CreatureOasis/Structs/ProjectSettings/GardenSettings.h"
+
 #include "Kismet/GameplayStatics.h"
 
 USaveLoadSubsystem::USaveLoadSubsystem()
@@ -85,8 +87,19 @@ void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
 		{
 			continue;
 		}
+
+		FCreatureDataLoad CreatureDataLoad;
+
+		TArray<UActorComponent*> Components = GASCharacter->GetComponentsByInterface(UCreatureComponentLoadableInterface::StaticClass());
+		for	(UActorComponent* Component : Components)
+		{
+			ICreatureComponentLoadableInterface::Execute_GatherCreatureData(Component, CreatureDataLoad);
+		}
 		
-		CreatureJsonObject->SetStringField("Name", "Default");
+		FJsonObjectConverter JsonObjectConverter;
+		TSharedPtr<FJsonObject> CreatureDataLoadJsonObject = JsonObjectConverter.UStructToJsonObject(CreatureDataLoad);
+		
+		CreatureJsonObject->SetObjectField("Data", CreatureDataLoadJsonObject);
 		CreatureJsonObject->SetObjectField(TEXT("Attributes"), SerializeAttributesIntoJsonObject(ASC));
 
 		CreatureJsonValueObjectArray.Add(MakeShared<FJsonValueObject>(CreatureJsonObject));
@@ -141,11 +154,26 @@ void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
 				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
 				if (IsValid(SpawnedGASCharacter))
 				{
+					// Lets load some save data
+					
+					const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
 					SpawnedGASCharacter->SpawnDefaultController();
-		
+					
 					UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
 		
-					InitAttributesFromJsonObject(AbilitySystemComponent, CreatureEntry->AsObject()->GetObjectField("Attributes"));
+					InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
+					
+					FCreatureDataLoad CreatureDataLoad;
+					FJsonObjectConverter JsonObjectConverter;
+					if (CreatureObjectEntry->HasField("Data")
+						&& JsonObjectConverter.JsonObjectToUStruct(CreatureObjectEntry->GetObjectField("Data").ToSharedRef(), FCreatureDataLoad::StaticStruct(), &CreatureDataLoad))
+					{
+						TArray<UActorComponent*> Components = SpawnedGASCharacter->GetComponentsByInterface(UCreatureComponentLoadableInterface::StaticClass());
+						for	(UActorComponent* Component : Components)
+						{
+							ICreatureComponentLoadableInterface::Execute_LoadCreatureData(Component, CreatureDataLoad);
+						}
+					}
 				}
 			}
 		}

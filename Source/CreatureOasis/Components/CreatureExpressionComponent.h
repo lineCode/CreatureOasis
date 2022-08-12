@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
+#include "CreatureOasis/Interfaces/CreatureComponentLoadableInterface.h"
 #include "CreatureExpressionComponent.generated.h"
 
 class UDataTable;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CREATUREOASIS_API UCreatureExpressionComponent : public UActorComponent
+class CREATUREOASIS_API UCreatureExpressionComponent : public UActorComponent, public ICreatureComponentLoadableInterface
 {
 	GENERATED_BODY()
 
@@ -31,7 +32,10 @@ protected:
 	virtual void InitializeComponent() override;
 
 	UMaterialInstanceDynamic* GetMaterialInstance(const FName MaterialName) const;
-	
+
+	virtual void LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad) override;
+	virtual void GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad) override;
+
 	UPROPERTY(EditAnywhere)
 	UDataTable* EyeDataTable;
 	
