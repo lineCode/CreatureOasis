@@ -5,20 +5,8 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "BehaviorTree/BTDecorator.h"
+#include "CreatureOasis/CreatureOasis.h"
 #include "BTDecorator_CheckGASAttribute.generated.h"
-
-/**
- * Used for determining what kind of Comparative check we should use
- */
-UENUM(BlueprintType)
-enum class ECheckCompareQuery : uint8
-{
-	Less				UMETA(DisplayName = "Less"),
-	LessOrEqual			UMETA(DisplayName = "LessOrEqual"),
-	Equal				UMETA(DisplayName = "Equal"),
-	Greater				UMETA(DisplayName = "Greater"),
-	GreaterOrEqual		UMETA(DisplayName = "GreaterOrEqual")
-};
 
 /**
  * Use this Decorator node to check a GAS Attribute
@@ -43,6 +31,4 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	FGameplayAttribute TargetAttribute;
-	
-	
 };

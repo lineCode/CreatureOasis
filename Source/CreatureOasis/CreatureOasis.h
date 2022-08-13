@@ -19,3 +19,16 @@ enum class EAbilityInputID : uint8
 	Jump			UMETA(DisplayName = "Jump"),
 	Interact		UMETA(DisplayName = "Interact")
 };
+
+/**
+ * Used for determining what kind of Comparative check we should use
+ */
+UENUM(BlueprintType)
+enum class ECheckCompareQuery : uint8
+{
+	Less				UMETA(DisplayName = "Less"),
+	LessOrEqual			UMETA(DisplayName = "LessOrEqual"),
+	Equal				UMETA(DisplayName = "Equal"),
+	Greater				UMETA(DisplayName = "Greater"),
+	GreaterOrEqual		UMETA(DisplayName = "GreaterOrEqual")
+};
