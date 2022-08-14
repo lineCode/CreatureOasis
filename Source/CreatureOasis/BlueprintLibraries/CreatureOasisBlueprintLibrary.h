@@ -29,8 +29,8 @@ public:
 	static FLinearColor GenerateRandomColor();
 
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
-	static bool GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& InGameplayTag);
+	static bool GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& OutGameplayTag);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
 	static bool GetNameOfTopMostChildTag(const FGameplayTag& TargetTag, FName& OutName);
 };

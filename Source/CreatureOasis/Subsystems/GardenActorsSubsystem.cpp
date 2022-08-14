@@ -3,6 +3,8 @@
 
 #include "GardenActorsSubsystem.h"
 
+#include "AIController.h"
+
 void UGardenActorsSubsystem::AddGardenActor(FGameplayTag GardenActorTypeTag, AActor* GardenActor)
 {
 	GardenActorsMultiMap.Add(GardenActorTypeTag, GardenActor);
@@ -88,8 +90,77 @@ bool UGardenActorsSubsystem::GetGardenActorsInRange(FVector Start,
 	return !OutGardenActors.IsEmpty();
 }
 
+AActor* UGardenActorsSubsystem::GetClosestGardenActorInViewCone(FVector Start, FVector Direction, float ConeAngle,
+	const float Range, FGameplayTag GardenActorTag)
+{
+	TArray<AActor*> GardenActors;
+	GetGardenActorsByTag(GardenActorTag, GardenActors);
+	
+	TPair<float, AActor*> ClosestActor(TNumericLimits<float>::Max(), nullptr);
+	for (AActor* Actor : GardenActors)
+	{
+		const FVector DirToStart = (Actor->GetActorLocation() - Start).GetSafeNormal();
+
+		const float Distance = FVector::Distance(Start, Actor->GetActorLocation());
+		const float DotResult = Direction.Dot(DirToStart);
+		if (Distance < Range && DotResult > ConeAngle && Distance < ClosestActor.Key)
+		{
+			ClosestActor.Key = Distance;
+			ClosestActor.Value = Actor;
+		}
+	}
+
+	return ClosestActor.Value;
+}
+
+AActor* UGardenActorsSubsystem::GetClosestGardenActorInViewConeUsingActor(const AActor* OriginActor, float ConeAngle,
+	const float Range, FGameplayTag GardenActorTag)
+{
+	return GetClosestGardenActorInViewCone(OriginActor->GetActorLocation(), OriginActor->GetActorForwardVector(), ConeAngle,
+	Range, GardenActorTag);
+}
+
+bool UGardenActorsSubsystem::HasGardenActorInViewCone(FVector Start, FVector Direction, float ConeAngle,
+	const float Range, FGameplayTag GardenActorTag)
+{
+	TArray<AActor*> GardenActors;
+	GetGardenActorsByTag(GardenActorTag, GardenActors);
+	
+	DrawDebugSphere(GetWorld(), Start, Range, 12, FColor::Yellow, false, 10.f, 0, 6.f);
+
+	for (const AActor* Actor : GardenActors)
+	{
+		const FVector DirToStart = (Actor->GetActorLocation() -Start).GetSafeNormal();
+
+		const float Distance = FVector::Distance(Start, Actor->GetActorLocation());
+		const float DotResult = Direction.Dot(DirToStart);
+		if (Distance < Range && DotResult > ConeAngle)
+		{
+			//DrawDebugLine(GetWorld(), Start, Start + DirToStart * Distance, FColor::Green, false, 10.f, 0, 2.f);
+
+			return true;
+		}
+		// else if (Distance > Range && DotResult > ConeAngle)
+		// {
+		// 	DrawDebugLine(GetWorld(), Start, Start + DirToStart * Distance, FColor::Red, false, 10.f, 0, 2.f);
+		// }
+		// else
+		// {
+		// 	DrawDebugLine(GetWorld(), Start, Start + DirToStart * Distance, FColor::Blue, false, 10.f, 0, 1.f);
+		// }
+	}
+	
+	return false;
+}
+
+bool UGardenActorsSubsystem::HasGardenActorInViewConeUsingActor(const AActor* OriginActor, const float ConeAngle,
+	const float Range, const FGameplayTag GardenActorTag)
+{
+	return HasGardenActorInViewCone(OriginActor->GetActorLocation(), OriginActor->GetActorForwardVector(), ConeAngle, Range, GardenActorTag);
+}
+
 bool UGardenActorsSubsystem::IsAnyGardenActorOfTypeInRange(FVector Start,
-	const float Range, FGameplayTag GardenActorTypeTag)
+                                                           const float Range, FGameplayTag GardenActorTypeTag)
 {
 	TArray<AActor*> GardenActors;
 	if (GetGardenActorsByTag(GardenActorTypeTag, GardenActors))
@@ -105,4 +176,52 @@ bool UGardenActorsSubsystem::IsAnyGardenActorOfTypeInRange(FVector Start,
 	}
 
 	return false;
+}
+
+bool UGardenActorsSubsystem::HasGardenActorFromInActorArray(FGameplayTag GardenActorTypeTag, TArray<AActor*> InActorArray)
+{
+	TArray<AActor*> GardenActors;
+	if (GetGardenActorsByTag(GardenActorTypeTag, GardenActors))
+	{
+		for (const AActor* InActor : InActorArray)
+		{
+			for (const AActor* GardenActor : GardenActors)
+			{
+				if (InActor == GardenActor)
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+AActor* UGardenActorsSubsystem::GetClosestGardenActorFromInActorArray(const FVector Start, FGameplayTag GardenActorTypeTag, const TArray<AActor*> InActorArray)
+{
+	TArray<AActor*> GardenActors;
+	if (GetGardenActorsByTag(GardenActorTypeTag, GardenActors))
+	{
+		TPair<float, AActor*> ClosestActor(TNumericLimits<float>::Max(), nullptr);
+		for (const AActor* InActor : InActorArray)
+		{
+			for (AActor* GardenActor : GardenActors)
+			{
+				if (InActor == GardenActor)
+				{
+					const float Distance = FVector::Distance(Start, GardenActor->GetActorLocation());
+					if (Distance < ClosestActor.Key)
+					{
+						ClosestActor.Key = Distance;
+						ClosestActor.Value = GardenActor;
+					}
+				}
+			}
+		}
+		
+		return ClosestActor.Value;
+	}
+
+	return nullptr;
 }

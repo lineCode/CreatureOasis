@@ -34,4 +34,7 @@ public:
 	/* Get the objects gameplay tag type */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=HoldableInterface)
 	FGameplayTag GetTypeOfActor();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=HoldableInterface)
+	bool IsBeingHeld();
 };

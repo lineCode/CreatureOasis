@@ -21,8 +21,13 @@ FLinearColor UCreatureOasisBlueprintLibrary::GenerateRandomColor()
 	return {FMath::RandRange(0.f, 1.f), FMath::RandRange(0.f, 1.f), FMath::RandRange(0.f, 1.f), 1.f};
 }
 
-bool UCreatureOasisBlueprintLibrary::GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& InGameplayTag)
+bool UCreatureOasisBlueprintLibrary::GetDirectActiveChildTag(UAbilitySystemComponent* ASC, FGameplayTag ParentTag, FGameplayTag& OutGameplayTag)
 {
+	if (!IsValid(ASC))
+	{
+		return false;
+	}
+	
 	const FGameplayTagContainer DirectChildTagContainer = UGameplayTagsManager::Get().RequestGameplayTagChildren(ParentTag);
 
 	FGameplayTagContainer ASCTagContainer;
@@ -35,7 +40,7 @@ bool UCreatureOasisBlueprintLibrary::GetDirectActiveChildTag(UAbilitySystemCompo
 	{
 		if (DirectChildTagContainer.HasTag(GameplayTag))
 		{
-			InGameplayTag = GameplayTag;
+			OutGameplayTag = GameplayTag;
 			return true;
 		}
 	}
