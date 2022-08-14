@@ -138,4 +138,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|MovementComponent|Rotation")
 	FGameplayAttributeData RotationRateYaw;
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, RotationRateYaw);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|MovementComponent")
+	FGameplayAttributeData MaxWalkSpeed;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, MaxWalkSpeed);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|MovementComponent")
+	FGameplayAttributeData MaxSwimSpeed;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, MaxSwimSpeed);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|MovementComponent")
+	FGameplayAttributeData MaxFlySpeed;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, MaxFlySpeed);
 };
