@@ -44,7 +44,11 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 	
 	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
 	{
-		TargetLocation = Cast<AActor>(AIController->GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()))->GetActorLocation();
+		UObject* Object = AIController->GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey());
+		if (IsValid(Object))
+		{
+			TargetLocation = Cast<AActor>(Object)->GetActorLocation();
+		}
 	}
 	else
 	{

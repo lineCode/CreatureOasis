@@ -126,7 +126,7 @@ bool UGardenActorsSubsystem::HasGardenActorInViewCone(FVector Start, FVector Dir
 	TArray<AActor*> GardenActors;
 	GetGardenActorsByTag(GardenActorTag, GardenActors);
 	
-	DrawDebugSphere(GetWorld(), Start, Range, 12, FColor::Yellow, false, 10.f, 0, 6.f);
+	//DrawDebugSphere(GetWorld(), Start, Range, 12, FColor::Yellow, false, 10.f, 0, 6.f);
 
 	for (const AActor* Actor : GardenActors)
 	{
