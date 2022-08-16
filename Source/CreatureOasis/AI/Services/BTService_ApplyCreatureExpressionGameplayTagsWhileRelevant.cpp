@@ -9,6 +9,8 @@
 UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant()
 	: EyeTag(FGameplayTag::EmptyTag)
 	, MouthTag(FGameplayTag::EmptyTag)
+	, bClearEyesOnEmptyTag(false)
+	, bClearMouthOnEmptyTag(false)
 {
 	bNotifyBecomeRelevant = true;
 	bNotifyCeaseRelevant = true;
@@ -28,10 +30,18 @@ void UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::OnBecomeReleva
 			{
 				CreatureExpressionComp->SetEyeTag(EyeTag);
 			}
+			else if (bClearEyesOnEmptyTag)
+			{
+				CreatureExpressionComp->ClearEyeTag();
+			}
 
 			if (MouthTag.IsValid())
 			{
 				CreatureExpressionComp->SetMouthTag(MouthTag);
+			}
+			else if (bClearMouthOnEmptyTag)
+			{
+				CreatureExpressionComp->ClearMouthTag();
 			}
 		}
 	}

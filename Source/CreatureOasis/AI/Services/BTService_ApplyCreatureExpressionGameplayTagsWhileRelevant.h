@@ -29,4 +29,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bDoNotRemoveOnCeaseRelevant;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bClearEyesOnEmptyTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bClearMouthOnEmptyTag;
 };
