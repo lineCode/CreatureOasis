@@ -57,9 +57,9 @@ AActor* UHoldableAnchorComponent::DetectHoldableActor() const
 void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
 {
 	ActorWeAreHolding = HoldableActor;
-	
-	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
 
+	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
+	
 	OnStartHoldDelegate.Broadcast(HoldableActor);
 }
 
@@ -84,4 +84,3 @@ bool UHoldableAnchorComponent::IsHoldingActor() const
 {
 	return ActorWeAreHolding != nullptr;
 }
-

@@ -49,8 +49,10 @@ void ACreatureCharacter::StartBeingHold_Implementation(AGASCharacter* Instigator
 	// make sure other abilities know we have just Cancelled holding an object
 	const FGameplayEventData GameplayEventData = FGameplayEventData();
 	AbilitySystemComponent->HandleGameplayEvent(FGameplayTag::RequestGameplayTag("Event.HoldCancel"), &GameplayEventData);
+
+	GetMovementComponent()->StopMovementImmediately();
 	
-	GetMovementComponent()->Deactivate();
+	GetCharacterMovement()->DisableMovement();
 	
 	GetCapsuleComponent()->SetCollisionProfileName(FName("IgnoreOnlyCreature"));
 
@@ -61,8 +63,8 @@ void ACreatureCharacter::EndBeingHold_Implementation()
 {
 	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 
-	GetMovementComponent()->Activate();
-	
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
 	GetCapsuleComponent()->SetCollisionProfileName(FName("Creature"));
 
 	CharacterCurrentlyHoldingUs = nullptr;

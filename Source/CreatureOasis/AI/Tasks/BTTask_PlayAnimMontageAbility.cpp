@@ -13,8 +13,14 @@ UBTTask_PlayAnimMontageAbility::UBTTask_PlayAnimMontageAbility()
 	, EndEventGameplayTag(FGameplayTag::RequestGameplayTag("Event.Chao.EndMontage"))
 {
 	NodeName = "PlayAnimMontageAbility";
+	OverwritePlayRate = 1.f;
+	bFinishAfterMontageCompleted = false;
 
+	MinWait = 0.f;
+	MaxWait = 0.f;
+	
 	bNotifyTaskFinished = true;
+	bNotifyTick = false;
 }
 
 EBTNodeResult::Type UBTTask_PlayAnimMontageAbility::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -34,9 +40,9 @@ EBTNodeResult::Type UBTTask_PlayAnimMontageAbility::ExecuteTask(UBehaviorTreeCom
 	}
 	
 	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
-
+	
 	UPlayMontageGameplayEventObject* EventObject = NewObject<UPlayMontageGameplayEventObject>();
-	EventObject->InitializeWithData(AnimMontageToPlay, MontageSectionStrings, MinWait, MaxWait, &OwnerComp, this);
+	EventObject->InitializeWithData(AnimMontageToPlay, MontageSectionStrings, MinWait, MaxWait, bFinishAfterMontageCompleted, OverwritePlayRate, &OwnerComp, this);
 	
 	FGameplayEventData GameplayEventData;
 	GameplayEventData.OptionalObject = EventObject;

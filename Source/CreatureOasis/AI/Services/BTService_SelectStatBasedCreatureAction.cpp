@@ -75,10 +75,15 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 						OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, BestBehaviorTree);
 
 						OwnerComp.GetBlackboardComponent()->SetValueAsBool(BooleanBKeyToSet.SelectedKeyName, true);
-					} else
+					}
+					else
 					{
 						OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, DefaultBTToRun);
 					}
+				}
+				else
+				{
+					OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, DefaultBTToRun);
 				}
 			}
 		}

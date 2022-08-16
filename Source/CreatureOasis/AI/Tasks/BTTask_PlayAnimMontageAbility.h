@@ -35,6 +35,13 @@ protected:
 	TArray<FName> MontageSectionStrings;
 
 	UPROPERTY(EditAnywhere)
+	bool bFinishAfterMontageCompleted;
+
+	UPROPERTY(EditAnywhere)
+	float OverwritePlayRate;
+
+	// Keep zero to always finish task after montage completed
+	UPROPERTY(EditAnywhere)
 	float MinWait;
 
 	UPROPERTY(EditAnywhere)

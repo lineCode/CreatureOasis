@@ -18,7 +18,7 @@ class CREATUREOASIS_API UPlayMontageGameplayEventObject : public UObject
 public:
 	UPlayMontageGameplayEventObject();
 
-	void InitializeWithData(UAnimMontage* InMontageToPlay, TArray<FName> InSectionNames, float InMinTime, float InMaxTime, UBehaviorTreeComponent* InCompThatCalledThis, UBTTaskNode* InTaskNode);
+	void InitializeWithData(UAnimMontage* InMontageToPlay, TArray<FName> InSectionNames, float InMinTime, float InMaxTime, bool InbFinishAfterMontageCompleted, float InOverwritePlayRate, UBehaviorTreeComponent* InCompThatCalledThis, UBTTaskNode* InTaskNode);
 
 	UFUNCTION(BlueprintCallable)
 	void FinishLatentTaskUsingTaskNode() const;
@@ -36,10 +36,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxTime;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bFinishAfterMontageCompleted;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float OverwritePlayRate;
+	
 	UPROPERTY()
 	UBehaviorTreeComponent* CompThatCalledThis;
 
 	UPROPERTY()
 	UBTTaskNode* TaskNode;
-
 };

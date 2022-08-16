@@ -39,7 +39,14 @@ void UBTTask_CreatureRotateTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8
 			return;
 		}
 
-		TargetLoc = Cast<AActor>(GotObject)->GetActorLocation();
+		const AActor* Actor = Cast<AActor>(GotObject);
+		if (!IsValid(Actor))
+		{
+			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+			return;
+		}
+		
+		TargetLoc = Actor->GetActorLocation();
 	}
 	else
 	{
