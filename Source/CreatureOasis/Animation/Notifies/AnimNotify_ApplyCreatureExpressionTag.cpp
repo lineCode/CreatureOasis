@@ -16,7 +16,7 @@ void UAnimNotify_ApplyCreatureExpressionTag::Notify(USkeletalMeshComponent* Mesh
 	{
 		if (UCreatureExpressionComponent* CreatureExpressionComp = ICreatureComponentGetterInterface::Execute_GetCreatureExpressionComponent(OwnerActor))
 		{
-			if (bUseContainer)
+			if (bUseContainers)
 			{
 				if (EyeTagContainer.IsValid())
 				{

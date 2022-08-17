@@ -61,6 +61,8 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 
 				if (BestAttribute.IsValid() && BestStatCalculationResult != 0.f)
 				{
+					UE_LOG(LogTemp, Warning, TEXT("[FuzzyAction] BestAttribute found: %s %f"), *BestAttribute.AttributeName, BestStatCalculationResult);
+
 					const FCreatureFuzzyActionStatCollection* ActionStatCollection = MovementModeLibraryEntry->CreatureStatChecks.Find(BestAttribute);
 
 					UBehaviorTree* BestBehaviorTree = nullptr;
@@ -84,6 +86,8 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 
 					if (BestBehaviorTree != nullptr)
 					{
+						UE_LOG(LogTemp, Warning, TEXT("[FuzzyActions] Best action found: %s %f"), *BestBehaviorTree->GetName(), BestFuzzyActionCalculationResult);
+						
 						// Inject new Action BT into Dynamic Run task
 						OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, BestBehaviorTree);
 
@@ -91,11 +95,13 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 					}
 					else
 					{
+						UE_LOG(LogTemp, Warning, TEXT("[FuzzyActions] No action found"));
 						OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, DefaultBTToRun);
 					}
 				}
 				else
 				{
+					UE_LOG(LogTemp, Warning, TEXT("[FuzzyActions] No action found"));
 					OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, DefaultBTToRun);
 				}
 			}

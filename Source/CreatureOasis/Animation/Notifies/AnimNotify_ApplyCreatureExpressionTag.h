@@ -17,19 +17,19 @@ class CREATUREOASIS_API UAnimNotify_ApplyCreatureExpressionTag : public UAnimNot
 public:
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
-	UPROPERTY(EditAnywhere, Category = GameplayTag, meta = (ToolTip = "The eye gameplay tag to apply for the notify", EditConditionHides = "!bUseContainer"))
+	UPROPERTY(EditAnywhere, Category = GameplayTag, meta = (ToolTip = "The eye gameplay tag to apply for the notify", EditCondition = "!bUseContainers"))
 	FGameplayTag EyeTag;
 
-	UPROPERTY(EditAnywhere, Category = GameplayTag, meta = (ToolTip = "The mouth gameplay tag to apply for the notify", EditConditionHides = "!bUseContainer"))
+	UPROPERTY(EditAnywhere, Category = GameplayTag, meta = (ToolTip = "The mouth gameplay tag to apply for the notify", EditCondition = "!bUseContainers"))
 	FGameplayTag MouthTag;
 
 	// Allows for defining a container of tags in use for selecting a random tag
 	UPROPERTY(EditAnywhere)
-	bool bUseContainer;
+	bool bUseContainers;
 
-	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bUseContainers"))
 	FGameplayTagContainer EyeTagContainer;
 
-	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bUseContainers"))
 	FGameplayTagContainer MouthTagContainer;
 };

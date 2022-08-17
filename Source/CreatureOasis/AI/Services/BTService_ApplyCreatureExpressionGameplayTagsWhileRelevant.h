@@ -21,28 +21,28 @@ public:
 	virtual void OnCeaseRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditConditionHides = "!bUseContainer || bClearEyesOnEmptyTag"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditCondition = "!bUseContainers"))
 	FGameplayTag EyeTag;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditConditionHides = "!bUseContainer || bClearMouthOnEmptyTag"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditCondition = "!bUseContainers"))
 	FGameplayTag MouthTag;
 
 	// Allows for defining a container of tags in use for selecting a random tag
 	UPROPERTY(EditAnywhere)
-	bool bUseContainer;
+	bool bUseContainers;
 
-	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer || bClearEyesOnEmptyTag"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bUseContainers"))
 	FGameplayTagContainer EyeTagContainer;
 
-	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer || bClearMouthOnEmptyTag"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bUseContainers"))
 	FGameplayTagContainer MouthTagContainer;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool bDoNotRemoveOnCeaseRelevant;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bClearEyesOnEmptyTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bClearMouthOnEmptyTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bResetExpressionOnCeaseRelevant;
 };

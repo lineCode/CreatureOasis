@@ -2,6 +2,13 @@
 
 #include "GameplayEffectExtension.h"
 
+void UChaoCoreAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	NewValue = FMath::Clamp(NewValue, 0.f, 999.f); // TODO make flexible, not expecting any attribute to go beyond this range atm
+}
+
 void UChaoCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);

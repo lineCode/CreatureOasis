@@ -26,7 +26,7 @@ void UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::OnBecomeReleva
 	{
 		if (UCreatureExpressionComponent* CreatureExpressionComp = ICreatureComponentGetterInterface::Execute_GetCreatureExpressionComponent(OwnerPawn))
 		{
-			if (bUseContainer)
+			if (bUseContainers)
 			{
 				if (EyeTagContainer.IsValid())
 				{
@@ -69,7 +69,7 @@ void UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::OnCeaseRelevan
 {
 	Super::OnCeaseRelevant(OwnerComp, NodeMemory);
 
-	if (bDoNotRemoveOnCeaseRelevant)
+	if (!bResetExpressionOnCeaseRelevant)
 	{
 		return;
 	}
@@ -79,17 +79,8 @@ void UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::OnCeaseRelevan
 	{
 		if (UCreatureExpressionComponent* CreatureExpressionComp = ICreatureComponentGetterInterface::Execute_GetCreatureExpressionComponent(OwnerPawn); IsValid(CreatureExpressionComp))
 		{
-			// Clear only eye/mouth tags that are still the same, the active eye/mouth tag could have changed since last time we set it
-			// We dont want to do anything in that case
-			if (CreatureExpressionComp->GetActiveEyeTag() == EyeTag)
-			{
-				CreatureExpressionComp->ClearEyeTag();
-			}
-
-			if (CreatureExpressionComp->GetActiveMouthTag() == MouthTag)
-			{
-				CreatureExpressionComp->ClearMouthTag();
-			}
+			CreatureExpressionComp->ClearEyeTag();
+			CreatureExpressionComp->ClearMouthTag();
 		}
 	}
 }

@@ -64,7 +64,7 @@ bool UCreatureOasisBlueprintLibrary::GetNameOfTopMostChildTag(const FGameplayTag
 }
 
 bool UCreatureOasisBlueprintLibrary::GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer,
-	FGameplayTag OutTag)
+	FGameplayTag& OutTag)
 {
 	if (!InTagContainer.IsValid())
 	{

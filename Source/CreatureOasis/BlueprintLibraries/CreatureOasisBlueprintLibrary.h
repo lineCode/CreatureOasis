@@ -36,7 +36,7 @@ public:
 	static bool GetNameOfTopMostChildTag(const FGameplayTag& TargetTag, FName& OutName);
 
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
-	static bool GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer, FGameplayTag OutTag);
+	static bool GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer, FGameplayTag& OutTag);
 
 	// Debug methods
 	

@@ -10,6 +10,7 @@ class CREATUREOASIS_API UChaoCoreAttributeSet : public UChaoStatsAttributeSet
 	GENERATED_BODY()
 	
 public:
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	virtual void InitFromMetaDataTable(const UDataTable* DataTable) override;
