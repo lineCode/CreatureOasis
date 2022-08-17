@@ -10,6 +10,11 @@ void UGardenActorsSubsystem::AddGardenActor(FGameplayTag GardenActorTypeTag, AAc
 	GardenActorsMultiMap.Add(GardenActorTypeTag, GardenActor);
 }
 
+void UGardenActorsSubsystem::RemoveGardenActor(const FGameplayTag GardenActorTypeTag, AActor* GardenActor)
+{
+	GardenActorsMultiMap.RemoveSingle(GardenActorTypeTag, GardenActor);
+}
+
 int UGardenActorsSubsystem::GetGardenActorCountByTag(FGameplayTag GameplayTag) const
 {
 	if (GardenActorsMultiMap.IsEmpty())

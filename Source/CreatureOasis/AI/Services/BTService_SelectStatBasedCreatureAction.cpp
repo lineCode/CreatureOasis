@@ -43,12 +43,19 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 				for (const FGameplayAttribute& Key : OutKeys)
 				{
 					const FCreatureStatCalculationLibraryEntry* StatCalculationEntry = GardenSettings->CreatureStatCalculationLibrary.Find(Key);
-					const float Result = IsValid(StatCalculationEntry->FuzzyActionCalculationObject) ? StatCalculationEntry->FuzzyActionCalculationObject.GetDefaultObject()->CalculateScore(GetWorld(), OwnerComp.GetAIOwner(), AbilitySystemComponent) : StatCalculationEntry->ValToUseWhenComparing;
 
-					if (Result > BestStatCalculationResult)
+					if (AbilitySystemComponent->GetNumericAttribute(Key) > StatCalculationEntry->AttributeMinValue)
 					{
-						BestAttribute = Key;
-						BestStatCalculationResult = Result;
+						if (!(StatCalculationEntry->ChanceToApply <= 0.f) && StatCalculationEntry->ChanceToApply >= FMath::FRandRange(0.0f, 1.0f))
+						{
+							const float Result = (!StatCalculationEntry->bUseCustomValues && IsValid(StatCalculationEntry->FuzzyActionCalculationObject)) ? StatCalculationEntry->FuzzyActionCalculationObject.GetDefaultObject()->CalculateScore(GetWorld(), OwnerComp.GetAIOwner(), AbilitySystemComponent) : StatCalculationEntry->GetCustomResultValue();
+
+							if (Result > BestStatCalculationResult)
+							{
+								BestAttribute = Key;
+								BestStatCalculationResult = Result;
+							}
+						}
 					}
 				}	
 
@@ -60,12 +67,18 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 					float BestFuzzyActionCalculationResult = 0.f;
 					for (const FCreatureFuzzyActionData& FuzzyAction : ActionStatCollection->CreatureFuzzyActionDataArray)
 					{
-						const float Result = IsValid(FuzzyAction.FuzzyActionCalculationObject) ? FuzzyAction.FuzzyActionCalculationObject.GetDefaultObject()->CalculateScore(GetWorld(), OwnerComp.GetAIOwner(), AbilitySystemComponent) : FuzzyAction.ResultValueToUseOnMissingCalculationObject;
-				
-						if (Result > BestFuzzyActionCalculationResult)
+						if (AbilitySystemComponent->GetNumericAttribute(BestAttribute) > FuzzyAction.AttributeMinValue)
 						{
-							BestFuzzyActionCalculationResult = Result;
-							BestBehaviorTree = FuzzyAction.BehaviorTreeAction;
+							if (!(FuzzyAction.ChanceToApply <= 0.f) && FuzzyAction.ChanceToApply >= FMath::FRandRange(0.0f, 1.0f))
+							{
+								const float Result = (!FuzzyAction.bUseCustomValues && IsValid(FuzzyAction.FuzzyActionCalculationObject)) ? FuzzyAction.FuzzyActionCalculationObject.GetDefaultObject()->CalculateScore(GetWorld(), OwnerComp.GetAIOwner(), AbilitySystemComponent) : FuzzyAction.GetCustomResultValue();
+						
+								if (Result > BestFuzzyActionCalculationResult)
+								{
+									BestFuzzyActionCalculationResult = Result;
+									BestBehaviorTree = FuzzyAction.BehaviorTreeAction;
+								}
+							}
 						}
 					}
 

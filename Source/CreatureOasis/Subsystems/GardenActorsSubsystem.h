@@ -19,6 +19,9 @@ public:
 	void AddGardenActor(const FGameplayTag GardenActorTypeTag, AActor* GardenActor);
 
 	UFUNCTION(BlueprintCallable, Category="Garden")
+	void RemoveGardenActor(const FGameplayTag GardenActorTypeTag, AActor* GardenActor);
+	
+	UFUNCTION(BlueprintCallable, Category="Garden")
 	int GetGardenActorCountByTag(const FGameplayTag GameplayTag) const;
 
 	UFUNCTION(BlueprintCallable, Category="Garden")
@@ -44,7 +47,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Garden")
 	bool HasGardenActorInViewConeUsingActor(const AActor* OriginActor, const float ConeAngle, const float Range, const FGameplayTag GardenActorTag);
-
 	
 	UFUNCTION(BlueprintCallable, Category="Garden")
 	bool IsAnyGardenActorOfTypeInRange(const FVector Start, const float Range, const FGameplayTag GardenActorTypeTag);

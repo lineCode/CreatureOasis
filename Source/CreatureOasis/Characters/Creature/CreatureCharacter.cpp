@@ -29,6 +29,13 @@ void ACreatureCharacter::BeginPlay()
 	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(FGameplayTag::RequestGameplayTag("Type.Creature"), this);
 }
 
+void ACreatureCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->RemoveGardenActor(FGameplayTag::RequestGameplayTag("Type.Creature"), this);
+}
+
 // Called to bind functionality to input
 void ACreatureCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

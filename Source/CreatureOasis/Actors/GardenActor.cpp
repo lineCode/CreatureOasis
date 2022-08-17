@@ -15,3 +15,10 @@ void AGardenActor::BeginPlay()
 
 	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->AddGardenActor(GardenActorTypeTag, this);
 }
+
+void AGardenActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetSubsystem<UGardenActorsSubsystem>()->RemoveGardenActor(GardenActorTypeTag, this);
+}
