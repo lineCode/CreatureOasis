@@ -10,9 +10,44 @@ UBTDecorator_CheckGASAttribute::UBTDecorator_CheckGASAttribute()
 {
 	NodeName = TEXT("CheckGASAttribute");
 
-	bNotifyActivation	= false;
-	bNotifyDeactivation = false;
-	bNotifyProcessed	= false;
+	bNotifyBecomeRelevant	= true;
+	bNotifyCeaseRelevant	= true;
+	bNotifyDeactivation		= false;
+	bNotifyProcessed		= false;
+}
+
+void UBTDecorator_CheckGASAttribute::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
+	
+	UAbilitySystemComponent* AbilitySystemComponent = GetASCFromActor(OwnerComp.GetAIOwner()->GetPawn());
+	if (!IsValid(AbilitySystemComponent))
+	{
+		return;
+	}
+
+	FBTCheckGASAttributeMemory* Memory = CastInstanceNodeMemory<FBTCheckGASAttributeMemory>(NodeMemory);
+	Memory->DelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute).AddLambda([&](const FOnAttributeChangeData& OnAttributeChangeData)
+	{
+		if (CommenceComparativeCheck(OnAttributeChangeData.NewValue))
+		{
+			OwnerComp.RequestExecution(this);
+		}
+	});
+}
+
+void UBTDecorator_CheckGASAttribute::OnCeaseRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::OnCeaseRelevant(OwnerComp, NodeMemory);
+
+	// const UAbilitySystemComponent* AbilitySystemComponent = GetASCFromActor(OwnerComp.GetAIOwner()->GetPawn());
+	// if (!IsValid(AbilitySystemComponent))
+	// {
+	// 	return;
+	// }
+	
+	FBTCheckGASAttributeMemory* Memory = CastInstanceNodeMemory<FBTCheckGASAttributeMemory>(NodeMemory);
+	Memory->DelegateHandle.Reset();
 }
 
 bool UBTDecorator_CheckGASAttribute::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
@@ -28,6 +63,11 @@ bool UBTDecorator_CheckGASAttribute::CalculateRawConditionValue(UBehaviorTreeCom
 	}
 
 	return false;
+}
+
+uint16 UBTDecorator_CheckGASAttribute::GetInstanceMemorySize() const
+{
+	return sizeof(FBTCheckGASAttributeMemory);
 }
 
 bool UBTDecorator_CheckGASAttribute::CommenceComparativeCheck(const float ValToCheck) const
@@ -60,4 +100,21 @@ bool UBTDecorator_CheckGASAttribute::CommenceComparativeCheck(const float ValToC
 	}
 	
 	return CompareCheck;
+}
+
+UAbilitySystemComponent* UBTDecorator_CheckGASAttribute::GetASCFromActor(const AActor* TargetActor) const
+{
+	const AGASCharacter* GASCharacter = Cast<AGASCharacter>(TargetActor);
+	if(!IsValid(GASCharacter))
+	{
+		return nullptr;
+	}
+
+	UAbilitySystemComponent* AbilitySystemComponent = GASCharacter->GetAbilitySystemComponent();
+	if (!IsValid(AbilitySystemComponent))
+	{
+		return nullptr;
+	}
+
+	return AbilitySystemComponent;
 }

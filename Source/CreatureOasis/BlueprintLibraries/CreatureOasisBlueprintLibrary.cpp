@@ -62,3 +62,35 @@ bool UCreatureOasisBlueprintLibrary::GetNameOfTopMostChildTag(const FGameplayTag
 	
 	return true;
 }
+
+bool UCreatureOasisBlueprintLibrary::GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer,
+	FGameplayTag OutTag)
+{
+	if (!InTagContainer.IsValid())
+	{
+		return false;
+	}
+	
+	TArray<FGameplayTag> TagArray;
+	InTagContainer.GetGameplayTagArray(TagArray);
+
+	OutTag = TagArray[FMath::RandRange(0, TagArray.Num() - 1)];
+	
+	return true;
+}
+
+void UCreatureOasisBlueprintLibrary::SetAttributeBaseInAbilitySystemComponent(const FGameplayAttribute& TargetAttribute, const float NewValue,
+	UAbilitySystemComponent* AbilitySystemComponent)
+{
+	AbilitySystemComponent->SetNumericAttributeBase(TargetAttribute, NewValue);
+}
+
+FString UCreatureOasisBlueprintLibrary::GetNameOfGameplayAttribute(const FGameplayAttribute& TargetAttribute)
+{
+	if (TargetAttribute.IsValid())
+	{
+		return TargetAttribute.AttributeName;
+	}
+	
+	return "None";
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 
 #include "CreatureOasisBlueprintLibrary.generated.h"
@@ -33,4 +34,17 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
 	static bool GetNameOfTopMostChildTag(const FGameplayTag& TargetTag, FName& OutName);
+
+	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
+	static bool GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer, FGameplayTag OutTag);
+
+	// Debug methods
+	
+	// Force sets an attribute to specific value, shouldn't be used in regular gameplay
+	// Sets the base value of an attribute. Existing active modifiers are NOT cleared and will act upon the new base value.
+	UFUNCTION(BlueprintCallable, Category="GAS Debugging")
+	static void SetAttributeBaseInAbilitySystemComponent(const FGameplayAttribute& TargetAttribute, const float NewValue, UAbilitySystemComponent* AbilitySystemComponent);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GAS Debuggin")
+	static FString GetNameOfGameplayAttribute(const FGameplayAttribute& TargetAttribute);
 };

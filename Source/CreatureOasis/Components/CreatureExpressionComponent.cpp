@@ -45,6 +45,20 @@ void UCreatureExpressionComponent::SetMouthTag(const FGameplayTag NewMouthTag)
 	RegenerateMouth();
 }
 
+void UCreatureExpressionComponent::SetRandomEyeTag(const FGameplayTagContainer NewEyeTagContainer)
+{
+	const FGameplayTag Tag;
+	UCreatureOasisBlueprintLibrary::GetRandomTagFromGameplayTagContainer(NewEyeTagContainer, Tag);
+	SetEyeTag(Tag);
+}
+
+void UCreatureExpressionComponent::SetRandomMouthTag(const FGameplayTagContainer NewMouthTagContainer)
+{
+	const FGameplayTag Tag;
+	UCreatureOasisBlueprintLibrary::GetRandomTagFromGameplayTagContainer(NewMouthTagContainer, Tag);
+	SetEyeTag(Tag);
+}
+
 void UCreatureExpressionComponent::ClearEyeTag()
 {
 	SetEyeTag(FGameplayTag::EmptyTag);

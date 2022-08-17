@@ -17,7 +17,7 @@ struct FCreatureFuzzyActionData
 	UPROPERTY(EditAnywhere)
 	bool bUseCustomValues;
 
-	UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=100.f, EditCondition = "bUseCustomValues"))
+	UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=1.f, EditCondition = "bUseCustomValues"))
 	float CustomResultValue;
 
 	UPROPERTY(EditAnywhere, Category = Condition, meta = (EditCondition = "bUseCustomValues"))

@@ -26,20 +26,37 @@ void UBTService_ApplyCreatureExpressionGameplayTagsWhileRelevant::OnBecomeReleva
 	{
 		if (UCreatureExpressionComponent* CreatureExpressionComp = ICreatureComponentGetterInterface::Execute_GetCreatureExpressionComponent(OwnerPawn))
 		{
-			if (EyeTag.IsValid())
+			if (bUseContainer)
 			{
-				CreatureExpressionComp->SetEyeTag(EyeTag);
+				if (EyeTagContainer.IsValid())
+				{
+					CreatureExpressionComp->SetRandomEyeTag(EyeTagContainer);
+				}
+			
+				if (MouthTagContainer.IsValid())
+				{
+					CreatureExpressionComp->SetRandomMouthTag(MouthTagContainer);
+				}
 			}
-			else if (bClearEyesOnEmptyTag)
+			else
+			{
+				if (EyeTag.IsValid())
+				{
+					CreatureExpressionComp->SetEyeTag(EyeTag);
+				}
+			
+				if (MouthTag.IsValid())
+				{
+					CreatureExpressionComp->SetMouthTag(MouthTag);
+				}
+			}
+
+			if (bClearEyesOnEmptyTag)
 			{
 				CreatureExpressionComp->ClearEyeTag();
 			}
 
-			if (MouthTag.IsValid())
-			{
-				CreatureExpressionComp->SetMouthTag(MouthTag);
-			}
-			else if (bClearMouthOnEmptyTag)
+			if (bClearMouthOnEmptyTag)
 			{
 				CreatureExpressionComp->ClearMouthTag();
 			}

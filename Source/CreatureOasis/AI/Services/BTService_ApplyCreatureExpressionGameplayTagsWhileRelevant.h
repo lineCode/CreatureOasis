@@ -21,12 +21,22 @@ public:
 	virtual void OnCeaseRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditConditionHides = "!bUseContainer || bClearEyesOnEmptyTag"))
 	FGameplayTag EyeTag;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditConditionHides = "!bUseContainer || bClearMouthOnEmptyTag"))
 	FGameplayTag MouthTag;
 
+	// Allows for defining a container of tags in use for selecting a random tag
+	UPROPERTY(EditAnywhere)
+	bool bUseContainer;
+
+	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer || bClearEyesOnEmptyTag"))
+	FGameplayTagContainer EyeTagContainer;
+
+	UPROPERTY(EditAnywhere, meta = (EditConditionHides = "bUseContainer || bClearMouthOnEmptyTag"))
+	FGameplayTagContainer MouthTagContainer;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bDoNotRemoveOnCeaseRelevant;
 

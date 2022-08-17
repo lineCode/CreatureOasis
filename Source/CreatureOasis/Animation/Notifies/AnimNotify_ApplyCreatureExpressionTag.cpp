@@ -3,6 +3,7 @@
 
 #include "AnimNotify_ApplyCreatureExpressionTag.h"
 
+#include "GameplayTagsManager.h"
 #include "CreatureOasis/Interfaces/CreatureComponentGetterInterface.h"
 
 void UAnimNotify_ApplyCreatureExpressionTag::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
@@ -15,14 +16,29 @@ void UAnimNotify_ApplyCreatureExpressionTag::Notify(USkeletalMeshComponent* Mesh
 	{
 		if (UCreatureExpressionComponent* CreatureExpressionComp = ICreatureComponentGetterInterface::Execute_GetCreatureExpressionComponent(OwnerActor))
 		{
-			if (EyeTag.IsValid())
+			if (bUseContainer)
 			{
-				CreatureExpressionComp->SetEyeTag(EyeTag);
+				if (EyeTagContainer.IsValid())
+				{
+					CreatureExpressionComp->SetRandomEyeTag(EyeTagContainer);
+				}
+			
+				if (MouthTagContainer.IsValid())
+				{
+					CreatureExpressionComp->SetRandomMouthTag(MouthTagContainer);
+				}
 			}
-
-			if (MouthTag.IsValid())
+			else
 			{
-				CreatureExpressionComp->SetMouthTag(MouthTag);
+				if (EyeTag.IsValid())
+				{
+					CreatureExpressionComp->SetEyeTag(EyeTag);
+				}
+			
+				if (MouthTag.IsValid())
+				{
+					CreatureExpressionComp->SetMouthTag(MouthTag);
+				}
 			}
 		}
 	}

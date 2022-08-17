@@ -29,6 +29,12 @@ public:
 	void SetMouthTag(const FGameplayTag NewMouthTag);
 
 	UFUNCTION(BlueprintCallable)
+	void SetRandomEyeTag(const FGameplayTagContainer NewEyeTagContainer);
+
+	UFUNCTION(BlueprintCallable)
+	void SetRandomMouthTag(const FGameplayTagContainer NewMouthTagContainer);
+	
+	UFUNCTION(BlueprintCallable)
 	void ClearEyeTag();
 
 	UFUNCTION(BlueprintCallable)

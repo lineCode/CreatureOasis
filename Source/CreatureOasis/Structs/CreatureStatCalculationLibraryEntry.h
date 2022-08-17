@@ -16,7 +16,7 @@ struct FCreatureStatCalculationLibraryEntry
 	UPROPERTY(EditAnywhere)
     bool bUseCustomValues;
 
-    UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=100.f, EditCondition = "bUseCustomValues"))
+    UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=1.f, EditCondition = "bUseCustomValues"))
     float CustomResultValue;
 
     UPROPERTY(EditAnywhere, Category = Condition, meta = (EditCondition = "bUseCustomValues"))
@@ -29,9 +29,6 @@ struct FCreatureStatCalculationLibraryEntry
     // 0.f = 0% chance | 0.5 = 50% chance | 1.f = 100% chance
     UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=1.f))
     float ChanceToApply = 1.f;
-    
-    UPROPERTY(EditAnywhere)
-    UBehaviorTree* BehaviorTreeAction;
 
     float GetCustomResultValue() const
     {

@@ -35,7 +35,6 @@ void UBTDecorator_CheckGameplayTagsOnActorWithAbort::OnBecomeRelevant(UBehaviorT
 	
 	FDelegateHandle DelegateHandle = AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTag, EGameplayTagEventType::NewOrRemoved).AddLambda([&](const FGameplayTag ResultTag, int32 Count)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Requesting Execution"));
 		OwnerComp.RequestExecution(this);
 	});
 
