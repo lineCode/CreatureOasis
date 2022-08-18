@@ -79,8 +79,16 @@ bool UCreatureOasisBlueprintLibrary::GetRandomTagFromGameplayTagContainer(const 
 	return true;
 }
 
-void UCreatureOasisBlueprintLibrary::SetAttributeBaseInAbilitySystemComponent(const FGameplayAttribute& TargetAttribute, const float NewValue,
+FGameplayTag UCreatureOasisBlueprintLibrary::GetTypeTagAssignedToAbilitySystemComponent(
 	UAbilitySystemComponent* AbilitySystemComponent)
+{
+	FGameplayTag ResultingTag = FGameplayTag::EmptyTag;
+	UCreatureOasisBlueprintLibrary::GetDirectActiveChildTag(AbilitySystemComponent, FGameplayTag::RequestGameplayTag("Type"), ResultingTag);
+	return ResultingTag;
+}
+
+void UCreatureOasisBlueprintLibrary::SetAttributeBaseInAbilitySystemComponent(const FGameplayAttribute& TargetAttribute, const float NewValue,
+                                                                              UAbilitySystemComponent* AbilitySystemComponent)
 {
 	AbilitySystemComponent->SetNumericAttributeBase(TargetAttribute, NewValue);
 }

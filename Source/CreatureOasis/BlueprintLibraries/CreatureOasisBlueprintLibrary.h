@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 
@@ -37,6 +38,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
 	static bool GetRandomTagFromGameplayTagContainer(const FGameplayTagContainer InTagContainer, FGameplayTag& OutTag);
+
+	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
+	static FGameplayTag GetTypeTagAssignedToAbilitySystemComponent(UAbilitySystemComponent* AbilitySystemComponent);
 
 	// Debug methods
 	

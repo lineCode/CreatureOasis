@@ -29,7 +29,7 @@ void UBTDecorator_CheckGASAttribute::OnBecomeRelevant(UBehaviorTreeComponent& Ow
 	FBTCheckGASAttributeMemory* Memory = CastInstanceNodeMemory<FBTCheckGASAttributeMemory>(NodeMemory);
 	Memory->DelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute).AddLambda([&](const FOnAttributeChangeData& OnAttributeChangeData)
 	{
-		if (CommenceComparativeCheck(OnAttributeChangeData.NewValue))
+		if (!CommenceComparativeCheck(OnAttributeChangeData.NewValue))
 		{
 			OwnerComp.RequestExecution(this);
 		}

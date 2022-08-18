@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "BehaviorTree/BehaviorTreeTypes.h"
+#include "CreatureOasis/BlueprintLibraries/CreatureOasisBlueprintLibrary.h"
 #include "CreatureOasis/Components/HoldableAnchorComponent.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureOasis/Interfaces/HoldableAnchorInterface.h"
@@ -40,9 +41,9 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 	Task->EventReceived.AddDynamic(this, &UAbilityCharacterHoldActor::CancelAbilityEvent);
 	Task->ReadyForActivation();
 	
-	AGASCharacter* Character = CastChecked<AGASCharacter>(ActorInfo->AvatarActor.Get());
+	AGASCharacter* AvatarCharacter = CastChecked<AGASCharacter>(ActorInfo->AvatarActor.Get());
 	
-	UHoldableAnchorComponent* HoldableAnchorComponent = Character->FindComponentByClass<UHoldableAnchorComponent>();
+	UHoldableAnchorComponent* HoldableAnchorComponent = AvatarCharacter->FindComponentByClass<UHoldableAnchorComponent>();
 	if (IsValid(HoldableAnchorComponent))
 	{
 		AActor* ActorToHold = nullptr;
@@ -60,10 +61,15 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 		
 		if (IsValid(ActorToHold))
 		{
+			FGameplayTagContainer NewTargetTags;
+			
 			AActor* TargetHoldable = DoWeTakeHoldableFromTarget(ActorToHold);
 			if (IsValid(TargetHoldable))
 			{
 				ActorToHold = TargetHoldable;
+				
+				NewTargetTags.AddTag(IHoldableInterface::Execute_GetTypeOfActor(ActorToHold));
+				NewTargetTags.AddTag(FGameplayTag::RequestGameplayTag("State.Holdable.TakenAway"));
 			}
 			
 			// Make sure that when the ActorToHold is already being held by a GASCharacter we Detach from it first
@@ -71,11 +77,16 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 			const AGASCharacter* HolderOfActorToHold = IHoldableInterface::Execute_GetCharacterCurrentlyHoldingUs(ActorToHold);
 			if (IsValid(HolderOfActorToHold))
 			{
-				const FGameplayEventData GameplayEventData = FGameplayEventData();
+				FGameplayEventData GameplayEventData = FGameplayEventData();
+				GameplayEventData.Target = ActorToHold;
+				GameplayEventData.TargetTags = NewTargetTags;
+				GameplayEventData.Instigator = AvatarCharacter;
+				GameplayEventData.InstigatorTags = FGameplayTagContainer(UCreatureOasisBlueprintLibrary::GetTypeTagAssignedToAbilitySystemComponent(AvatarCharacter->GetAbilitySystemComponent()));
+				
 				HolderOfActorToHold->GetAbilitySystemComponent()->HandleGameplayEvent(FGameplayTag::RequestGameplayTag("Event.HoldCancel"), &GameplayEventData);
 			}
 			
-			IHoldableInterface::Execute_StartBeingHold(ActorToHold, Character);
+			IHoldableInterface::Execute_StartBeingHold(ActorToHold, AvatarCharacter);
 		
 			HoldableAnchorComponent->AttachHoldable(ActorToHold);
 		}
@@ -136,7 +147,6 @@ AActor* UAbilityCharacterHoldActor::DoWeTakeHoldableFromTarget(AActor* Target)
 	{
 		AActor* HeldActor = IHoldableAnchorInterface::Execute_GetHeldActorFromHoldableAnchorComponent(Target);
 
-		UE_LOG(LogTemp, Warning, TEXT("DOT %f"), Target->GetActorForwardVector().Dot(GetAvatarActorFromActorInfo()->GetActorForwardVector()));
 		if (Target->GetActorForwardVector().Dot(GetAvatarActorFromActorInfo()->GetActorForwardVector()) < -0.6f)
 		{
 			return HeldActor;

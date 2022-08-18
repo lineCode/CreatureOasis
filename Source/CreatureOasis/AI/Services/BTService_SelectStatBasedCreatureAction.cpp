@@ -43,8 +43,8 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 				for (const FGameplayAttribute& Key : OutKeys)
 				{
 					const FCreatureStatCalculationLibraryEntry* StatCalculationEntry = GardenSettings->CreatureStatCalculationLibrary.Find(Key);
-
-					if (AbilitySystemComponent->GetNumericAttribute(Key) > StatCalculationEntry->AttributeMinValue)
+					
+					if (Key.IsValid() && StatCalculationEntry != nullptr && AbilitySystemComponent->GetNumericAttribute(Key) > StatCalculationEntry->AttributeMinValue)
 					{
 						if (!(StatCalculationEntry->ChanceToApply <= 0.f) && StatCalculationEntry->ChanceToApply >= FMath::FRandRange(0.0f, 1.0f))
 						{
