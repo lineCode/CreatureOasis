@@ -79,7 +79,14 @@ void ACreatureCharacter::EndBeingHold_Implementation()
 		// Character holding us has thrown us
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Falling);
 
-		const FVector Vel = (CharacterCurrentlyHoldingUs->GetActorForwardVector() + (GetActorUpVector() * 2.f)).GetSafeNormal() * 400.f;
+		// Rotate character the right way before launch of
+		const float DotResult = FVector::DotProduct(CharacterCurrentlyHoldingUs->GetActorForwardVector(), GetActorForwardVector());
+		if (DotResult < 0.f)
+		{
+			AddActorLocalRotation(FRotator(0.f, 180.f, 0.f));
+		}
+		
+		const FVector Vel = (CharacterCurrentlyHoldingUs->GetActorForwardVector() + (GetActorUpVector() * 1.1f)).GetSafeNormal() * 750.f;
 		GetCharacterMovement()->AddImpulse(Vel, true);
 		AbilitySystemComponent->ApplyGameplayEffectToSelf(EffectToApplyOnBeingThrown.GetDefaultObject(), 0.f, FGameplayEffectContextHandle());
 	}

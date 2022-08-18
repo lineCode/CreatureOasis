@@ -122,9 +122,9 @@ void UCreatureExpressionComponent::RegenerateMouth() const
 			return;
 		}
 
-		MouthMaterialInstance->SetTextureParameterValue("MainMouthTexture", MouthTableRow->MouthTexture);
+		MouthMaterialInstance->SetTextureParameterValue("MainMouthTexture", IsValid(MouthTableRow->MouthTexture) ? MouthTableRow->MouthTexture : FallbackTexture);
 
-		SubMouthMaterialInstance->SetTextureParameterValue("SideMouthTexture", MouthTableRow->SideMouthTexture);
+		SubMouthMaterialInstance->SetTextureParameterValue("SideMouthTexture", IsValid(MouthTableRow->SideMouthTexture) ? MouthTableRow->SideMouthTexture : FallbackTexture);
 	}
 }
 

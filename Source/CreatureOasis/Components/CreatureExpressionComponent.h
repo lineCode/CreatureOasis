@@ -68,6 +68,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* MouthDataTable;
+
+	UPROPERTY(EditAnywhere)
+	UTexture* FallbackTexture;
 	
 private:
 	UPROPERTY()
