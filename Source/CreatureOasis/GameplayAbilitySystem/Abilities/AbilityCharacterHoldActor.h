@@ -25,5 +25,8 @@ public:
 	void CancelAbilityEvent(FGameplayEventData GameplayEventData);
 	
 protected:
+	// Returns nullptr if our target has no holdable
+	AActor* DoWeTakeHoldableFromTarget(AActor* Target);
+	
 	FGameplayTag ActiveGameplayTag;
 };
