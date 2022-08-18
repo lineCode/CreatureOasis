@@ -35,6 +35,10 @@ public:
 	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, RemainingLife);
 	
 	//// Evolutions
+	// Dark <-> Hero
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Evolution")
+	FGameplayAttributeData DarkHero;
+	ATTRIBUTE_ACCESSORS(UChaoCoreAttributeSet, DarkHero);
 	// Run <-> Power
     UPROPERTY(BlueprintReadOnly, Category="Attributes|ChaoCore|Evolution")
     FGameplayAttributeData RunPower;

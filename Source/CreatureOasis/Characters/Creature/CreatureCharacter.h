@@ -34,6 +34,9 @@ public:
 	virtual AGASCharacter* GetCharacterCurrentlyHoldingUs_Implementation() override;
 	// End
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> EffectToApplyOnBeingThrown;
+	
 private:
 	UPROPERTY()
 	ACreatureAIController* CreatureAIController;

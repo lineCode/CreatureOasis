@@ -25,7 +25,10 @@ struct FCreatureStatCalculationLibraryEntry
     // Owning attribute should have at least this value before we decide on applying this action
     UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=100.f))
     float AttributeMinValue;
-    
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UCurveFloat* AttributeBasedCurveResultValue;
+	
     // 0.f = 0% chance | 0.5 = 50% chance | 1.f = 100% chance
     UPROPERTY(EditAnywhere, meta = (ClampMin=0.f, ClampMax=1.f))
     float ChanceToApply = 1.f;

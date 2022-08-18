@@ -6,7 +6,7 @@ void UChaoCoreAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribu
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	NewValue = FMath::Clamp(NewValue, 0.f, 999.f); // TODO make flexible, not expecting any attribute to go beyond this range atm
+	NewValue = FMath::Clamp(NewValue, MinValue, MaxValue);
 }
 
 void UChaoCoreAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

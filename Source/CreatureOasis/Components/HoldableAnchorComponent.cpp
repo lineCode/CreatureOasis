@@ -58,7 +58,15 @@ void UHoldableAnchorComponent::AttachHoldable(AActor* HoldableActor)
 {
 	ActorWeAreHolding = HoldableActor;
 
+	const float DotResult = FVector::DotProduct(HoldableActor->GetActorForwardVector(), GetOwner()->GetActorForwardVector());
+	
 	HoldableActor->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketNameToAttachTo);
+
+	// Make sure to flip the HoldableActor its relative rotation based on which direction it was picked up
+	if (DotResult < 0.f)
+	{
+		HoldableActor->SetActorRelativeRotation(FRotator(0.f, 180.f, 0.f));
+	}
 	
 	OnStartHoldDelegate.Broadcast(HoldableActor);
 }

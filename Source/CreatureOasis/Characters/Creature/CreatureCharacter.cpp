@@ -70,7 +70,19 @@ void ACreatureCharacter::EndBeingHold_Implementation()
 {
 	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Interrupted.BeingHold"));
 
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	if (CharacterCurrentlyHoldingUs->GetVelocity() == FVector::Zero() && !CharacterCurrentlyHoldingUs->bWasJumping)
+	{
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	}
+	else
+	{
+		// Character holding us has thrown us
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Falling);
+
+		const FVector Vel = (CharacterCurrentlyHoldingUs->GetActorForwardVector() + (GetActorUpVector() * 2.f)).GetSafeNormal() * 400.f;
+		GetCharacterMovement()->AddImpulse(Vel, true);
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(EffectToApplyOnBeingThrown.GetDefaultObject(), 0.f, FGameplayEffectContextHandle());
+	}
 
 	GetCapsuleComponent()->SetCollisionProfileName(FName("Creature"));
 
