@@ -8,6 +8,7 @@
 #include "JsonObjectConverter.h"
 #include "NavigationSystem.h"
 #include "AI/NavigationSystemBase.h"
+#include "CreatureOasis/Actors/GardenActor.h"
 #include "CreatureOasis/GameplayAbilitySystem/GASCharacter.h"
 #include "CreatureOasis/Interfaces/CreatureComponentLoadableInterface.h"
 #include "CreatureOasis/Structs/ProjectSettings/GardenSettings.h"
@@ -19,7 +20,7 @@ USaveLoadSubsystem::USaveLoadSubsystem()
 {
 }
 
-void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
+void USaveLoadSubsystem::PrepareGardenSaveGame()
 {
 	if (!IsValid(CreatureSaveGame))
 	{
@@ -33,8 +34,6 @@ void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
 	{
 		return;
 	}
-	
-	UGardenActorsSubsystem* GardenActorsSubsystem = World->GetSubsystem<UGardenActorsSubsystem>();
 
 	TSharedPtr<FJsonObject> RootJsonObject(new FJsonObject);
 	
@@ -64,12 +63,64 @@ void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
 	}
 	
 	const TSharedPtr<FJsonObject> GardenRootJsonObject(new FJsonObject());
+	RootJsonObject->SetObjectField(World->GetMapName(), GardenRootJsonObject);
+
+	UpdateSaveGameWithGardenObjects(GardenRootJsonObject);
+	UpdateSaveGameWithCreatures(GardenRootJsonObject);
+
+	const TSharedRef< TJsonWriter< > > Writer = TJsonWriterFactory<>::Create(&CreatureSaveGame->GardenActorsJsonString);
+	FJsonSerializer::Serialize(RootJsonObject.ToSharedRef(), Writer);
+	
+	UE_LOG(LogTemp, Warning, TEXT("resulting jsonString -> %s"), *CreatureSaveGame->GardenActorsJsonString);
+}
+
+void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects(const TSharedPtr<FJsonObject> InGardenRootJsonObject)
+{
+	UGardenActorsSubsystem* GardenActorsSubsystem = GetGameInstance()->GetWorld()->GetSubsystem<UGardenActorsSubsystem>();
+
+	const TSharedPtr<FJsonObject> GardenObjectsRootJsonObject(new FJsonObject());
+	const TSharedPtr<FJsonObject> GardenObjectsJsonObject(new FJsonObject());
+	
+	InGardenRootJsonObject->SetObjectField(TEXT("GardenObjects"), GardenObjectsRootJsonObject);
+	
+	TArray<TSharedPtr<FJsonValue>> CreatureJsonValueObjectArray;
+	
+	TArray<AActor*> CreatureActors;
+	GardenActorsSubsystem->GetGardenActorsByTag(FGameplayTag::RequestGameplayTag("Type.Garden.Fruit"),CreatureActors);
+	
+	for (AActor* Actor : CreatureActors)
+	{
+		TSharedPtr<FJsonObject> CreatureJsonObject(new FJsonObject);
+		
+		const AGardenActor* GardenActor = Cast<AGardenActor>(Actor);
+		UAbilitySystemComponent* ASC = GardenActor->GetAbilitySystemComponent();
+		
+		if (ASC->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag("Type.Unsavable")))
+		{
+			continue;
+		}
+		
+		TSharedPtr<FJsonObject> GardenObjectData = MakeShared<FJsonObject>();
+		GardenObjectData->SetStringField("MainTypeTag", GardenActor->GetMainTypeTag().ToString());
+		GardenObjectData->SetStringField("SubTypeTag", GardenActor->GetSubTypeTag().ToString());
+
+		CreatureJsonObject->SetObjectField("Data", GardenObjectData);
+		CreatureJsonObject->SetObjectField(TEXT("Attributes"), SerializeAttributesIntoJsonObject(ASC));
+
+		CreatureJsonValueObjectArray.Add(MakeShared<FJsonValueObject>(CreatureJsonObject));
+	}
+	
+	InGardenRootJsonObject->SetArrayField(TEXT("GardenObjects"), CreatureJsonValueObjectArray);
+}
+
+void USaveLoadSubsystem::UpdateSaveGameWithCreatures(const TSharedPtr<FJsonObject> InGardenRootJsonObject)
+{
+	UGardenActorsSubsystem* GardenActorsSubsystem = GetGameInstance()->GetWorld()->GetSubsystem<UGardenActorsSubsystem>();
+
 	const TSharedPtr<FJsonObject> GardenCreatureRootJsonObject(new FJsonObject());
 	const TSharedPtr<FJsonObject> GardenObjectsJsonObject(new FJsonObject());
-
-	RootJsonObject->SetObjectField(World->GetMapName(), GardenRootJsonObject);
 	
-	GardenRootJsonObject->SetObjectField(TEXT("Creatures"), GardenCreatureRootJsonObject);
+	InGardenRootJsonObject->SetObjectField(TEXT("Creatures"), GardenCreatureRootJsonObject);
 	
 	TArray<TSharedPtr<FJsonValue>> CreatureJsonValueObjectArray;
 	
@@ -105,15 +156,10 @@ void USaveLoadSubsystem::UpdateSaveGameWithGardenObjects()
 		CreatureJsonValueObjectArray.Add(MakeShared<FJsonValueObject>(CreatureJsonObject));
 	}
 	
-	GardenRootJsonObject->SetArrayField(TEXT("Creatures"), CreatureJsonValueObjectArray);
-
-	const TSharedRef< TJsonWriter< > > Writer = TJsonWriterFactory<>::Create(&CreatureSaveGame->GardenActorsJsonString);
-	FJsonSerializer::Serialize(RootJsonObject.ToSharedRef(), Writer);
-	
-	UE_LOG(LogTemp, Warning, TEXT("resulting jsonString -> %s"), *CreatureSaveGame->GardenActorsJsonString);
+	InGardenRootJsonObject->SetArrayField(TEXT("Creatures"), CreatureJsonValueObjectArray);
 }
 
-void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
+void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 {
 	if (!IsValid(CreatureSaveGame) && CreatureSaveGame->GardenActorsJsonString.IsEmpty())
 	{
@@ -139,47 +185,16 @@ void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
 	}
 	
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
-	const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
 
 	if (RootJsonValue->AsObject()->HasField(World->GetMapName()))
 	{
-		TArray<TSharedPtr<FJsonValue>> CreatureArray = RootJsonValue->AsObject()->GetObjectField(World->GetMapName())->GetArrayField("Creatures");
-
-		for (const TSharedPtr<FJsonValue> CreatureEntry : CreatureArray)
-		{
-			FNavLocation SpawnNavLocation;
-			FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
-			if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
-			{
-				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
-				if (IsValid(SpawnedGASCharacter))
-				{
-					// Lets load some save data
-					
-					const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
-					SpawnedGASCharacter->SpawnDefaultController();
-					
-					UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
-		
-					InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
-					
-					FCreatureDataLoad CreatureDataLoad;
-					FJsonObjectConverter JsonObjectConverter;
-					if (CreatureObjectEntry->HasField("Data")
-						&& JsonObjectConverter.JsonObjectToUStruct(CreatureObjectEntry->GetObjectField("Data").ToSharedRef(), FCreatureDataLoad::StaticStruct(), &CreatureDataLoad))
-					{
-						TArray<UActorComponent*> Components = SpawnedGASCharacter->GetComponentsByInterface(UCreatureComponentLoadableInterface::StaticClass());
-						for	(UActorComponent* Component : Components)
-						{
-							ICreatureComponentLoadableInterface::Execute_LoadCreatureData(Component, CreatureDataLoad);
-						}
-					}
-				}
-			}
-		}
+		LoadAllCreatures(RootJsonValue, GardenSettings);
+		LoadAllGardenObjects(RootJsonValue, GardenSettings);
 	}
 	else
 	{
+		const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
+
 		// If no save-data is present for this specific map, we spawn a set amount of Creatures at start
 		for (int32 Count = 0; Count < GardenSettings->AmountOfStartingCreaturesToSpawnOnEmptySave; Count++)
 		{
@@ -192,6 +207,91 @@ void USaveLoadSubsystem::LoadGardenObjectsFromSaveGame()
 			}
 		}
 	}
+}
+
+void USaveLoadSubsystem::LoadAllCreatures(const TSharedPtr<FJsonValue> InRootJsonObject, const UGardenSettings* InGardenSettings) const
+{
+	const TSubclassOf<AActor> ClassTypeToSpawn = InGardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
+	UWorld* World = GetGameInstance()->GetWorld();
+
+	TArray<TSharedPtr<FJsonValue>> CreatureArray = InRootJsonObject->AsObject()->GetObjectField(World->GetMapName())->GetArrayField("Creatures");
+
+	for (const TSharedPtr<FJsonValue> CreatureEntry : CreatureArray)
+	{
+		FNavLocation SpawnNavLocation;
+		FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
+		if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+		{
+			AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+			if (IsValid(SpawnedGASCharacter))
+			{
+				// Lets load some save data
+				
+				const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
+				SpawnedGASCharacter->SpawnDefaultController();
+				
+				UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
+	
+				InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
+				
+				FCreatureDataLoad CreatureDataLoad;
+				FJsonObjectConverter JsonObjectConverter;
+				if (CreatureObjectEntry->HasField("Data")
+					&& JsonObjectConverter.JsonObjectToUStruct(CreatureObjectEntry->GetObjectField("Data").ToSharedRef(), FCreatureDataLoad::StaticStruct(), &CreatureDataLoad))
+				{
+					TArray<UActorComponent*> Components = SpawnedGASCharacter->GetComponentsByInterface(UCreatureComponentLoadableInterface::StaticClass());
+					for	(UActorComponent* Component : Components)
+					{
+						ICreatureComponentLoadableInterface::Execute_LoadCreatureData(Component, CreatureDataLoad);
+					}
+				}
+			}
+		}
+	}
+}
+
+void USaveLoadSubsystem::LoadAllGardenObjects(const TSharedPtr<FJsonValue> InRootJsonObject, const UGardenSettings* InGardenSettings) const
+{
+	UWorld* World = GetGameInstance()->GetWorld();
+
+	TArray<TSharedPtr<FJsonValue>> CreatureArray = InRootJsonObject->AsObject()->GetObjectField(World->GetMapName())->GetArrayField("GardenObjects");
+
+	for (const TSharedPtr<FJsonValue> CreatureEntry : CreatureArray)
+	{
+		FNavLocation SpawnNavLocation;
+		FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
+		if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+		{
+			const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
+
+			if (CreatureObjectEntry->HasField("Data"))
+			{
+				const FName MainTypeTagStr(CreatureObjectEntry->GetObjectField("Data")->GetStringField("MainTypeTag"));
+				const FName SubTypeTagStr(CreatureObjectEntry->GetObjectField("Data")->GetStringField("SubTypeTag"));
+
+				const TSubclassOf<AActor> ClassTypeToSpawn = InGardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag(MainTypeTagStr));
+
+				AGardenActor* SpawnedGardenActor = Cast<AGardenActor, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+				if (IsValid(SpawnedGardenActor))
+				{
+					UAbilitySystemComponent* AbilitySystemComponent = SpawnedGardenActor->GetAbilitySystemComponent();
+					InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
+				
+					SpawnedGardenActor->InitializeFromSaveGame(
+					FGameplayTag::RequestGameplayTag(MainTypeTagStr)
+					,FGameplayTag::RequestGameplayTag(SubTypeTagStr));
+				}
+			}
+		}
+	}
+}
+
+void USaveLoadSubsystem::UpdateSaveGameWithActiveTrackGenerator()
+{
+}
+
+void USaveLoadSubsystem::LoadTrackFromSaveGame()
+{
 }
 
 void USaveLoadSubsystem::WriteSaveGameToDisk() const

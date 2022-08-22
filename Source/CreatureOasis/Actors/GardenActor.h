@@ -16,11 +16,19 @@ class CREATUREOASIS_API AGardenActor : public AGASActor
 public:
 	AGardenActor();
 
+	void InitializeFromSaveGame(const FGameplayTag InMainTypeTag, const FGameplayTag InSubTypeTag);
+	
+	FGameplayTag GetMainTypeTag() const;
+	FGameplayTag GetSubTypeTag() const;
+	
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag GardenActorTypeTag;
+	FGameplayTag MainTypeTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag SubTypeTag;
 };
