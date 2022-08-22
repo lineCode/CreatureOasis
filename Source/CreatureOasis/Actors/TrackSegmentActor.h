@@ -25,6 +25,11 @@ public:
 
 	void SetIsBeingPreviewed(const bool bInIsBeingPreviewed);
 	bool GetIsBeingPreviewed() const;
+
+	void SetIsSplineMeshCollisionEnabled(const bool bIsEnabled) const;
+
+	void SetWidth(const float InWidth) const;
+	void SetElevation(const float InElevation) const;
 	
 protected:
 	virtual void BeginPlay() override;

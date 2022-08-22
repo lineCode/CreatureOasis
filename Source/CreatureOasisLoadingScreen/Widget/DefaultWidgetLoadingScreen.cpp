@@ -9,7 +9,7 @@
 void SDefaultWidgetLoadingScreen::Construct(const FArguments& InArgs)
 {
 	FSlateBrush *BGBrush = new FSlateBrush();
-	BGBrush->TintColor = FLinearColor(0.012f, 0.012f, 0.5f, 1.0f);
+	BGBrush->TintColor = FLinearColor(0.f, 0.f, 0.f, 1.0f);
 	
 	ChildSlot
 		[

@@ -203,6 +203,9 @@ bool ATrackGeneratorActor::RemoveSegmentAtEnd()
 	
 	GeneratedTrackSegmentActors.RemoveAt(GeneratedTrackSegmentActors.Num() - 1);
 
+	// Re add a preview segment
+	GenerateSegments(StartingSegmentTag, true);
+
 	return false;
 }
 
@@ -216,6 +219,19 @@ void ATrackGeneratorActor::ChangePreviewSegment(const FGameplayTag SegmentTag)
 	RemovePreviewSegments();
 
 	GenerateSegments(SegmentTag, true);
+}
+
+const USplineComponent* ATrackGeneratorActor::GetSplineComponent() const
+{
+	return SplineTrack;
+}
+
+void ATrackGeneratorActor::GenerateCollision()
+{
+	for (const ATrackSegmentActor* TrackSegmentActor : GeneratedTrackSegmentActors)
+	{
+		TrackSegmentActor->SetIsSplineMeshCollisionEnabled(true);
+	}
 }
 
 bool ATrackGeneratorActor::GetSpawnPoints(TArray<USceneComponent*>& OutSpawnPoints)
@@ -263,6 +279,16 @@ bool ATrackGeneratorActor::CanSetSegmentLength() const
 
 void ATrackGeneratorActor::SetSegmentWidth(const float InWidth)
 {
+	if (GeneratedPreviewSegmentCount <= 0)
+	{
+		return;
+	}
+
+	const ATrackSegmentActor* TrackSegmentActor = GeneratedTrackSegmentActors[GeneratedTrackSegmentActors.Num() - 1];
+	if (IsValid(TrackSegmentActor) && TrackSegmentActor->GetTrackTagType() == RegularSegmentTag)
+	{
+		TrackSegmentActor->SetWidth(InWidth);
+	}
 }
 
 bool ATrackGeneratorActor::CanSetSegmentWidth() const
@@ -272,9 +298,39 @@ bool ATrackGeneratorActor::CanSetSegmentWidth() const
 
 void ATrackGeneratorActor::SetSegmentElevation(const float InElevation)
 {
+	if (GeneratedPreviewSegmentCount <= 0)
+	{
+		return;
+	}
+
+	const ATrackSegmentActor* TrackSegmentActor = GeneratedTrackSegmentActors[GeneratedTrackSegmentActors.Num() - 1];
+	if (IsValid(TrackSegmentActor) && TrackSegmentActor->GetTrackTagType() == RegularSegmentTag)
+	{
+		TrackSegmentActor->SetElevation(InElevation);
+	}
 }
 
 bool ATrackGeneratorActor::CanSetSegmentElevation() const
 {
 	return false;
+}
+
+void ATrackGeneratorActor::SetSegmentRotation(const FRotator& InRotation)
+{
+	if (GeneratedPreviewSegmentCount <= 0)
+	{
+		return;
+	}
+
+	const ATrackSegmentActor* TrackSegmentActor = GeneratedTrackSegmentActors[GeneratedTrackSegmentActors.Num() - 1];
+	if (IsValid(TrackSegmentActor) && TrackSegmentActor->GetTrackTagType() == RegularSegmentTag)
+	{
+		SplineTrack->SetRotationAtSplinePoint(SplineTrack->GetNumberOfSplinePoints() - 1, InRotation + SplineTrack->GetRotationAtSplinePoint(SplineTrack->GetNumberOfSplinePoints() - 2, ESplineCoordinateSpace::Local), ESplineCoordinateSpace::Local);
+		
+		FVector EndPointLoc(0.f), EndPointTangent(0.f);
+		SplineTrack->GetLocationAndTangentAtSplinePoint(SplineTrack->GetNumberOfSplinePoints() - 1, EndPointLoc, EndPointTangent, ESplineCoordinateSpace::World);
+
+		TrackSegmentActor->SetStartTangent(SplineTrack->GetTangentAtSplinePoint(SplineTrack->GetNumberOfSplinePoints() - 2, ESplineCoordinateSpace::Local));
+		TrackSegmentActor->SetEndLocationAndTangent(TrackSegmentActor->GetTransform().InverseTransformPosition(EndPointLoc), EndPointTangent);
+	}
 }

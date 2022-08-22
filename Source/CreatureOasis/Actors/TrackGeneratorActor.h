@@ -46,6 +46,12 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void ChangePreviewSegment(const FGameplayTag SegmentTag);
 
+	UFUNCTION(BlueprintCallable)
+	const USplineComponent* GetSplineComponent() const;
+
+	UFUNCTION(BlueprintCallable)
+	void GenerateCollision();
+	
 	// Returns false if no spawn points were found
 	UFUNCTION(BlueprintCallable)
 	bool GetSpawnPoints(TArray<USceneComponent*>& OutSpawnPoints);
@@ -67,6 +73,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="PreviewSegmentTools")
 	bool CanSetSegmentElevation() const;
+
+	UFUNCTION(BlueprintCallable, Category="PreviewSegmentTools")
+	void SetSegmentRotation(const FRotator& InRotation);
 	
 	// Preview segment data
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

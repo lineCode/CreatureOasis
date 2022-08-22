@@ -24,6 +24,9 @@ ATrackSegmentActor::ATrackSegmentActor()
 	SplineMeshComponent->SetupAttachment(RootComponent);
 	SplineMeshComponent->SetStaticMesh(FallBackTrackMesh);
 	SplineMeshComponent->SetEndPosition(GetActorForwardVector() * 400.f);
+	
+	SplineMeshComponent->SetStartScale(FVector2D(2.f, 1.f));
+	SplineMeshComponent->SetEndScale(FVector2D(2.f, 1.f));
 }
 
 void ATrackSegmentActor::SetStartTangent(const FVector NewStartTangent) const
@@ -66,14 +69,29 @@ bool ATrackSegmentActor::GetIsBeingPreviewed() const
 	return bIsBeingPreviewed;
 }
 
+void ATrackSegmentActor::SetIsSplineMeshCollisionEnabled(const bool bIsEnabled) const
+{
+	SplineMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+}
+
+void ATrackSegmentActor::SetWidth(const float InWidth) const
+{
+	SplineMeshComponent->SetStartScale(FVector2D(InWidth, 1.f));
+	SplineMeshComponent->SetEndScale(FVector2D(InWidth, 1.f));
+}
+
+void ATrackSegmentActor::SetElevation(const float InElevation) const
+{
+	const FVector2D DefaultScale = SplineMeshComponent->GetEndScale();
+	SplineMeshComponent->SetEndScale(FVector2D(DefaultScale.X, InElevation));
+}
+
 // Called when the game starts or when spawned
 void ATrackSegmentActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	DefaultMaterial = SplineMeshComponent->GetMaterial(0);
-
-	SplineMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 // Called every frame

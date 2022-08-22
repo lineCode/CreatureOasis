@@ -25,4 +25,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float AcceptableRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(EditCondition="!bOnlySetFocalPoint"))
+	bool bOnlyMoveForwards;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(EditCondition="!bOnlyMoveForwards"))
+	bool bOnlySetFocalPoint;
 };

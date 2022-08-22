@@ -32,7 +32,10 @@ EBTNodeResult::Type UBTTask_CreatureRotateAndMoveTo::ExecuteTask(UBehaviorTreeCo
 void UBTTask_CreatureRotateAndMoveTo::OnTaskFinished(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
 	EBTNodeResult::Type TaskResult)
 {
-	OwnerComp.GetAIOwner()->ClearFocus(EAIFocusPriority::Move);
+	if (!bOnlyMoveForwards)
+	{
+		OwnerComp.GetAIOwner()->ClearFocus(EAIFocusPriority::Move);
+	}
 }
 
 void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -55,11 +58,18 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 		TargetLocation = AIController->GetBlackboardComponent()->GetValueAsVector(GetSelectedBlackboardKey());
 	}
 	
-	AIController->SetFocalPoint(TargetLocation, EAIFocusPriority::Move);
-	AIController->MoveForward();
+	if (!bOnlyMoveForwards)
+	{
+		AIController->SetFocalPoint(TargetLocation, EAIFocusPriority::Move);
+	}
+
+	if (!bOnlySetFocalPoint)
+	{
+		AIController->MoveForward();
+	}
 
 	// Acceptable radius
-	if (AIController->IsAtLocation(TargetLocation, AcceptableRadius))
+	if (!bOnlyMoveForwards && !bOnlySetFocalPoint && AIController->IsAtLocation(TargetLocation, AcceptableRadius))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}
