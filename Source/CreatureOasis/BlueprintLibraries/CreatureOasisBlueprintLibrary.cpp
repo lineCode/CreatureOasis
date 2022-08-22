@@ -58,7 +58,7 @@ bool UCreatureOasisBlueprintLibrary::GetNameOfTopMostChildTag(const FGameplayTag
 	TArray<FName> SplitTagArray;
 	UGameplayTagsManager::Get().SplitGameplayTagFName(TargetTag, SplitTagArray);
 
-	OutName = SplitTagArray[SplitTagArray.Max() - 1];
+	OutName = SplitTagArray[SplitTagArray.Num() - 1];
 	
 	return true;
 }
