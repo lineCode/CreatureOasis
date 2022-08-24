@@ -63,17 +63,27 @@ void UCreatureAppearanceComponent::RegenerateMesh() const
 	if (EvolutionStateTag.IsValid() && GardenSettings->EvolutionStateTagSkeletalMeshMap.Contains(EvolutionStateTag))
 	{
 		const FEvolutionStateData* EvolutionStateData = GardenSettings->EvolutionStateTagSkeletalMeshMap.Find(EvolutionStateTag);
-	
+		
 		if (EvolutionStateTag == EggStateTag)
 		{
-			CreatureMesh->SetAnimClass(nullptr);
+			//CreatureMesh->SetAnimInstanceClass(DefaultEggAnimClass);
+			CreatureMesh->SetSkeletalMesh(EvolutionStateData->SkeletalMesh, false);
+
 		}
 		else
 		{
+			CreatureMesh->SetSkeletalMesh(EvolutionStateData->SkeletalMesh, false);
+
 			CreatureMesh->SetAnimInstanceClass(DefaultChaoAnimClass);
+			//CreatureMesh->Play();
+			//
+			// CreatureMesh->ClearAnimScriptInstance();
+			// CreatureMesh->AnimClass = DefaultChaoAnimClass;
+			// CreatureMesh->ClearAnimScriptInstance();
+			// CreatureMesh->InitAnim(true);
+			// CreatureMesh->InitializeAnimScriptInstance();
+
 		}
-		
-		CreatureMesh->SetSkeletalMesh(EvolutionStateData->SkeletalMesh);
 	}
 }
 

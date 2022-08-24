@@ -33,10 +33,6 @@
 			"Enabled": false
 		},
 		{
-			"Name": "AndroidDeviceProfileSelector",
-			"Enabled": false
-		},
-		{
 			"Name": "AlembicImporter",
 			"Enabled": false
 		},
@@ -50,10 +46,6 @@
 			"SupportedTargetPlatforms": [
 				"Android"
 			]
-		},
-		{
-			"Name": "AndroidPermission",
-			"Enabled": false
 		},
 		{
 			"Name": "AndroidFileServer",
@@ -286,6 +278,10 @@
 		},
 		{
 			"Name": "DatasmithRuntime",
+			"Enabled": true
+		},
+		{
+			"Name": "OptionalMobileFeaturesBPLibrary",
 			"Enabled": true
 		}
 	],

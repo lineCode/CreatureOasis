@@ -46,6 +46,8 @@ void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent*
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABaseThirdPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABaseThirdPersonCharacter::LookUpAtRate);
+
+	PlayerInputComponent->BindAxis("ZoomRate", this, &ABaseThirdPersonCharacter::ZoomRate);
 }
 
 void ABaseThirdPersonCharacter::TurnAtRate(float Rate)
@@ -56,6 +58,12 @@ void ABaseThirdPersonCharacter::TurnAtRate(float Rate)
 void ABaseThirdPersonCharacter::LookUpAtRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void ABaseThirdPersonCharacter::ZoomRate(float Rate)
+{
+	const float NewArmLength = FMath::Max(10.f, CameraBoom->TargetArmLength + Rate);
+	CameraBoom->TargetArmLength = NewArmLength;
 }
 
 void ABaseThirdPersonCharacter::MoveForward(float Value)
