@@ -2,8 +2,8 @@
 
 #pragma once
 
+#include "CreatureOasis/Components/CreatureAppearanceComponent.h"
 #include "CreatureOasis/Components/CreatureExpressionComponent.h"
-#include "CreatureOasis/Structs/CreatureDataLoad.h"
 #include "UObject/Interface.h"
 
 #include "CreatureComponentGetterInterface.generated.h"
@@ -22,6 +22,9 @@ class CREATUREOASIS_API ICreatureComponentGetterInterface
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="CreatureComponentGetterInterface")
+	UCreatureAppearanceComponent* GetCreatureAppearanceComponent();
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="CreatureComponentGetterInterface")
 	UCreatureExpressionComponent* GetCreatureExpressionComponent();
 };

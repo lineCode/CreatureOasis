@@ -174,19 +174,13 @@ void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 		return;
 	}
 	
-	TSharedPtr<FJsonValue> RootJsonValue;
-	
-	// Create a reader pointer to read the json data
-	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(CreatureSaveGame->GardenActorsJsonString);
-
-	if (!FJsonSerializer::Deserialize(Reader, RootJsonValue))
-	{
-		return;
-	}
-	
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
 
-	if (RootJsonValue->AsObject()->HasField(World->GetMapName()))
+	// Create a reader pointer to read the json data
+	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(CreatureSaveGame->GardenActorsJsonString);
+	
+	TSharedPtr<FJsonValue> RootJsonValue;
+	if (FJsonSerializer::Deserialize(Reader, RootJsonValue) && RootJsonValue->AsObject()->HasField(World->GetMapName()))
 	{
 		LoadAllCreatures(RootJsonValue, GardenSettings);
 		LoadAllGardenObjects(RootJsonValue, GardenSettings);
@@ -203,7 +197,10 @@ void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 			if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
 			{
 				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
-				SpawnedGASCharacter->SpawnDefaultController();
+				if (IsValid(SpawnedGASCharacter))
+				{
+					SpawnedGASCharacter->SpawnDefaultController();
+				}
 			}
 		}
 	}
@@ -222,11 +219,14 @@ void USaveLoadSubsystem::LoadAllCreatures(const TSharedPtr<FJsonValue> InRootJso
 		FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
 		if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
 		{
-			AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+			SpawnNavLocation.Location += FVector(0.f, 0.f, 100.f);
+			
+			AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, SpawnParameters));
 			if (IsValid(SpawnedGASCharacter))
 			{
 				// Lets load some save data
-				
 				const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
 				SpawnedGASCharacter->SpawnDefaultController();
 				

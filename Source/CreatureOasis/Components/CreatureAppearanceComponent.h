@@ -11,17 +11,28 @@ class CREATUREOASIS_API UCreatureAppearanceComponent : public UActorComponent, p
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UCreatureAppearanceComponent();
 
 protected:
 	virtual void InitializeComponent() override;
 	
-	// Called when the game starts
 	virtual void BeginPlay() override;
-
+	
+	UFUNCTION(BlueprintCallable)
+	void SetEvolutionStateTag(const FGameplayTag InEvolutionStateTag, const bool bRegenerateMesh = true);
+	
+	UFUNCTION(BlueprintCallable)
+	FGameplayTag GetEvolutionStateTag() const;
+	
+	void RegenerateMesh() const;
+	
+	// Begin ICreatureComponentLoadableInterface
 	virtual void LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad) override;
 	virtual void GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad) override;
+	// End ICreatureComponentLoadableInterface
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UAnimInstance> DefaultChaoAnimClass;
 	
 public:	
 	// Called every frame
@@ -48,4 +59,10 @@ private:
 	
 	UPROPERTY()
 	FLinearColor InitialSecondaryColor;
+	
+	UPROPERTY()
+	FGameplayTag EvolutionStateTag;
+
+	UPROPERTY()
+	FGameplayTag EggStateTag;
 };

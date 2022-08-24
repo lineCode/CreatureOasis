@@ -19,9 +19,14 @@ struct FCreatureDataLoad
 	FGameplayTag InitialEyeTag;
 	UPROPERTY()
 	FGameplayTag InitialMouthTag;
+
+	UPROPERTY()
+	FGameplayTag EvolutionStateTag;
 	
 	// Personality Component
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString CreatureName;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGuid UniqueIdentifier;
 };

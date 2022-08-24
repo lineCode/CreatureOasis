@@ -23,16 +23,31 @@ void UCreaturePersonalityComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
 	
 }
 
 void UCreaturePersonalityComponent::LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad)
 {
 	SetCreatureName(CreatureDataLoad.CreatureName);
+
+	if (!CreatureDataLoad.UniqueIdentifier.IsValid() || CreatureDataLoad.UniqueIdentifier == FGuid())
+	{
+		UniqueIdentifier = FGuid::NewGuid();
+	}
+	else
+	{
+		UniqueIdentifier = CreatureDataLoad.UniqueIdentifier;
+	}
 }
 
 void UCreaturePersonalityComponent::GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad)
 {
 	CreatureDataLoad.CreatureName = GetCreatureName();
+
+	if (!UniqueIdentifier.IsValid() || UniqueIdentifier == FGuid())
+	{
+		UniqueIdentifier = FGuid::NewGuid();
+	}
+	
+	CreatureDataLoad.UniqueIdentifier = UniqueIdentifier;
 }

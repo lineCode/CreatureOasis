@@ -2,6 +2,7 @@
 
 #include "CreatureOasis/Structs/CreatureNaturalActionLibraryEntry.h"
 #include "CreatureOasis/Structs/CreatureStatCalculationLibraryEntry.h"
+#include "CreatureOasis/Structs/EvolutionStateData.h"
 
 #include "GardenSettings.generated.h"
 
@@ -34,4 +35,7 @@ public:
 	// This so we've got more control in deciding which actions should play when, also to improve performance 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
 	TMap<FGameplayAttribute, FCreatureStatCalculationLibraryEntry> CreatureStatCalculationLibrary;
+
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature", meta=(AllowedClasses="SkeletalMesh"))
+	TMap<FGameplayTag, FEvolutionStateData> EvolutionStateTagSkeletalMeshMap;
 };

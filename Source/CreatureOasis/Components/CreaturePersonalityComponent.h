@@ -32,4 +32,6 @@ protected:
 		
 private:
 	FString CreatureName;
+
+	FGuid UniqueIdentifier;
 };
