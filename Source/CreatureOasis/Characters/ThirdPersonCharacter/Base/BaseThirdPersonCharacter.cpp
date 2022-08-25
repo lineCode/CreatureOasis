@@ -62,7 +62,7 @@ void ABaseThirdPersonCharacter::LookUpAtRate(float Rate)
 
 void ABaseThirdPersonCharacter::ZoomRate(float Rate)
 {
-	const float NewArmLength = FMath::Max(10.f, CameraBoom->TargetArmLength + Rate);
+	const float NewArmLength = FMath::Max(10.f, CameraBoom->TargetArmLength + Rate * 15.f);
 	CameraBoom->TargetArmLength = NewArmLength;
 }
 

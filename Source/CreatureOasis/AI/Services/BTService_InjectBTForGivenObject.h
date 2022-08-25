@@ -15,7 +15,10 @@ struct FTreeTagElement
 	FGameplayTagContainer TagContainer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UBehaviorTree* BehaviorTree;
+	UBehaviorTree* BehaviorTree = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bShowStatDisplay = false;
 };
 
 /**

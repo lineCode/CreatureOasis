@@ -17,7 +17,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayTagChanged, const FGamep
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, meta=(ExposedAsyncProxy = AsyncTask))
 class CREATUREOASIS_API UAsyncTaskListenForGameplayTagNewOrRemoved : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()

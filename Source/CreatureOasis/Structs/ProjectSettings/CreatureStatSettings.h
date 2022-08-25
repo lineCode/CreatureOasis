@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "CreatureOasis/CreatureOasis.h"
+#include "CreatureOasis/Structs/CreatureStatRelationData.h"
 
 #include "CreatureStatSettings.generated.h"
 
@@ -20,4 +22,10 @@ class CREATUREOASIS_API UCreatureStatSettings : public UDeveloperSettings
 public:
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
 	TMap<FGameplayTag, FGameplayAttribute> StatTagRelationArray;
+	
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
+	TMap<FGameplayAttribute, FCreatureStatRelationData> StatRelationDataMap;
+
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
+	TMap<ECreatureStatProficiencyGrade, FCreatureStatProficiencyData> StatProficiencyGradeDataMap;
 };

@@ -32,3 +32,17 @@ enum class ECheckCompareQuery : uint8
 	Greater				UMETA(DisplayName = "Greater"),
 	GreaterOrEqual		UMETA(DisplayName = "GreaterOrEqual")
 };
+
+/**
+ * Used with StatProficiencyGradeDataMap to determine how many points we give to a creature based on its grade
+ */
+UENUM(BlueprintType)
+enum class ECreatureStatProficiencyGrade : uint8
+{
+	Grade_E		UMETA(DisplayName = "Grade_E"),
+	Grade_D		UMETA(DisplayName = "Grade_D"),
+	Grade_C		UMETA(DisplayName = "Grade_C"),
+	Grade_B		UMETA(DisplayName = "Grade_B"),
+	Grade_A		UMETA(DisplayName = "Grade_A"),
+	Grade_S		UMETA(DisplayName = "Grade_S")
+};

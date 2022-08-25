@@ -5,7 +5,9 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "CreatureOasis/Interfaces/CreatureStatWidgetInterface.h"
 #include "CreatureOasis/Interfaces/HoldableAnchorInterface.h"
+#include "GameFramework/HUD.h"
 
 UBTService_InjectBTForGivenObject::UBTService_InjectBTForGivenObject()
 {
@@ -36,6 +38,12 @@ void UBTService_InjectBTForGivenObject::OnBecomeRelevant(UBehaviorTreeComponent&
 				if (IsValid(ResultBT))
 				{
 					OwnerComp.SetDynamicSubtree(DynamicBTInjectionTag, ResultBT);
+
+					if (TreeTagElement.bShowStatDisplay)
+					{
+						ICreatureStatWidgetInterface::Execute_SetTargetActor(GetWorld()->GetFirstPlayerController()->GetHUD(), OwnerPawn);
+					}
+					
 					return;
 				}
 			}

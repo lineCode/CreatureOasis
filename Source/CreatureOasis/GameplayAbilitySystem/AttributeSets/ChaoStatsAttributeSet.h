@@ -10,7 +10,9 @@ class CREATUREOASIS_API UChaoStatsAttributeSet : public UBaseAttributeSet
 	GENERATED_BODY()
 	
 public:
-
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+	
 	//// Stats
 
 	// Swim
@@ -25,6 +27,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
 	FGameplayAttributeData SwimLvlProgress;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, SwimLvlProgress);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData SwimProficiencyGrade;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, SwimProficiencyGrade);
 	
 	// Fly
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
@@ -39,6 +45,10 @@ public:
 	FGameplayAttributeData FlyLvlProgress;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, FlyLvlProgress);
 
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData FlyProficiencyGrade;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, FlyProficiencyGrade);
+
 	// Run
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
 	FGameplayAttributeData RunPoints;
@@ -51,6 +61,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
 	FGameplayAttributeData RunLvlProgress;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, RunLvlProgress);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData RunProficiencyGrade;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, RunProficiencyGrade);
 	
 	// Power
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
@@ -64,6 +78,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
 	FGameplayAttributeData PowerLvlProgress;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, PowerLvlProgress);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData PowerProficiencyGrade;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, PowerProficiencyGrade);
 	
 	// Stamina
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
@@ -77,6 +95,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
 	FGameplayAttributeData StaminaLvlProgress;
 	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, StaminaLvlProgress);
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes|CreatureStats")
+	FGameplayAttributeData StaminaProficiencyGrade;
+	ATTRIBUTE_ACCESSORS(UChaoStatsAttributeSet, StaminaProficiencyGrade);
 	
 	// Intelligence
 
