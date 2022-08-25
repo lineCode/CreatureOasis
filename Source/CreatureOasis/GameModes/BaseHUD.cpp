@@ -12,7 +12,7 @@ ABaseHUD::ABaseHUD()
 	  GGameIni
 	);
 	
-	AppVersion = FString(__TIMESTAMP__);
+	// AppVersion = FString(__TIMESTAMP__);
 }
 
 void ABaseHUD::DrawHUD()
@@ -23,5 +23,5 @@ void ABaseHUD::DrawHUD()
 	GetWorld()->GetGameViewport()->GetViewportSize(ViewportSize);
 	ViewportSize *= GetWorld()->GetGameViewport()->GetDPIScale();
 	
-	DrawText(AppVersion, FLinearColor(0.5f,0.5f,0.5f, 0.75f), ViewportSize.X - 100.f, ViewportSize.Y, nullptr, 0.95f, true);
+	DrawText(AppVersion, FLinearColor(0.5f,0.5f,0.5f, 0.8f), ViewportSize.X - 50.f, ViewportSize.Y, nullptr, 0.95f, true);
 }

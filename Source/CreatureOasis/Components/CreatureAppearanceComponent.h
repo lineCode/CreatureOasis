@@ -49,7 +49,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetSkeletalMesh(USkeletalMeshComponent* NewMesh);
-	
+
 private:
 	UPROPERTY()
 	class ACreatureCharacter* CreatureCharacter;

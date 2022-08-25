@@ -161,7 +161,7 @@ void USaveLoadSubsystem::UpdateSaveGameWithCreatures(const TSharedPtr<FJsonObjec
 
 void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 {
-	if (!IsValid(CreatureSaveGame) && CreatureSaveGame->GardenActorsJsonString.IsEmpty())
+	if (!IsValid(CreatureSaveGame) || CreatureSaveGame->GardenActorsJsonString.IsEmpty())
 	{
 		return;
 	}
