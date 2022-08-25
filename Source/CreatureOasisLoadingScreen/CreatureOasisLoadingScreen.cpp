@@ -36,9 +36,10 @@ void FCreatureOasisLoadingScreenModule::StopInGameLoadingScreen()
 void FCreatureOasisLoadingScreenModule::CreateScreen()
 {
 	FLoadingScreenAttributes LoadingScreenAttributes;
-	LoadingScreenAttributes.bAutoCompleteWhenLoadingCompletes = true;
+	LoadingScreenAttributes.bAutoCompleteWhenLoadingCompletes = false;
 	LoadingScreenAttributes.MinimumLoadingScreenDisplayTime = 3.f;
 	LoadingScreenAttributes.WidgetLoadingScreen = SNew(SDefaultWidgetLoadingScreen);
+	
 	GetMoviePlayer()->SetupLoadingScreen(LoadingScreenAttributes);
 }
 
