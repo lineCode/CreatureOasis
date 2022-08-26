@@ -6,6 +6,10 @@
 #include "BehaviorTree/BTService.h"
 #include "BTService_InjectBTForGivenObject.generated.h"
 
+/**
+ * Used to determine which BehaviorTree to use depending on which tags in the defined TagContainer is present
+ * bShowStatDisplay is used to show the stat display on certain objects or not
+ */
 USTRUCT(BlueprintType)
 struct FTreeTagElement
 {
