@@ -63,7 +63,7 @@ private:
 	UPROPERTY()
 	FLinearColor InitialSecondaryColor;
 	
-	UPROPERTY()
+	UPROPERTY(EditInstanceOnly, Category="Overrideables")
 	FGameplayTag EvolutionStateTag;
 
 	UPROPERTY()
