@@ -66,7 +66,7 @@ void ABaseThirdPersonCharacter::ZoomRate(float Rate)
 {
 	if (Rate != 0.f)
 	{
-		DesiredArmLength = FMath::Max(20.f, CameraBoom->TargetArmLength + Rate * 150.f);
+		DesiredArmLength = FMath::Max(20.f, CameraBoom->TargetArmLength + Rate * 120.f);
 	}
 }
 
@@ -78,7 +78,7 @@ void ABaseThirdPersonCharacter::Tick(float DeltaSeconds)
 	{
 		CameraBoom->TargetArmLength = FMath::Lerp(CameraBoom->TargetArmLength, DesiredArmLength, GetWorld()->DeltaTimeSeconds * 8.f);
 
-		if (CameraBoom->TargetArmLength < 25.f)
+		if (CameraBoom->TargetArmLength < 35.f)
 		{
 			if (GetMesh()->GetVisibleFlag())
 			{
