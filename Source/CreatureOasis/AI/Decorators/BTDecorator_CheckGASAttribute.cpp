@@ -58,7 +58,7 @@ bool UBTDecorator_CheckGASAttribute::CalculateRawConditionValue(UBehaviorTreeCom
 		if(IsValid(GASCharacter))
 		{
 			const UAbilitySystemComponent* AbilitySystemComponent = GASCharacter->GetAbilitySystemComponent();
-			return CommenceComparativeCheck(AbilitySystemComponent->GetNumericAttributeBase(TargetAttribute));
+			return CommenceComparativeCheck(AbilitySystemComponent->GetNumericAttribute(TargetAttribute));
 		}
 	}
 
@@ -77,23 +77,23 @@ bool UBTDecorator_CheckGASAttribute::CommenceComparativeCheck(const float ValToC
 	switch (CheckQuery)
 	{
 	case ECheckCompareQuery::Less:
-		CompareCheck = ScalableFloat.GetValue() < ValToCheck;
+		CompareCheck = ValToCheck < ScalableFloat.GetValue();
 		break;
 
 	case ECheckCompareQuery::LessOrEqual:
-		CompareCheck = ScalableFloat.GetValue() <= ValToCheck;
+		CompareCheck = ValToCheck <= ScalableFloat.GetValue();
 		break;
 
 	case ECheckCompareQuery::Equal:
-		CompareCheck = ScalableFloat.GetValue() == ValToCheck;
+		CompareCheck = ValToCheck == ScalableFloat.GetValue();
 		break;
 
 	case ECheckCompareQuery::Greater:
-		CompareCheck = ScalableFloat.GetValue() > ValToCheck ;
+		CompareCheck = ValToCheck > ScalableFloat.GetValue();
 		break;
 
 	case ECheckCompareQuery::GreaterOrEqual:
-		CompareCheck = ScalableFloat.GetValue() >= ValToCheck;
+		CompareCheck = ValToCheck >= ScalableFloat.GetValue();
 		break;
 		
 	default: ;

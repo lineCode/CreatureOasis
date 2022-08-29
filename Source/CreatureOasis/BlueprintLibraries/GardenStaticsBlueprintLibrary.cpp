@@ -12,10 +12,10 @@ ABaseGardenGameMode* UGardenStaticsBlueprintLibrary::GetGardenGameMode(const UOb
 	return Cast<ABaseGardenGameMode>(World->GetAuthGameMode());
 }
 
-FString UGardenStaticsBlueprintLibrary::GetRandomCreatureName()
+FName UGardenStaticsBlueprintLibrary::GetRandomCreatureName()
 {
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
-	const TArray<FString>& StringArray = GardenSettings->CreatureNameStringArray;
+	const TArray<FName>& StringArray = GardenSettings->CreatureNameStringArray;
 	if (StringArray.IsEmpty())
 	{
 		return "";

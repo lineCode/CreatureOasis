@@ -11,6 +11,7 @@
 #include "CreatureOasis/Characters/Creature/CreatureAIController.h"
 
 UBTTask_CreatureRotateAndMoveTo::UBTTask_CreatureRotateAndMoveTo()
+	: bIgnoreAcceptableRadius(false)
 {
 	NodeName = TEXT("Creature Rotate and Move To");
 
@@ -69,7 +70,7 @@ void UBTTask_CreatureRotateAndMoveTo::TickTask(UBehaviorTreeComponent& OwnerComp
 	}
 
 	// Acceptable radius
-	if (!bOnlyMoveForwards && !bOnlySetFocalPoint && AIController->IsAtLocation(TargetLocation, AcceptableRadius))
+	if (!bIgnoreAcceptableRadius && AIController->IsAtLocation(TargetLocation, AcceptableRadius))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}

@@ -23,7 +23,7 @@ public:
 	
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(EditCondition="!bIgnoreAcceptableRadius"))
 	float AcceptableRadius;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(EditCondition="!bOnlySetFocalPoint"))
@@ -31,4 +31,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(EditCondition="!bOnlyMoveForwards"))
 	bool bOnlySetFocalPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bIgnoreAcceptableRadius;
 };

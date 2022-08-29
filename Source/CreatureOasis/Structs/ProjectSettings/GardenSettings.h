@@ -25,7 +25,7 @@ public:
 	TMap<FGameplayTag, TSubclassOf<AActor>> GardenActorTypeClassRelationMap;
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
-	TArray<FString> CreatureNameStringArray;
+	TArray<FName> CreatureNameStringArray;
 
 	// Actions the creature can do naturally based on its stats and without being interrupted (Actions Creature can take while thinking for itself)
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
