@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 
 ABaseThirdPersonCharacter::ABaseThirdPersonCharacter()
+	: DesiredArmLength(300.f)
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -27,7 +28,7 @@ ABaseThirdPersonCharacter::ABaseThirdPersonCharacter()
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f;
+	CameraBoom->TargetArmLength = DesiredArmLength;
 	CameraBoom->bUsePawnControlRotation = true;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -48,6 +49,7 @@ void ABaseThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent*
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABaseThirdPersonCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAxis("ZoomRate", this, &ABaseThirdPersonCharacter::ZoomRate);
+	
 }
 
 void ABaseThirdPersonCharacter::TurnAtRate(float Rate)
@@ -62,8 +64,35 @@ void ABaseThirdPersonCharacter::LookUpAtRate(float Rate)
 
 void ABaseThirdPersonCharacter::ZoomRate(float Rate)
 {
-	const float NewArmLength = FMath::Max(10.f, CameraBoom->TargetArmLength + Rate * 15.f);
-	CameraBoom->TargetArmLength = NewArmLength;
+	if (Rate != 0.f)
+	{
+		DesiredArmLength = FMath::Max(20.f, CameraBoom->TargetArmLength + Rate * 150.f);
+	}
+}
+
+void ABaseThirdPersonCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	if (!FMath::IsNearlyEqual(DesiredArmLength, CameraBoom->TargetArmLength))
+	{
+		CameraBoom->TargetArmLength = FMath::Lerp(CameraBoom->TargetArmLength, DesiredArmLength, GetWorld()->DeltaTimeSeconds * 8.f);
+
+		if (CameraBoom->TargetArmLength < 25.f)
+		{
+			if (GetMesh()->GetVisibleFlag())
+			{
+				GetMesh()->SetVisibility(false);
+			}
+		}
+		else if (CameraBoom->TargetArmLength >= 25.f)
+		{
+			if (!GetMesh()->GetVisibleFlag())
+			{
+				GetMesh()->SetVisibility(true);
+			}
+		}
+	}
 }
 
 void ABaseThirdPersonCharacter::MoveForward(float Value)

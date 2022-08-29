@@ -24,15 +24,15 @@ void SDefaultWidgetLoadingScreen::Construct(const FArguments& InArgs)
 		+SOverlay::Slot()
 		.HAlign(HAlign_Center)
 		.VAlign(VAlign_Center)
-		[
-			SNew(SHeader)
-			.Content()
-			[
-				SNew(STextBlock)
-				.Font(FCoreStyle::GetDefaultFontStyle("Regular", 32))
-				.Text(FText::FromString(TEXT("Loading Creature Oasis")))
-			]
-		]
+		// [
+		// 	SNew(SHeader)
+		// 	.Content()
+		// 	[
+		// 		SNew(STextBlock)
+		// 		.Font(FCoreStyle::GetDefaultFontStyle("Regular", 32))
+		// 		.Text(FText::FromString(TEXT("Loading Creature Oasis")))
+		// 	]
+		// ]
 		+SOverlay::Slot()
 		.HAlign(HAlign_Fill)
 		.VAlign(VAlign_Fill)

@@ -13,7 +13,10 @@ class CREATUREOASIS_API ABaseThirdPersonCharacter : public AGASCharacter
 
 public:
 	ABaseThirdPersonCharacter();
-
+	
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	
 protected:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -31,6 +34,8 @@ protected:
 	void LookUpAtRate(float Rate);
 
 	void ZoomRate(float Rate);
+
+	virtual void Tick(float DeltaSeconds) override;
 	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -43,10 +48,6 @@ protected:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
-
-public:
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -55,5 +56,7 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
-};
 
+	UPROPERTY();
+	float DesiredArmLength;
+};
