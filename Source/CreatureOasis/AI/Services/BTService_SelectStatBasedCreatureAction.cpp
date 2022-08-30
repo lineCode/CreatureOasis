@@ -43,9 +43,11 @@ void UBTService_SelectStatBasedCreatureAction::OnBecomeRelevant(UBehaviorTreeCom
 				for (const FGameplayAttribute& Key : OutKeys)
 				{
 					const FCreatureStatCalculationLibraryEntry* StatCalculationEntry = GardenSettings->CreatureStatCalculationLibrary.Find(Key);
-					
+					UE_LOG(LogTemp, Warning, TEXT("[FuzzyAction] Checking key: %s Result: %i"), *Key.AttributeName, (int)(StatCalculationEntry != nullptr));
+
 					if (Key.IsValid() && StatCalculationEntry != nullptr && AbilitySystemComponent->GetNumericAttribute(Key) > StatCalculationEntry->AttributeMinValue)
 					{
+
 						if (!(StatCalculationEntry->ChanceToApply <= 0.f) && StatCalculationEntry->ChanceToApply >= FMath::FRandRange(0.0f, 1.0f))
 						{
 							const float Result = (!StatCalculationEntry->bUseCustomValues && IsValid(StatCalculationEntry->FuzzyActionCalculationObject)) ? StatCalculationEntry->FuzzyActionCalculationObject.GetDefaultObject()->CalculateScore(GetWorld(), OwnerComp.GetAIOwner(), AbilitySystemComponent) : StatCalculationEntry->GetCustomResultValue();
