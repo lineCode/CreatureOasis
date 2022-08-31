@@ -86,6 +86,8 @@ private:
 	UMaterialInstanceDynamic* MouthMaterialInstance;
 	UPROPERTY()
 	UMaterialInstanceDynamic* SubMouthMaterialInstance;
+	UPROPERTY()
+	UMaterialInstanceDynamic* EyeLidMaterialInstance;
 
 	// Used for defaulting back to, generated based on personality
 	UPROPERTY()

@@ -103,6 +103,8 @@ void UCreatureExpressionComponent::RegenerateEyes() const
 		}
 	
 		EyeMaterialInstance->SetTextureParameterValue("EyeTexture", EyeTableRow->EyeTexture);
+
+		EyeLidMaterialInstance->SetScalarParameterValue("EyeClosedScale", EyeTableRow->EyeLidCloseScale);
 	}
 }
 
@@ -175,7 +177,8 @@ UMaterialInstanceDynamic* UCreatureExpressionComponent::CreateAndSetMaterialInst
 void UCreatureExpressionComponent::PrepareMaterialInstances()
 {
 	EyeMaterialInstance = CreateAndSetMaterialInstanceDynamic("M_eyes");
-	
+	EyeLidMaterialInstance = CreateAndSetMaterialInstanceDynamic("M_EyeLid");
+
 	MouthMaterialInstance = CreateAndSetMaterialInstanceDynamic("M_mouth_middle");
 	SubMouthMaterialInstance = CreateAndSetMaterialInstanceDynamic("M_mouth_sides");
 }
