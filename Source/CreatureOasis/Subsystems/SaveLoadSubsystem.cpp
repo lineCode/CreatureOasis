@@ -161,7 +161,7 @@ void USaveLoadSubsystem::UpdateSaveGameWithCreatures(const TSharedPtr<FJsonObjec
 
 void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 {
-	if (!IsValid(CreatureSaveGame) || CreatureSaveGame->GardenActorsJsonString.IsEmpty())
+	if (!IsValid(CreatureSaveGame))
 	{
 		return;
 	}
@@ -176,31 +176,33 @@ void USaveLoadSubsystem::LoadGardenUsingSaveObject()
 	
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
 
-	// Create a reader pointer to read the json data
-	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(CreatureSaveGame->GardenActorsJsonString);
+	if (!CreatureSaveGame->GardenActorsJsonString.IsEmpty())
+	{
+		// Create a reader pointer to read the json data
+		const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(CreatureSaveGame->GardenActorsJsonString);
 	
-	TSharedPtr<FJsonValue> RootJsonValue;
-	if (FJsonSerializer::Deserialize(Reader, RootJsonValue) && RootJsonValue->AsObject()->HasField(World->GetMapName()))
-	{
-		LoadAllCreatures(RootJsonValue, GardenSettings);
-		LoadAllGardenObjects(RootJsonValue, GardenSettings);
-	}
-	else
-	{
-		const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
-
-		// If no save-data is present for this specific map, we spawn a set amount of Creatures at start
-		for (int32 Count = 0; Count < GardenSettings->AmountOfStartingCreaturesToSpawnOnEmptySave; Count++)
+		TSharedPtr<FJsonValue> RootJsonValue;
+		if (FJsonSerializer::Deserialize(Reader, RootJsonValue) && RootJsonValue->AsObject()->HasField(World->GetMapName()))
 		{
-			FNavLocation SpawnNavLocation;
-			FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
-			if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+			LoadAllCreatures(RootJsonValue, GardenSettings);
+			LoadAllGardenObjects(RootJsonValue, GardenSettings);
+			return;
+		}
+	}
+	
+	const TSubclassOf<AActor> ClassTypeToSpawn = GardenSettings->GardenActorTypeClassRelationMap.FindRef(FGameplayTag::RequestGameplayTag("Type.Creature"));
+
+	// If no save-data is present for this specific map, we spawn a set amount of Creatures at start
+	for (int32 Count = 0; Count < GardenSettings->AmountOfStartingCreaturesToSpawnOnEmptySave; Count++)
+	{
+		FNavLocation SpawnNavLocation;
+		FRotator SpawnRotation(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
+		if (UNavigationSystemV1::GetCurrent(World)->GetRandomPoint(SpawnNavLocation))
+		{
+			AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
+			if (IsValid(SpawnedGASCharacter))
 			{
-				AGASCharacter* SpawnedGASCharacter = Cast<AGASCharacter, AActor>(World->SpawnActor(ClassTypeToSpawn, &SpawnNavLocation.Location, &SpawnRotation, FActorSpawnParameters()));
-				if (IsValid(SpawnedGASCharacter))
-				{
-					SpawnedGASCharacter->SpawnDefaultController();
-				}
+				SpawnedGASCharacter->SpawnDefaultController();
 			}
 		}
 	}
