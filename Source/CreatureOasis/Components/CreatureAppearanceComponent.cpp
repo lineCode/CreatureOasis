@@ -24,7 +24,6 @@ void UCreatureAppearanceComponent::InitializeComponent()
 	SetSkeletalMesh(CreatureCharacter->GetMesh());
 
 	PrepareMaterialInstances();
-	SetColorTag(ColorTag);
 }
 
 void UCreatureAppearanceComponent::UninitializeComponent()
@@ -40,6 +39,7 @@ void UCreatureAppearanceComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	RegenerateMesh();
+	SetColorTag(FGameplayTag::RequestGameplayTag("Color.Normal"));
 }
 
 void UCreatureAppearanceComponent::SetEvolutionStateTag(const FGameplayTag InEvolutionStateTag, const bool bRegenerateMesh)
@@ -214,7 +214,7 @@ void UCreatureAppearanceComponent::SetColorTag(const FGameplayTag InColorTag, co
 	const FLinearColor InCustomSecondaryColor)
 {
 	const UGardenSettings* GardenSettings = GetDefault<UGardenSettings>();
-	
+
 	if (GardenSettings->CreatureColorDataMap.Contains(InColorTag))
 	{
 		const FCreatureColorData* ColorData = GardenSettings->CreatureColorDataMap.Find(InColorTag);

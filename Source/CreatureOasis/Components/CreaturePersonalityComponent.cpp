@@ -5,6 +5,7 @@
 
 
 UCreaturePersonalityComponent::UCreaturePersonalityComponent()
+	: CreatureName(TEXT(""))
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
@@ -22,8 +23,6 @@ FName UCreaturePersonalityComponent::GetCreatureName() const
 void UCreaturePersonalityComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 void UCreaturePersonalityComponent::LoadCreatureData_Implementation(const FCreatureDataLoad& CreatureDataLoad)
