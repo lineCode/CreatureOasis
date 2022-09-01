@@ -4,6 +4,7 @@
 
 #include "CreatureOasis/Components/CreatureAppearanceComponent.h"
 #include "CreatureOasis/Components/CreatureExpressionComponent.h"
+#include "CreatureOasis/Components/CreaturePersonalityComponent.h"
 #include "UObject/Interface.h"
 
 #include "CreatureComponentGetterInterface.generated.h"
@@ -27,4 +28,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="CreatureComponentGetterInterface")
 	UCreatureExpressionComponent* GetCreatureExpressionComponent();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="CreatureComponentGetterInterface")
+	UCreaturePersonalityComponent* GetCreaturePersonalityComponent();
 };
