@@ -56,6 +56,9 @@ public:
 	void SetColorTag(const FGameplayTag InColorTag, const FLinearColor InCustomPrimaryColor = FLinearColor(0.f, 0.f, 0.f, 0.f), const FLinearColor InCustomSecondaryColor = FLinearColor(0.f, 0.f, 0.f, 0.f));
 
 	UFUNCTION(BlueprintCallable)
+	FGameplayTag GetColorTag() const;
+	
+	UFUNCTION(BlueprintCallable)
 	void SetPrimaryColor(const FLinearColor NewColor) const;
 	
 	UFUNCTION(BlueprintCallable)

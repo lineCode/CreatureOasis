@@ -234,3 +234,8 @@ void UCreatureAppearanceComponent::SetColorTag(const FGameplayTag InColorTag, co
 	}
 }
 
+FGameplayTag UCreatureAppearanceComponent::GetColorTag() const
+{
+	return ColorTag;
+}
+
