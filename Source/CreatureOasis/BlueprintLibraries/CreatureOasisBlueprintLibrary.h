@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
 	static FGameplayTag GetTypeTagAssignedToAbilitySystemComponent(UAbilitySystemComponent* AbilitySystemComponent);
 
+	UFUNCTION(BlueprintCallable, Category="GameplayTagManager")
+	static FGameplayTag RequestGameplayTagFromName(const FName InTagName);
+	
 	// Debug methods
 	
 	// Force sets an attribute to specific value, shouldn't be used in regular gameplay

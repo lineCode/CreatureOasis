@@ -17,9 +17,15 @@ public:
 	AGardenActor();
 
 	void InitializeFromSaveGame(const FGameplayTag InMainTypeTag, const FGameplayTag InSubTypeTag);
-	
+
+	UFUNCTION(BlueprintCallable)
 	FGameplayTag GetMainTypeTag() const;
+
+	UFUNCTION(BlueprintCallable)
 	FGameplayTag GetSubTypeTag() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetSubTypeTag(const FGameplayTag InTag);
 	
 protected:
 	virtual void BeginPlay() override;

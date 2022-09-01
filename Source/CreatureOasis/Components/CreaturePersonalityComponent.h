@@ -18,10 +18,10 @@ public:
 	UCreaturePersonalityComponent();
 	
 	UFUNCTION(BlueprintCallable)
-	void SetCreatureName(FString NewNameString);
+	void SetCreatureName(FName NewNameString);
 
 	UFUNCTION(BlueprintCallable)
-	FString GetCreatureName() const;
+	FName GetCreatureName() const;
 	
 protected:
 	// Called when the game starts
@@ -31,7 +31,7 @@ protected:
 	virtual void GatherCreatureData_Implementation(FCreatureDataLoad& CreatureDataLoad) override;
 		
 private:
-	FString CreatureName;
+	FName CreatureName;
 
 	FGuid UniqueIdentifier;
 };

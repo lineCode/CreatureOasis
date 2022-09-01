@@ -66,7 +66,7 @@ void ABaseThirdPersonCharacter::ZoomRate(float Rate)
 {
 	if (Rate != 0.f)
 	{
-		DesiredArmLength = FMath::Max(20.f, CameraBoom->TargetArmLength + Rate * 120.f);
+		DesiredArmLength = FMath::Max(20.f, CameraBoom->TargetArmLength + Rate * 60.f);
 	}
 }
 

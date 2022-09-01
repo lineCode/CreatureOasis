@@ -9,12 +9,12 @@ UCreaturePersonalityComponent::UCreaturePersonalityComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UCreaturePersonalityComponent::SetCreatureName(FString NewNameString)
+void UCreaturePersonalityComponent::SetCreatureName(FName NewNameString)
 {
 	CreatureName = NewNameString;
 }
 
-FString UCreaturePersonalityComponent::GetCreatureName() const
+FName UCreaturePersonalityComponent::GetCreatureName() const
 {
 	return CreatureName;
 }

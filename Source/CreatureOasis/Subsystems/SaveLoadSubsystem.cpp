@@ -230,10 +230,6 @@ void USaveLoadSubsystem::LoadAllCreatures(const TSharedPtr<FJsonValue> InRootJso
 				const TSharedPtr<FJsonObject> CreatureObjectEntry = CreatureEntry->AsObject();
 				SpawnedGASCharacter->SpawnDefaultController();
 				
-				UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
-	
-				InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
-				
 				FCreatureDataLoad CreatureDataLoad;
 				FJsonObjectConverter JsonObjectConverter;
 				if (CreatureObjectEntry->HasField("Data")
@@ -245,6 +241,9 @@ void USaveLoadSubsystem::LoadAllCreatures(const TSharedPtr<FJsonValue> InRootJso
 						ICreatureComponentLoadableInterface::Execute_LoadCreatureData(Component, CreatureDataLoad);
 					}
 				}
+
+				UAbilitySystemComponent* AbilitySystemComponent = SpawnedGASCharacter->GetAbilitySystemComponent();
+				InitAttributesFromJsonObject(AbilitySystemComponent, CreatureObjectEntry->GetObjectField("Attributes"));
 			}
 		}
 	}

@@ -22,5 +22,5 @@ class CREATUREOASIS_API ICreaturePublicDataInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="CreaturePublicData")
-	FString GetCreatureName();
+	FName GetCreatureName();
 };

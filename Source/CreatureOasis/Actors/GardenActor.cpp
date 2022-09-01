@@ -25,6 +25,11 @@ FGameplayTag AGardenActor::GetSubTypeTag() const
 	return SubTypeTag;
 }
 
+void AGardenActor::SetSubTypeTag(const FGameplayTag InTag)
+{
+	SubTypeTag = InTag;
+}
+
 void AGardenActor::BeginPlay()
 {
 	Super::BeginPlay();

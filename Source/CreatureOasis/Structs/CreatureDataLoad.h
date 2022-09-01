@@ -10,9 +10,12 @@ struct FCreatureDataLoad
 	
 	// Appearance Component
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FLinearColor InitialPrimaryColor;
+	FGameplayTag ColorTag = FGameplayTag::RequestGameplayTag("Color.Normal");
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FLinearColor InitialSecondaryColor;
+	FLinearColor InitialPrimaryColor = FLinearColor(0.f, 0.f, 0.f, 1.f);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FLinearColor InitialSecondaryColor = FLinearColor(0.f, 0.f, 0.f, 1.f);
 	
 	// Expression Component
 	UPROPERTY()
@@ -25,7 +28,7 @@ struct FCreatureDataLoad
 	
 	// Personality Component
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FString CreatureName;
+	FName CreatureName = TEXT("");
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGuid UniqueIdentifier;

@@ -87,6 +87,11 @@ FGameplayTag UCreatureOasisBlueprintLibrary::GetTypeTagAssignedToAbilitySystemCo
 	return ResultingTag;
 }
 
+FGameplayTag UCreatureOasisBlueprintLibrary::RequestGameplayTagFromName(const FName InTagName)
+{
+	return FGameplayTag::RequestGameplayTag(InTagName);
+}
+
 void UCreatureOasisBlueprintLibrary::SetAttributeBaseInAbilitySystemComponent(const FGameplayAttribute& TargetAttribute, const float NewValue,
                                                                               UAbilitySystemComponent* AbilitySystemComponent)
 {

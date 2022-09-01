@@ -1,8 +1,10 @@
 ﻿#pragma once
 
+#include "CreatureOasis/Structs/CreatureColorData.h"
 #include "CreatureOasis/Structs/CreatureNaturalActionLibraryEntry.h"
 #include "CreatureOasis/Structs/CreatureStatCalculationLibraryEntry.h"
 #include "CreatureOasis/Structs/EvolutionStateData.h"
+#include "CreatureOasis/Structs/GradualEvolutionData.h"
 
 #include "GardenSettings.generated.h"
 
@@ -38,4 +40,10 @@ public:
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature", meta=(AllowedClasses="SkeletalMesh"))
 	TMap<FGameplayTag, FEvolutionStateData> EvolutionStateTagSkeletalMeshMap;
+
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
+	TMap<FGameplayTag, FGradualEvolutionData> GradualEvolutionAttributeMap;
+
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "Creature")
+	TMap<FGameplayTag, FCreatureColorData> CreatureColorDataMap;
 };
