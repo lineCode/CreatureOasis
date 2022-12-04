@@ -113,7 +113,7 @@ void UAbilityTaskPlayMontageAndWaitForEvent::Activate()
 
 	bool bPlayedMontage = false;
 
-	if (AbilitySystemComponent)
+	if (AbilitySystemComponent.IsValid())
 	{
 		const FGameplayAbilityActorInfo* ActorInfo = Ability->GetCurrentActorInfo();
 		UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
@@ -172,7 +172,7 @@ void UAbilityTaskPlayMontageAndWaitForEvent::Activate()
 
 void UAbilityTaskPlayMontageAndWaitForEvent::ExternalCancel()
 {
-	check(AbilitySystemComponent);
+	check(AbilitySystemComponent.IsValid());
 
 	OnAbilityCancelled();
 
@@ -194,7 +194,7 @@ void UAbilityTaskPlayMontageAndWaitForEvent::OnDestroy(bool AbilityEnded)
 		}
 	}
 
-	if (AbilitySystemComponent)
+	if (AbilitySystemComponent.IsValid())
 	{
 		AbilitySystemComponent->RemoveGameplayEventTagContainerDelegate(EventTags, EventHandle);
 	}
@@ -218,7 +218,7 @@ bool UAbilityTaskPlayMontageAndWaitForEvent::StopPlayingMontage() const
 
 	// Check if the montage is still playing
 	// The ability would have been interrupted, in which case we should automatically stop the montage
-	if (AbilitySystemComponent && Ability)
+	if (AbilitySystemComponent.IsValid() && Ability)
 	{
 		if (AbilitySystemComponent->GetAnimatingAbility() == Ability
 			&& AbilitySystemComponent->GetCurrentMontage() == MontageToPlay)

@@ -16,6 +16,7 @@
 #define SELECT_INDEX -101
 #define RETURN_INDEX -202
 
+class UUINavHorizontalComponent;
 enum class EButtonStyle : uint8;
 
 /**
@@ -296,12 +297,11 @@ public:
 	virtual void NativeTick(const FGeometry & MyGeometry, float DeltaTime) override;
 
 	virtual void RemoveFromParent() override;
-	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
 	/**
 	*	Traverses this widget's hierarchy to setup all the UIUINavButtons
 	*/
-	static void TraverseHierarquy(UUINavWidget* UINavWidget, UUserWidget* WidgetToTraverse);
+	static void TraverseHierarchy(UUINavWidget* UINavWidget, UUserWidget* WidgetToTraverse);
 
 	static void SearchForUINavElements(UUINavWidget* UINavWidget, UUserWidget* WidgetToTraverse, UWidget* Widget, UUINavCollection* TraversingCollection, const int GridDepth);
 

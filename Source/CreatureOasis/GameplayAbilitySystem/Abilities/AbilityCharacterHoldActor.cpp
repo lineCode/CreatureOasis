@@ -51,7 +51,7 @@ void UAbilityCharacterHoldActor::ActivateAbility(const FGameplayAbilitySpecHandl
 		if (TriggerEventData != nullptr)
 		{
 			// FGameplayEventData TempPayload = *TriggerEventData; // As done in AbilityTak_WaitGameplayEvent, dereference and copy data due to how UStruct works
-			ActorToHold = const_cast<AActor*>(TriggerEventData->Target); // Bad; why you do this to me Unreal???? Blueprints lets me alter payload data just fine
+			ActorToHold = const_cast<AActor*>(TriggerEventData->Target.Get()); // Bad; why you do this to me Unreal???? Blueprints lets me alter payload data just fine
 		}
 
 		if (ActorToHold == nullptr)

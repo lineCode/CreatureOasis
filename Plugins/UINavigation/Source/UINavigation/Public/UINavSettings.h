@@ -38,12 +38,12 @@ public:
 	TSoftObjectPtr<UUINavEnhancedInputActions> EnhancedInputActions;
 
 	UPROPERTY(config)
-	TArray<struct FInputActionKeyMapping> ActionMappings;
+	TArray<FInputActionKeyMapping> ActionMappings;
 
 	UPROPERTY(config)
-	TArray<struct FInputAxisKeyMapping> AxisMappings;
+	TArray<FInputAxisKeyMapping> AxisMappings;
 
 	// A map for each Input Context in your game and its respective Default Input Context Mappings
 	UPROPERTY(config, EditAnywhere, Category = "Bindings")
-		TMap<TSoftObjectPtr<UInputMappingContext>, TSoftObjectPtr<UInputMappingContext>> DefaultInputContexts;
+	TMap<TSoftObjectPtr<UInputMappingContext>, TSoftObjectPtr<UInputMappingContext>> DefaultInputContexts;
 };
