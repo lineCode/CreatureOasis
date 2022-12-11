@@ -1,0 +1,6 @@
+[submodule "Plugins/UINavigation"]
+	path = Plugins/UINavigation
+	url = https://github.com/goncasmage1/UINavigation
+[submodule "Plugins/LuaMachine"]
+	path = Plugins/LuaMachine
+	url = https://github.com/rdeioris/LuaMachine
